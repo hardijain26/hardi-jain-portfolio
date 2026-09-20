@@ -22,4 +22,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://hardi-jain-portfolio.vercel.app/sitemap.xml
+Sitemap: https://hardijain.com/sitemap.xml
