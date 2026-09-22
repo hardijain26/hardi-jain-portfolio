@@ -1178,7 +1178,8 @@ if(typeof module!=='undefined')module.exports=SK;
   var PNAME={}; PILLARS.forEach(function(p){ PNAME[p[0]]=p[1]; });
   /* true: the grid holds every case study. false: only the ones not already in the flagship grid above. */
   var GRID_SHOWS_ALL=true;
-  /* add work here: feat:true also lifts it into the flagship grid at the top */
+  /* add work here: feat:true also lifts it into the flagship grid at the top.
+     `co` is kept for reference but is not shown on the cards. */
   var CASES=[
     {t:'Checkout Conversion & Bot Filtering',co:'PayU',p:'b2c',ic:'shield',feat:true},
     {t:'High-Value Payment Flexibility: DP+EMI',co:'PayU',p:'b2c',ic:'drivers',feat:true},
@@ -1190,7 +1191,7 @@ if(typeof module!=='undefined')module.exports=SK;
     return '<article class="cs">'+
       '<svg class="ci" viewBox="0 0 40 40" aria-hidden="true"><path d="'+SK.iconD(c.ic,20,20,.9)+'"/></svg>'+
       '<h3>'+esc(c.t)+'</h3>'+
-      '<p class="co">'+esc(c.co)+' · '+esc(PNAME[c.p])+'</p>'+
+      '<p class="co">'+esc(PNAME[c.p])+'</p>'+
       (c.note?'<p class="note">'+esc(c.note)+'</p>':'')+
       '</article>';
   }
