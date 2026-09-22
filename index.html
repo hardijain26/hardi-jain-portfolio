@@ -306,9 +306,9 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .sketch.on .sd{animation:sdin 1.4s ease var(--t,0s) forwards}
 @keyframes sdin{to{opacity:var(--o,.4)}}
 
-/* navigation page: intro, road, companies, principles, pinned road */
-.page.map{padding-top:56px}
-.page.map h2{font-size:clamp(34px,4.6vw,54px);line-height:1}
+/* navigation page: intro, road, companies, pinned road — and the How I work page */
+.page.map,.page.how{padding-top:56px}
+.page.map h2,.page.how h2{font-size:clamp(34px,4.6vw,54px);line-height:1}
 .intro{font-size:28px;line-height:1.2;max-width:50ch;margin:10px 0 4px}
 .hint2{font-size:24px;color:var(--muted);margin:0 0 2px}
 .road.draw svg{animation:wipeRoad 2.4s cubic-bezier(.45,.05,.3,1) .3s both}
@@ -320,8 +320,9 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .cos li{font-size:27px;font-weight:700;line-height:1.1}
 .cos li+li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin:0 16px 5px}
 .cos.draw li{opacity:0;animation:fade .9s ease forwards;animation-delay:calc(1.4s + var(--i) * .5s)}
-.principles{margin:64px 0 0}
-.principles h3{font-size:clamp(38px,4.6vw,52px);font-weight:700;line-height:1;margin:0 0 18px}
+.page.map .more{margin:56px 0 0;text-align:center}
+.page.map .more .ar{display:inline-block;margin-left:6px}
+.page.how .pgrid{margin-top:22px}
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
 .pr{border:1.5px solid var(--line);border-radius:8px;background:var(--card);transition:border-color .2s ease,box-shadow .25s ease,transform .25s ease}
 .pr:hover{border-color:var(--accent);box-shadow:0 8px 20px rgba(59,44,36,.12);transform:translateY(-2px)}
@@ -385,7 +386,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 @media (max-width:820px){
   .pgrid{grid-template-columns:repeat(2,1fr)}
   .page{padding:64px 20px 16px}
-  .page.map{padding-top:52px}
+  .page.map,.page.how{padding-top:52px}
   .pgrid{grid-template-columns:1fr}
   .road.draw svg{animation-name:wipeDown}
   .slim .seg{width:26px}
@@ -490,6 +491,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   </section>
   </main>
   <section class="view" id="v-nav" aria-label="The map"></section>
+  <section class="view" id="v-how" aria-label="How I work"></section>
   <section class="view" id="v-chapter" aria-label="Chapter">
     <div class="player" id="player">
       <div class="pl-top"><button type="button" class="link" data-go="nav">Map</button></div>
@@ -1104,7 +1106,7 @@ if(typeof module!=='undefined')module.exports=SK;
   var order=['ia','sa','au','pm','ai'];
   var progress={ia:false,sa:false,au:false,pm:false,fin:false};
   var CH={}; SK.chapters.forEach(function(c){ CH[c.id]=c; }); CH.fin=SK.finale;
-  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter')};
+  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how')};
   var player=$('player'), sketch=$('sketch'), sk=$('sk'), msgEl=$('msg'), nextBtn=$('next'), cprog=$('cprog'), aix=$('aix');
   var cur=null, bi=0, ptimers=[];
   /* history: the map is always the entry right after the landing page, so Back from the map lands on the landing page */
@@ -1126,9 +1128,13 @@ if(typeof module!=='undefined')module.exports=SK;
     '<p class="hint2">Pick any dot. The pulsing one is next.</p>'+
     '<div class="road" id="road"></div>'+
     '<div class="worked"><p class="worked-label">Where I’ve worked</p><ol class="cos" id="cos">'+COMPANIES.map(function(c,i){ return '<li style="--i:'+i+'">'+c+'</li>'; }).join('')+'</ol></div>'+
-    '<section class="principles" aria-label="How I work"><h3>How I work</h3><div class="pgrid">'+
+    '<p class="more"><button type="button" class="link" data-go="how">How I work<span class="ar" aria-hidden="true">→</span></button></p></div>';
+  views.how.innerHTML='<div class="page how"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
+    '<h2>How I work</h2>'+
+    '<p class="hint2">Pick any one to see what it means in practice.</p>'+
+    '<div class="pgrid">'+
     PRINCIPLES.map(function(p){ return '<details class="pr"><summary><svg class="pi" viewBox="0 0 40 40" aria-hidden="true"><path d="'+SK.iconD(p[0],20,20,1)+'"/></svg><span>'+p[1]+'</span></summary><p>'+p[2]+'</p></details>'; }).join('')+
-    '</div></section></div>';
+    '</div></div>';
   function unlocked(i){
     var id=order[i];
     if(i===0) return true;
@@ -1284,7 +1290,7 @@ if(typeof module!=='undefined')module.exports=SK;
   (function(){
     var fine=window.matchMedia&&window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     if(!fine) return;
-    Array.prototype.forEach.call(views.nav.querySelectorAll('details.pr'),function(dt){
+    Array.prototype.forEach.call(views.how.querySelectorAll('details.pr'),function(dt){
       dt.addEventListener('mouseenter',function(){ dt.open=true; });
       dt.addEventListener('mouseleave',function(){ dt.open=false; });
       dt.querySelector('summary').addEventListener('click',function(e){ if(e.detail>0) e.preventDefault(); });
@@ -1307,9 +1313,15 @@ if(typeof module!=='undefined')module.exports=SK;
     var st=e.state||{};
     hIdx=st.i||0;
     if(st.v==='chapter'&&CH[st.id]){ setupChapter(st.id,st.bi||0); go('chapter',false); playBeat(false); }
-    else go(st.v==='nav'?'nav':'intro',false);
+    else if(st.v==='nav'||st.v==='how') go(st.v,false);
+    else go('intro',false);
   });
   try{ history.replaceState({v:'intro',i:0},'',location.href); }catch(err){}
+  if(location.hash==='#how'){
+    /* landed straight on the How I work page: keep the entry beneath it pointing at the landing page */
+    try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
+    navIdx=2; go('how');
+  }
 
   function centre(){
     var sky=document.getElementById('skyBox');
