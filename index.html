@@ -360,6 +360,11 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .eqn{display:flex;flex-direction:column;align-items:center;gap:3px}
 .eqn .op{color:var(--accent);font-size:23px;line-height:1}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin:46px 0 0}
+.tags span{font-size:21px;color:var(--accent-text);border:1.5px solid var(--line);border-radius:999px;padding:4px 14px 6px}
+.st-cta{display:flex;justify-content:flex-end;margin:26px 0 0}
+.st-cta .ar{display:inline-block;margin-left:8px;color:var(--btn-ink)}
 .cb-t{font-size:20px;letter-spacing:.05em;color:var(--muted);text-align:center;margin:0 0 8px}
 .out{display:flex;flex-direction:column;gap:5px;align-items:stretch}
 .out p{margin:0;font-size:20px;line-height:1.15;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);padding:5px 12px 7px}
@@ -423,6 +428,8 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   .slim .seg{width:30px}
 }
 
+@media (max-width:1100px){ .three{grid-template-columns:1fr} }
+@media (max-width:520px){ .two{grid-template-columns:1fr} }
 @media (max-width:860px){
   .st-body{grid-template-columns:1fr;gap:18px}
   .st-text p{max-width:none}
@@ -558,7 +565,8 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   </main>
   <section class="view" id="v-nav" aria-label="The map"></section>
   <section class="view" id="v-how" aria-label="How I work"></section>
-  <section class="view" id="v-story" aria-label="The full story"></section>
+  <section class="view" id="v-story" aria-label="The KPMG story"></section>
+  <section class="view" id="v-story2" aria-label="The J.P. Morgan story"></section>
   <section class="view" id="v-chapter" aria-label="Chapter">
     <div class="player" id="player">
       <div class="pl-top"><button type="button" class="link" data-go="nav">Map</button></div>
@@ -1174,7 +1182,7 @@ if(typeof module!=='undefined')module.exports=SK;
   var order=['ia','sa','au','pm','ai'];
   var progress={ia:false,sa:false,au:false,pm:false,fin:false};
   var CH={}; SK.chapters.forEach(function(c){ CH[c.id]=c; }); CH.fin=SK.finale;
-  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story')};
+  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story'),story2:$('v-story2')};
   var player=$('player'), sketch=$('sketch'), sk=$('sk'), msgEl=$('msg'), nextBtn=$('next'), cprog=$('cprog'), aix=$('aix'), mlink=$('mlink');
   var cur=null, bi=0, ptimers=[];
   /* history: the map is always the entry right after the landing page, so Back from the map lands on the landing page */
@@ -1203,7 +1211,7 @@ if(typeof module!=='undefined')module.exports=SK;
     PRINCIPLES.map(function(p){ return '<details class="pr"><summary><svg class="pi" viewBox="0 0 40 40" aria-hidden="true"><path d="'+SK.iconD(p[0],20,20,1)+'"/></svg><span>'+p[1]+'</span></summary><p>'+p[2]+'</p></details>'; }).join('')+
     '</div></div>';
 
-  /* ---------- the full story: flow diagrams built from a few primitives ---------- */
+  /* ---------- the full stories: flow diagrams built from a few primitives ---------- */
   function nd(t,c){ return '<span class="nd'+(c?' '+c:'')+'">'+t+'</span>'; }
   function ar(t){ return '<span class="ar" aria-hidden="true">'+(t||'↓')+'</span>'; }
   function col(){ return '<div class="col">'+Array.prototype.slice.call(arguments).join('')+'</div>'; }
@@ -1211,13 +1219,19 @@ if(typeof module!=='undefined')module.exports=SK;
   function chain(list,c){ var h=[],i; for(i=0;i<list.length;i++){ if(i) h.push(ar()); h.push(nd(list[i],c)); } return col.apply(null,h); }
   function cb(t,inner){ return '<div><p class="cb-t">'+t+'</p>'+inner+'</div>'; }
   function two(a,b){ return '<div class="two">'+a+b+'</div>'; }
+  function three(a,b,c){ return '<div class="three">'+a+b+c+'</div>'; }
   function vs(){ return '<div class="vstack">'+Array.prototype.slice.call(arguments).join('')+'</div>'; }
   function lbl(t){ return '<p class="vlabel">'+t+'</p>'; }
   function eqn(parts){ var h=[],i; for(i=0;i<parts.length;i++){ h.push(i%2?'<span class="op" aria-hidden="true">'+parts[i]+'</span>':nd(parts[i])); } return '<div class="eqn">'+h.join('')+'</div>'; }
   function outs(rows){ return '<div class="out">'+rows.map(function(r){ return '<p class="'+r[0]+'"><span aria-hidden="true">'+(r[0]==='ok'?'✓':'!')+'</span> '+r[1]+'</p>'; }).join('')+'</div>'; }
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
 
-  var STORY=[
+  var STORIES=[{
+    id:'story', kick:'KPMG', tags:['#automation','#audit','#reconciliation'],
+    title:'Turning audit logic into an automated workflow',
+    lede:'I converted an auditor’s repeated reconciliation logic into a reusable system, so auditors could focus on investigating exceptions rather than performing the same calculations manually.',
+    cta:{to:'story2', label:'Next: J.P. Morgan'},
+    secs:[
     {n:'01',k:'THE OLD WAY',
      h:'Thousands of transactions. The same logic, repeated every time.',
      p:['Investment registers contained thousands of transactions that had to be tested through a series of reconciliations and account mappings.',
@@ -1225,7 +1239,6 @@ if(typeof module!=='undefined')module.exports=SK;
      v:vs(col(nd('INVESTMENT REGISTER','hi'),ar(),row(['Purchases','Sales','Bonuses','Splits','Dividends','Interest']),ar(),nd('AUDIT SAMPLE','on')),
           eqn(['OPENING','+','PURCHASES','−','SALES','+','BONUS / SPLIT','=','CLOSING']),
           col(nd('CLOSING'),ar('↕'),nd('BALANCE SHEET')))},
-
     {n:'02',k:'THE RECONCILIATION WEB',
      h:'Every transaction had to find its way back to the financial statements.',
      p:['The work wasn’t a single calculation. Each transaction had to connect to the right financial evidence and ultimately reconcile back to the financial statements.',
@@ -1235,21 +1248,18 @@ if(typeof module!=='undefined')module.exports=SK;
            row(['Bank','Sales account','Dividend','Interest']),ar(),
            nd('Profit / loss on sale'),ar(),
            nd('CLOSING BALANCE','on'),ar('↕'),nd('BALANCE SHEET','hi'))},
-
     {n:'03',k:'THE QUESTION',
      h:'What if the logic didn’t have to be repeated by the auditor?',
      p:['The underlying audit logic was repeatable.',
         'If the rules could be defined once, the system could perform the calculations and reconciliations consistently, leaving the auditor to investigate what didn’t reconcile.'],
      v:two(cb('TODAY',chain(['Auditor','Calculate','Map','Reconcile','Document','Repeat'])),
            cb('OPPORTUNITY',chain(['Define logic once','Automate','Investigate exceptions'],'hi')))},
-
     {n:'04',k:'DEFINE THE LOGIC',
      h:'We turned audit procedures into rules.',
      p:['We defined the underlying audit logic at the backend.',
         'The system could calculate the expected closing balance, map transactions to the relevant accounts, calculate profit or loss on sales, incorporate dividend and interest income, and identify differences against the expected balances.'],
      v:vs(col(lbl('INPUT DATA'),row(['Transaction data','Opening balance','Bank data','Sales account','Income data'])),
           col(ar(),nd('RULE ENGINE','on'),ar(),row(['Calculate','Map','Reconcile']),ar(),nd('EXCEPTION?','hi')))},
-
     {n:'05',k:'THE USER EXPERIENCE',
      h:'The auditor didn’t need to perform the calculations anymore.',
      p:['The user’s job became simpler: upload the required data, review the automated output, investigate the differences, and document the conclusion.',
@@ -1257,72 +1267,139 @@ if(typeof module!=='undefined')module.exports=SK;
      v:vs(col(lbl('AUDITOR UPLOADS'),row(['Transaction data','Supporting data'])),
           col(ar(),nd('SYSTEM','on'),row(['Calculate','Map','Reconcile','Compare']),ar()),
           vs(lbl('OUTPUT'),outs([['ok','Reconciled'],['warn','Difference'],['warn','Difference'],['ok','Reconciled'],['ok','Reconciled']])))},
-
     {n:'06',k:'THE EXCEPTION BECOMES THE PRODUCT',
      h:'Automation didn’t replace the auditor. It changed what the auditor spent time on.',
      p:['Instead of spending time performing the same calculations across samples, auditors could focus their attention on the transactions where the system identified a difference.'],
      v:two(cb('BEFORE',chain(['Data','Calculate','Map','Reconcile','Investigate','Document'])),
            cb('AFTER',chain(['Data','Automate','Exceptions','Investigate','Document'],'hi')))},
-
     {n:'07',k:'THE INVESTIGATION',
      h:'Automation identifies where human judgment is needed.',
      p:['When the expected closing position did not agree with the financial statements, the system surfaced the difference rather than resolving it.',
         'Deciding what the difference meant stayed with the auditor.'],
      v:col(nd('EXPECTED CLOSING'),'<span class="ar" aria-hidden="true">≠</span>',nd('BALANCE SHEET'),ar(),
            nd('DIFFERENCE','hi'),ar(),nd('INVESTIGATE','on'),ar(),nd('DOCUMENT'))},
-
     {n:'08',k:'THE SCALE',
      h:'From repeated calculations to exception-driven review.',
      p:['The workflow was standardised across 50 client engagements and more than 150 auditors, contributing to a 40–50% reduction in audit cycle time.',
         'The numbers are the proof, not the story.'],
      v:vs(two(stat('50','client engagements'),stat('150+','auditors')),
           col(ar(),nd('AUTOMATED RECONCILIATION LOGIC','on'),ar()),
-          stat('40–50%','reduction in audit cycle time'))}
-  ];
+          stat('40–50%','reduction in audit cycle time'))}],
+    ends:[
+      {h:'Transaction → logic → exception',
+       v:col(lbl('TRANSACTIONS'),row(['','','','','','']),ar(),
+             nd('AUDIT LOGIC<br><small>Opening + Purchases − Sales + Bonus / Split = Closing</small>','on'),ar(),
+             nd('RECONCILIATION'),ar(),row(['✓ Match','! Difference'],'hi'),ar(),nd('INVESTIGATE','hi'))},
+      {h:'Where this leads',
+       v:'<div class="arc">'+[['Audit','I learned the logic.'],['KPMG','I recognised that the logic was repeatable.'],
+         ['Automation','I encoded the logic into a reusable workflow.'],['J.P. Morgan','I learned to redesign the workflow around automation.'],
+         ['Product','I started designing systems around customer problems.'],['AI','I now explore systems that can reason and interact.']]
+         .map(function(a,i){ return (i?ar():'')+nd(a[0]+'<br><small>'+a[1]+'</small>',i===1?'on':''); }).join('')+'</div>'}]
+  },{
+    id:'story2', kick:'J.P. MORGAN', tags:['#automation','#fundoperations','#workflow'],
+    title:'The numbers changed every day. The process didn’t need to.',
+    lede:'Whether it was a daily capital call or a quarterly NAV process, the opportunity was the same: identify repeatable logic, automate the workflow, and direct human effort toward exceptions rather than routine processing.',
+    secs:[
+    {n:'01',k:'CONTEXT',
+     h:'A daily operational process with a largely repeatable sequence.',
+     p:['Private equity fund operations involved recurring capital calls and distributions between funds and their investors.',
+        'When an investment was sold or a fund needed to call capital, the team had to evaluate the available cash flows, determine the amount to be called or distributed, calculate the amount attributable to each investor, account for adjustments and expenses, and prepare the corresponding investor communication.'],
+     v:chain(['PRIVATE EQUITY FUND','CASH FLOWS','CALL / DISTRIBUTION','INVESTOR-LEVEL CALCULATIONS','ADJUSTMENTS + EXPENSES','INVESTOR LETTERS'])},
+    {n:'02',k:'THE PROBLEM',
+     h:'The inputs changed. The workflow repeated.',
+     p:['Every day brought different cash flows and different investor amounts, but the underlying process remained largely the same.',
+        'The team had to repeatedly evaluate the cash flows, perform the calculations, make adjustments, and prepare the outputs.',
+        'The opportunity was not simply to make one calculation faster. It was to automate the repeatable logic across the workflow.'],
+     v:vs(three(cb('MONDAY',chain(['Cash flows','Calculate','Adjust','Output'])),
+                cb('TUESDAY',chain(['Cash flows','Calculate','Adjust','Output'])),
+                cb('WEDNESDAY',chain(['Cash flows','Calculate','Adjust','Output']))),
+          lbl('SAME WORKFLOW'))},
+    {n:'03',k:'THE INTERVENTION',
+     h:'Turning repeatable calculations into an automated workflow.',
+     p:['I worked on translating the recurring calculation logic into an automated workflow.',
+        'The underlying data could flow through the defined logic, with the system performing the repeatable calculations and surfacing exceptions for investigation.',
+        'This changed the team’s role from manually performing every calculation to reviewing the output and focusing on the cases that required judgment.'],
+     v:col(nd('INPUT DATA'),ar(),nd('DEFINED LOGIC','on'),ar(),nd('CALCULATIONS'),ar(),nd('ADJUSTMENTS'),ar(),
+           nd('OUTPUT'),ar(),row(['✓ Match','! Exception'],'hi'),ar(),nd('INVESTIGATE','hi'))},
+    {n:'04',k:'THE HUMAN ROLE CHANGED',
+     h:'From processing every transaction to investigating exceptions.',
+     p:['Automation handled the repeatable parts of the process, while human attention was focused on the exceptions that needed investigation and review.',
+        'The objective wasn’t to remove human judgment. It was to move human judgment to the places where it mattered.'],
+     v:two(cb('BEFORE',chain(['Data','Calculate','Check','Adjust','Document'])),
+           cb('AFTER',chain(['Data','Automated workflow','Exceptions','Investigate','Document'],'hi')))},
+    {n:'05',k:'THE SECOND WORKFLOW',
+     h:'Quarterly NAV reporting.',
+     p:['The same principle applied at quarter-end. The team also had to prepare quarterly financial statements and share NAV information with investors.',
+        'The reporting workflow started with the Trial Balance, which flowed into the Profit & Loss Statement, followed by the Balance Sheet and NAV.'],
+     v:chain(['TRIAL BALANCE','PROFIT & LOSS STATEMENT','BALANCE SHEET','NAV','INVESTOR REPORTING'])},
+    {n:'06',k:'AUTOMATING THE REPORTING',
+     h:'One upload. Multiple downstream outputs.',
+     p:['We automated this recurring reporting process so that the Trial Balance could be uploaded once, after which the relevant downstream calculations and outputs were populated automatically.',
+        'Rather than manually working through the entire reporting process, the team could review the generated outputs and investigate the exceptions surfaced by the system.'],
+     v:vs(col(nd('TRIAL BALANCE','hi'),lbl('ONE UPLOAD'),ar(),nd('AUTOMATED LOGIC','on'),ar()),
+          two(cb('CALCULATED OUTPUTS',chain(['P&L statement','Balance sheet','NAV','Investor reporting'])),
+              cb('EXCEPTIONS',chain(['Exception','Investigate'],'hi'))))},
+    {n:'07',k:'THE COMMON PATTERN',
+     h:'Two workflows. One automation principle.',
+     p:['Whether it was a daily capital call or a quarterly NAV process, the opportunity was the same: identify repeatable logic, automate the workflow, and direct human effort toward exceptions rather than routine processing.'],
+     v:vs(two(cb('DAILY OPERATIONS',chain(['Cash flows','Call / distribution','Investor calculations','Adjustments','Investor communication'])),
+              cb('QUARTERLY REPORTING',chain(['Trial Balance','P&L','Balance Sheet','NAV','Investor reporting']))),
+          col(ar(),nd('AUTOMATION','on'),ar(),nd('EXCEPTIONS','hi'),ar(),nd('HUMAN REVIEW')))},
+    {n:'08',k:'THE OUTCOME',
+     h:'What changed.',
+     p:['Across the automated workflows, fund-processing time was reduced from approximately two business days to less than four hours, processing effort was reduced by 75%, and NAV reporting errors decreased from 30% to 10%.'],
+     v:vs(stat('&lt;4 hrs','processing time, from about 2 business days'),
+          stat('75%','less processing effort'),
+          stat('30% → 10%','NAV reporting errors'))}],
+    ends:[
+      {h:'What I took forward',
+       v:vs(col(nd('THE DATA WILL KEEP CHANGING.<br><small>The workflow doesn’t always have to.</small>','on')),
+            two(cb('HUMAN JUDGMENT',chain(['Exceptions','Investigation','Review'],'hi')),
+                cb('REPEATABLE LOGIC',chain(['Calculations','Mappings','Outputs']))))}]
+  }];
 
+  function storySection(x){
+    return '<section class="st"><p class="st-n">'+x.n+' \u00b7 '+x.k+'</p><h3>'+x.h+'</h3>'+
+      '<div class="st-body"><div class="st-text">'+x.p.map(function(t){ return '<p>'+t+'</p>'; }).join('')+'</div>'+
+      '<div class="st-viz">'+x.v+'</div></div></section>';
+  }
+  function buildStory(d){
+    views[d.id].innerHTML='<nav class="sbar" aria-label="Story sections">'+
+      d.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
+      '</nav>'+
+      '<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
+      '<p class="st-kick">'+d.kick+'</p><h2>'+d.title+'</h2>'+
+      '<p class="st-lede">'+d.lede+'</p>'+
+      d.secs.map(storySection).join('')+
+      d.ends.map(function(e){ return '<div class="st-end"><h3>'+e.h+'</h3><div class="st-viz">'+e.v+'</div></div>'; }).join('')+
+      '<p class="tags">'+d.tags.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>'+
+      (d.cta?'<div class="st-cta"><button type="button" class="btn" data-go="'+d.cta.to+'">'+d.cta.label+'<span class="ar" aria-hidden="true">\u2192</span></button></div>':'')+
+      '</div>';
+    views[d.id].addEventListener('click',function(e){
+      var b=e.target.closest('.sbar button'); if(!b) return;
+      var s=views[d.id].querySelectorAll('.st')[parseInt(b.getAttribute('data-s'),10)];
+      if(!s) return;
+      try{ s.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(err){ s.scrollIntoView(); }
+    });
+  }
+  var STORY_IDS=STORIES.map(function(d){ return d.id; });
+  STORIES.forEach(buildStory);
+  function openStory(){
+    var i,v;
+    for(i=0;i<STORY_IDS.length;i++){ v=views[STORY_IDS[i]]; if(v.classList.contains('on')) return v; }
+    return null;
+  }
   function storyScroll(){
-    if(!views.story.classList.contains('on')) return;
-    var lede=views.story.querySelector('.st-lede'), secs=views.story.querySelectorAll('.st'),
-        btns=views.story.querySelectorAll('.sbar button'), cur=0, i;
-    $('sbar').classList.toggle('on',lede.getBoundingClientRect().bottom<0);
+    var v=openStory(); if(!v) return;
+    var lede=v.querySelector('.st-lede'), secs=v.querySelectorAll('.st'),
+        btns=v.querySelectorAll('.sbar button'), cur=0, i;
+    v.querySelector('.sbar').classList.toggle('on',lede.getBoundingClientRect().bottom<0);
     for(i=0;i<secs.length;i++){ if(secs[i].getBoundingClientRect().top<=140) cur=i; }
     for(i=0;i<btns.length;i++){
       if(i===cur) btns[i].setAttribute('aria-current','true'); else btns[i].removeAttribute('aria-current');
     }
   }
   window.addEventListener('scroll',storyScroll,{passive:true});
-  function storySection(x){
-    return '<section class="st"><p class="st-n">'+x.n+' · '+x.k+'</p><h3>'+x.h+'</h3>'+
-      '<div class="st-body"><div class="st-text">'+x.p.map(function(t){ return '<p>'+t+'</p>'; }).join('')+'</div>'+
-      '<div class="st-viz">'+x.v+'</div></div></section>';
-  }
-  function bindStoryBar(){
-    views.story.addEventListener('click',function(e){
-      var b=e.target.closest('.sbar button'); if(!b) return;
-      var s=views.story.querySelectorAll('.st')[parseInt(b.getAttribute('data-s'),10)];
-      if(!s) return;
-      try{ s.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(err){ s.scrollIntoView(); }
-    });
-  }
-  var ARC=[['Audit','I learned the logic.'],['KPMG','I recognised that the logic was repeatable.'],
-    ['Automation','I encoded the logic into a reusable workflow.'],['J.P. Morgan','I learned to redesign the workflow around automation.'],
-    ['Product','I started designing systems around customer problems.'],['AI','I now explore systems that can reason and interact.']];
-  views.story.innerHTML='<nav class="sbar" id="sbar" aria-label="Story sections">'+
-    STORY.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
-    '</nav>'+
-    '<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
-    '<p class="st-kick">KPMG</p>'+
-    '<h2>Turning audit logic into an automated workflow</h2>'+
-    '<p class="st-lede">I converted an auditor’s repeated reconciliation logic into a reusable system, so auditors could focus on investigating exceptions rather than performing the same calculations manually.</p>'+
-    STORY.map(storySection).join('')+
-    '<div class="st-end"><h3>Transaction → logic → exception</h3>'+
-    '<div class="st-viz">'+col(lbl('TRANSACTIONS'),row(['','','','','','']),ar(),
-      nd('AUDIT LOGIC<br><small>Opening + Purchases − Sales + Bonus / Split = Closing</small>','on'),ar(),
-      nd('RECONCILIATION'),ar(),row(['✓ Match','! Difference'],'hi'),ar(),nd('INVESTIGATE','hi'))+'</div></div>'+
-    '<div class="st-end"><h3>Where this leads</h3><div class="st-viz"><div class="arc">'+
-    ARC.map(function(a,i){ return (i?ar():'')+nd(a[0]+'<br><small>'+a[1]+'</small>',i===1?'on':''); }).join('')+
-    '</div></div></div></div>';
-  bindStoryBar();
 
   function unlocked(i){
     var id=order[i];
@@ -1412,7 +1489,7 @@ if(typeof module!=='undefined')module.exports=SK;
     mk.setAttribute('aria-label',chap?'Home, back to the map':'Hardi Jain, home');
     $('role').hidden=(name==='intro'||chap);
     if(name==='nav'){ renderMap(); updateSlim(); }
-    if(name==='story') storyScroll();
+    if(name==='story'||name==='story2') storyScroll();
     foot.classList.toggle('on',name==='intro'&&footReady);
     window.scrollTo(0,0);
     var h=views[name].querySelector('h2');
@@ -1507,12 +1584,12 @@ if(typeof module!=='undefined')module.exports=SK;
     var st=e.state||{};
     hIdx=st.i||0;
     if(st.v==='chapter'&&CH[st.id]){ setupChapter(st.id,st.bi||0); go('chapter',false); playBeat(false); }
-    else if(st.v==='nav'||st.v==='how'||st.v==='story') go(st.v,false);
+    else if(st.v==='nav'||st.v==='how'||st.v==='story'||st.v==='story2') go(st.v,false);
     else go('intro',false);
   });
   try{ history.replaceState({v:'intro',i:0},'',location.href); }catch(err){}
   var deep=location.hash.slice(1);
-  if(deep==='how'||deep==='story'){
+  if(deep==='how'||deep==='story'||deep==='story2'){
     /* landed straight on an inner page: keep the entry beneath it pointing at the landing page */
     try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
     navIdx=2; go(deep);
