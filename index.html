@@ -238,6 +238,9 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .stp.done .sym{stroke:var(--bg)}
 .stp .ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
 .stp.active .ring{animation:pulse 1.7s ease-out infinite}
+.stp.focus .ring{opacity:1;animation:pulse 1.2s ease-out 4}
+.stp.focus .body{stroke-width:7}
+.stp.focus .sym{stroke:var(--accent)}
 .stp{cursor:pointer}
 .stp.locked{opacity:.4}
 .stp:focus{outline:none}
@@ -330,7 +333,6 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .page.how .pgrid{margin-top:22px}
 /* the full story page: alternating text and hand-drawn flow diagrams */
 .page.story{max-width:1040px}
-.st-kick{font-size:24px;color:var(--muted);margin:0}
 .st-lede{font-size:30px;line-height:1.2;margin:16px 0 0;max-width:34ch;border-left:4px solid var(--accent);padding-left:18px}
 .st{margin:54px 0 0;scroll-margin-top:62px}
 .sbar{
@@ -473,7 +475,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 }
 @media (prefers-reduced-motion: reduce){
   .view.on{animation:none}
-  .stp.active .ring,.road .cl.more{animation:none}
+  .stp.active .ring,.stp.focus .ring,.road .cl.more{animation:none}
   .stp.active .ring{opacity:.6}
   .sketch .d{stroke-dashoffset:0 !important;animation:none !important}
   .sketch .f{opacity:1 !important;transform:none !important;animation:none !important}
@@ -1227,10 +1229,10 @@ if(typeof module!=='undefined')module.exports=SK;
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
 
   var STORIES=[{
-    id:'story', kick:'KPMG', tags:['#automation','#audit','#reconciliation'],
+    id:'story', tags:['#automation','#audit','#reconciliation'],
     title:'Turning audit logic into an automated workflow',
     lede:'I converted an auditor’s repeated reconciliation logic into a reusable system, so auditors could focus on investigating exceptions rather than performing the same calculations manually.',
-    cta:{to:'story2', label:'Next: J.P. Morgan'},
+    cta:{to:'story2', label:'Next story'},
     secs:[
     {n:'01',k:'THE OLD WAY',
      h:'Thousands of transactions. The same logic, repeated every time.',
@@ -1292,11 +1294,10 @@ if(typeof module!=='undefined')module.exports=SK;
              nd('RECONCILIATION'),ar(),row(['✓ Match','! Difference'],'hi'),ar(),nd('INVESTIGATE','hi'))},
       {h:'Where this leads',
        v:'<div class="arc">'+[['Audit','I learned the logic.'],['KPMG','I recognised that the logic was repeatable.'],
-         ['Automation','I encoded the logic into a reusable workflow.'],['J.P. Morgan','I learned to redesign the workflow around automation.'],
-         ['Product','I started designing systems around customer problems.'],['AI','I now explore systems that can reason and interact.']]
+         ['Automation','I encoded the logic into a reusable workflow.']]
          .map(function(a,i){ return (i?ar():'')+nd(a[0]+'<br><small>'+a[1]+'</small>',i===1?'on':''); }).join('')+'</div>'}]
   },{
-    id:'story2', kick:'J.P. MORGAN', tags:['#automation','#fundoperations','#workflow'],
+    id:'story2', tags:['#automation','#fundoperations','#workflow'],
     title:'The numbers changed every day. The process didn’t need to.',
     lede:'Whether it was a daily capital call or a quarterly NAV process, the opportunity was the same: identify repeatable logic, automate the workflow, and direct human effort toward exceptions rather than routine processing.',
     secs:[
@@ -1352,7 +1353,7 @@ if(typeof module!=='undefined')module.exports=SK;
           stat('75%','less processing effort'),
           stat('30% → 10%','NAV reporting errors'))}],
     ends:[
-      {h:'What I took forward',
+      {h:'What I took forward', cta:{focus:'pm', label:'Where this led: Product'},
        v:vs(col(nd('THE DATA WILL KEEP CHANGING.<br><small>The workflow doesn’t always have to.</small>','on')),
             two(cb('HUMAN JUDGMENT',chain(['Exceptions','Investigation','Review'],'hi')),
                 cb('REPEATABLE LOGIC',chain(['Calculations','Mappings','Outputs']))))}]
@@ -1368,14 +1369,18 @@ if(typeof module!=='undefined')module.exports=SK;
       d.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
       '</nav>'+
       '<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
-      '<p class="st-kick">'+d.kick+'</p><h2>'+d.title+'</h2>'+
+      '<h2>'+d.title+'</h2>'+
       '<p class="st-lede">'+d.lede+'</p>'+
       d.secs.map(storySection).join('')+
-      d.ends.map(function(e){ return '<div class="st-end"><h3>'+e.h+'</h3><div class="st-viz">'+e.v+'</div></div>'; }).join('')+
+      d.ends.map(function(e){ return '<div class="st-end"><h3>'+e.h+'</h3><div class="st-viz">'+e.v+'</div>'+
+        (e.cta?'<div class="st-cta"><button type="button" class="btn" data-focus="'+e.cta.focus+'">'+e.cta.label+'<span class="ar" aria-hidden="true">\u2192</span></button></div>':'')+
+        '</div>'; }).join('')+
       '<p class="tags">'+d.tags.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>'+
       (d.cta?'<div class="st-cta"><button type="button" class="btn" data-go="'+d.cta.to+'">'+d.cta.label+'<span class="ar" aria-hidden="true">\u2192</span></button></div>':'')+
       '</div>';
     views[d.id].addEventListener('click',function(e){
+      var f=e.target.closest('[data-focus]');
+      if(f){ focusStop=f.getAttribute('data-focus'); go('nav'); return; }
       var b=e.target.closest('.sbar button'); if(!b) return;
       var s=views[d.id].querySelectorAll('.st')[parseInt(b.getAttribute('data-s'),10)];
       if(!s) return;
@@ -1417,7 +1422,7 @@ if(typeof module!=='undefined')module.exports=SK;
     }
     return out;
   }
-  var navSeen=false;
+  var navSeen=false, focusStop=null;
   function renderSlim(){
     var nextIdx=-1,h='';
     order.forEach(function(id,i){ if(nextIdx<0&&id!=='ai'&&!progress[id]) nextIdx=i; });
@@ -1449,7 +1454,7 @@ if(typeof module!=='undefined')module.exports=SK;
     order.forEach(function(id,i){ if(nextIdx<0&&id!=='ai'&&!progress[id]) nextIdx=i; });
     order.forEach(function(id,i){
       var p=pts[i+1], done=(id!=='ai')&&progress[id], active=(i===nextIdx)||id==='ai';
-      h+='<g class="stp'+(done?' done':'')+(active?' active':'')+'" data-ch="'+id+'" role="button" tabindex="0" aria-label="'+CH[id].name+(done?', done':'')+'">'+
+      h+='<g class="stp'+(done?' done':'')+(active?' active':'')+(focusStop===id?' focus':'')+'" data-ch="'+id+'" role="button" tabindex="0" aria-label="'+CH[id].name+(done?', done':'')+'">'+
         '<circle class="ring" cx="'+p[0]+'" cy="'+p[1]+'" r="46"/><circle class="body" cx="'+p[0]+'" cy="'+p[1]+'" r="40"/>'+
         '<path class="sym" d="'+SK.iconD(SYMS[id],p[0],p[1],1.3)+'"/><circle class="hit" cx="'+p[0]+'" cy="'+p[1]+'" r="56"/></g>';
     });
@@ -1461,6 +1466,15 @@ if(typeof module!=='undefined')module.exports=SK;
     $('road').className='road'+(navSeen?'':' draw');
     $('cos').className='cos'+(navSeen?'':' draw');
     $('road').innerHTML=h;
+    if(focusStop){
+      var fg=$('road').querySelector('.stp.focus');
+      if(fg){
+        try{ fg.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'}); }catch(err){}
+        /* reduced motion turns the pulse off, it should not cut the highlight short */
+        setTimeout(function(){ fg.classList.remove('focus'); },5200);
+      }
+      focusStop=null;
+    }
     renderSlim();
     navSeen=true;
     Array.prototype.forEach.call($('road').querySelectorAll('.stp'),function(g){
