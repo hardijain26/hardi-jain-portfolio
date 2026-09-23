@@ -415,6 +415,8 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .out p{margin:0;font-size:20px;line-height:1.15;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);padding:5px 12px 7px}
 .out p.ok{color:var(--muted)}
 .out p.warn{border-color:var(--accent);color:var(--accent-text)}
+.out p.yes{border-color:var(--accent);color:var(--accent-text)}
+.out p.no{color:var(--fmuted);border-style:dashed}
 .stat{display:flex;flex-direction:column;align-items:center;line-height:1}
 .stat .big{font-size:clamp(40px,5.5vw,58px);font-weight:700;color:var(--accent-text)}
 .stat .sml{font-size:20px;color:var(--muted);text-align:center;margin-top:2px}
@@ -1277,6 +1279,11 @@ if(typeof module!=='undefined')module.exports=SK;
   function outs(rows){ return '<div class="out">'+rows.map(function(r){ return '<p class="'+r[0]+'"><span aria-hidden="true">'+(r[0]==='ok'?'✓':'!')+'</span> '+r[1]+'</p>'; }).join('')+'</div>'; }
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
   function voice(q,who){ return '<p class="vq">\u201c'+q+'\u201d'+(who?'<span class="vs">'+who+'</span>':'')+'</p>'; }
+  function perm(rows){
+    return '<div class="out">'+rows.map(function(r){
+      return '<p class="'+(r[0]?'yes':'no')+'"><span aria-hidden="true">'+(r[0]?'\u2713':'\u2715')+'</span> '+r[1]+'</p>';
+    }).join('')+'</div>';
+  }
   function form(t,fields){
     return '<div class="fm"><p class="fm-t">'+t+'</p>'+
       fields.map(function(f){ return '<div class="fm-f"><span class="fm-l">'+f[0]+'</span><div class="fm-i">'+(f[1]||'&nbsp;')+'</div></div>'; }).join('')+
@@ -1857,14 +1864,91 @@ if(typeof module!=='undefined')module.exports=SK;
        ends:[
         {h:'Operational problems often contain product opportunities',
          p:'When the same customization request keeps appearing, the answer isn\u2019t necessarily to process those requests faster. It may be to make the customer capable of solving them themselves.',
-         v:chain(['Customization requests','Pattern discovery','Configurable product','Self-serve flow','Less dependency','Faster value'],'hi')}]},
-            {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
-       v:chain(['Complexity','Discovery','Standardise','Enable','Scale']),
-       t:'',
-       l:['B2B','Enterprise','Platform']}]},
+         v:chain(['Customization requests','Pattern discovery','Configurable product','Self-serve flow','Less dependency','Faster value'],'hi')}]}]},
     {k:'ENTERPRISE', h:'Making complex organizations move faster.',
      intro:'At enterprise scale, product problems don’t stop at the customer interface. They can emerge from how teams build, share capabilities and allocate engineering capacity.',
      cards:[
+      {n:'06',id:'racb',h:'Payment links access governance',
+       ph:'How do you give an external agent enough access to sell, without giving them access to the business?',
+       sub:'Enterprise payment links \u00b7 access governance \u00b7 role-based access',
+       v:col(nd('External agent'),ar(),nd('Payment links only','on'),ar(),row(['Own links','Own status'],'hi')),
+       t:'Giving distributed sales teams the access they need, without exposing the enterprise behind them.',
+       l:['Enterprise SaaS','RBAC','Access Governance','Self-Service','Data Isolation','Platform Design'],
+       lede:'The business needed distribution. The platform needed control.',
+       secs:[
+        {n:'01',k:'THE CONTEXT',h:'Payment links were moving beyond the enterprise.',
+         p:['Payment Links allowed merchants to collect payments without requiring a technical integration.',
+            'For an enterprise such as an insurance company, the person creating the link wasn\u2019t always an employee. There were two very different users.'],
+         v:vs(col(nd('ENTERPRISE MERCHANT','on'),ar()),
+              two(cb('COMPANY EMPLOYEES',chain(['Internal operations','Broader access'])),
+                  cb('EXTERNAL AGENTS',chain(['Distributed field force','Need to create links'],'hi'))))},
+        {n:'02',k:'THE PROBLEM',h:'The existing permission model was too broad.',
+         p:['An external agent needed one capability: create a Payment Link for a customer.',
+            'Too little access and the agent cannot work. Too much and enterprise data is exposed. That tension is the story.'],
+         v:vs(col(nd('External agent'),ar(),nd('Merchant dashboard','hi'),ar()),
+              perm([[1,'Payment links'],[0,'Other transactions'],[0,'Settlement data'],
+                    [0,'Customer data'],[0,'Reports'],[0,'Other products']]))},
+        {n:'03',k:'THE WORKAROUND',h:'So the enterprise became the middleman.',
+         p:['When merchants couldn\u2019t safely give access to external agents, the request travelled through internal teams instead.',
+            'What looked like a support problem was actually a product problem.'],
+         v:chain(['External agent','Support / operations','Central merchant team','Payment link','Customer'],'hi')},
+        {n:'04',k:'DISCOVERY',h:'I started with the support queue.',
+         p:['Rather than treating tickets as isolated operational issues, I grouped the requests, found the repeating patterns and traced them back to product gaps.',
+            'The missing capability wasn\u2019t another support workflow. It was a permission primitive designed around the Payment Link job to be done.'],
+         v:vs(chain(['Support tickets','Group the requests','Identify repeating patterns','Trace them to product gaps'],'hi'),
+              voice('I need to create a link.'),
+              voice('But I can\u2019t give the agent access to the dashboard.'),
+              voice('They may see other transactions and reports.'))},
+        {n:'05',k:'THE PRODUCT QUESTION',h:'What is the smallest surface area an external agent actually needs?',
+         p:['The useful question was not which permissions this user should have.',
+            'It was what an agent needs in order to create and manage their own Payment Links, and nothing beyond that.'],
+         v:two(cb('CAN DO',chain(['Create links','View own links','Check own status'],'hi')),
+               cb('CANNOT DO',chain(['View other agents','Export reports','View settlements','Access other products'])))},
+        {n:'06',k:'THE DECISION',h:'From broad access to scoped capability.',
+         p:['Don\u2019t give users access to a product. Give them access to the capability they need.'],
+         v:vs(cb('BEFORE',col(nd('Merchant account'),ar(),nd('User access','hi'),ar(),row(['Links','Reports','Financial data']))),
+              cb('AFTER',vs(col(nd('Merchant account'),ar()),
+                  two(cb('ENTERPRISE OWNER',chain(['Full visibility'])),
+                      cb('EXTERNAL AGENT',chain(['Payment links only','Own links \u00b7 own status'],'hi'))))))},
+        {n:'07',k:'CAPABILITY ISOLATION',h:'A deliberately narrow workspace.',
+         p:['The agent gets a workspace built around one job, not a filtered version of the merchant dashboard.',
+            'That is capability isolation, not simply role-based access.'],
+         v:vs(lbl('EXTERNAL AGENT WORKSPACE'),
+              perm([[1,'Create payment link'],[1,'My payment links'],[1,'Payment status'],
+                    [0,'Other merchant products'],[0,'Settlement'],[0,'Financial reports'],
+                    [0,'Other agents\u2019 transactions'],[0,'Report downloads']]))},
+        {n:'08',k:'DATA ISOLATION',h:'The agent sees their work. The enterprise sees everything.',
+         p:['Two levels of visibility. The agent asks to see what they created; the enterprise asks to see everything the organization created.'],
+         v:vs(col(nd('ENTERPRISE OWNER','on'),ar()),
+              three(cb('AGENT A',col(nd('Own links'))),cb('AGENT B',col(nd('Own links'))),cb('AGENT C',col(nd('Own links')))),
+              col(ar(),nd('ENTERPRISE VIEW','hi'),ar(),nd('All payment links','on')))},
+        {n:'09',k:'SECURITY BY DESIGN',h:'Restricting navigation wasn\u2019t enough.',
+         p:['Hiding a menu item does not protect a record. Access had to hold at the interface, at the data and at export.'],
+         v:vs(col(nd('ACCESS CONTROL','on'),ar()),
+              three(cb('NAVIGATION',chain(['Payment links only'],'hi')),
+                    cb('DATA ACCESS',chain(['Own records only'],'hi')),
+                    cb('EXPORT',chain(['No report download'],'hi'))),
+              col(ar(),nd('CONTROLLED SURFACE','on')))},
+        {n:'10',k:'EXECUTION',h:'Turning a permission problem into a product system.',
+         p:['I converted recurring support issues into a product problem, defined what an external agent needed to accomplish, and specified what they could see, create, view and export.',
+            'The balance to hold was merchant productivity against enterprise data protection.'],
+         v:chain(['Support data','Problem framing','Permission model','User / role journeys','Product requirements','Design','Engineering','Testing','Rollout'],'hi')},
+        {n:'11',k:'THE TRANSFORMATION',h:'Manual delegation became controlled self-service.',
+         p:['The agent stopped routing through the organization to do their job, and the enterprise gained a view of everything the agents did.'],
+         v:vs(two(cb('BEFORE',chain(['External agent','Cannot safely access platform','Merchant admin','Support / operations','Payment link'])),
+                  cb('AFTER',chain(['External agent','Restricted payment link access','Create link','Track own link','Customer pays'],'hi'))),
+              col(nd('ENTERPRISE OWNER','on'),ar(),nd('Central governance'),ar(),nd('All agent activity'),ar(),nd('Complete oversight','hi')))},
+        {n:'12',k:'WHAT CHANGED',h:'Five different people got a different answer.',
+         p:['A recurring class of access requests moved out of manual intervention and into the product.'],
+         v:vs(three(cb('EXTERNAL AGENTS',col(nd('Create payment links directly with the customer'))),
+                    cb('ENTERPRISE MERCHANTS',col(nd('Extend the capability to distributed teams without opening the account'))),
+                    cb('ENTERPRISE DATA',col(nd('Agent access isolated from financial and transaction data')))),
+              two(cb('SUPPORT & OPERATIONS',col(nd('A recurring request class moved into the product'))),
+                  cb('THE PLATFORM',col(nd('A granular access model for distributed enterprise workflows')))))}],
+       ends:[
+        {h:'Access is a product decision',
+         p:'In enterprise products the question isn\u2019t simply who should have access. It is what this person needs to accomplish, what information they need to accomplish it, and what should remain invisible.',
+         v:chain(['User','Job to be done','Required capability','Minimum data access','Controlled action','Enterprise governance'],'hi')}]},
       {n:'07',id:'squads',h:'From squads to system',sub:'Engineering Execution Frameworks & Cross-Squad Velocity Optimization',
        v:vs(col(row(['Squad A','Squad B','Squad C','Squad D','Squad E']),ar(),nd('Shared execution model','on')),
             two(cb('BEFORE',col(nd('Different ways of working'))),
