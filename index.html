@@ -1240,7 +1240,65 @@ if(typeof module!=='undefined')module.exports=SK;
   var cur=null, bi=0, ptimers=[];
   /* history: the map is always the entry right after the landing page, so Back from the map lands on the landing page */
   var hIdx=0, navIdx=1;
-  function hpush(st,url){ try{ hIdx++; st.i=hIdx; history.pushState(st,'',url); }catch(err){} }
+  /* ---------- real paths, one per page, so each is indexable and shareable ---------- */
+  var SITE='https://hardijain.com';
+  var ROUTES={intro:'/',nav:'/map',how:'/how-i-work',
+    story:'/automation-stories/audit-reconciliation-automation',
+    story2:'/automation-stories/fund-operations-nav-reporting',
+    prod:'/product-stories'};
+  var PSLUG={checkout:'checkout-conversion-bot-detection',
+    'dp-emi':'down-payment-emi-high-value-checkout',
+    'partial-payments':'partial-payments-education-payment-links',
+    platform:'cross-platform-payment-ux-standardization',
+    'self-serve':'self-serve-payment-links-merchant-configuration',
+    'access-governance':'payment-links-access-governance',
+    squads:'cross-squad-execution-and-delivery'};
+  var CHSLUG={ia:'internal-audit',sa:'statutory-audit',au:'automation',pm:'product',ai:'ai',fin:'the-full-picture'};
+  var PID={}, CHID={}, k;
+  for(k in PSLUG) PID[PSLUG[k]]=k;
+  for(k in CHSLUG) CHID[CHSLUG[k]]=k;
+  var META={
+    intro:['Hardi Jain | Product Manager Portfolio','Hardi Jain, product manager. A hand-drawn portfolio in five chapters, from audit and automation to product and AI.'],
+    nav:['The journey | Hardi Jain','Five chapters from internal audit and statutory audit through automation to product and AI, and the thread that connects them.'],
+    how:['How I work | Hardi Jain','Six principles behind the work: empathy first, data as a decision tool, moments that matter, progress over perfection, speed with trust, systems over features.'],
+    story:['Turning audit logic into an automated workflow | Hardi Jain','How repeated reconciliation logic became a reusable system, so auditors could investigate exceptions instead of repeating calculations.'],
+    story2:['Automating fund operations and NAV reporting | Hardi Jain','Daily capital calls and quarterly NAV reporting, automated from one upload, cutting processing from two business days to under four hours.'],
+    prod:['Product stories | Hardi Jain','Product problems solved at three levels: the customer journey, the business workflow and the enterprise system.']
+  };
+  function path(st){
+    if(!st) return '/';
+    if(st.v==='pstory') return '/product-stories/'+PSLUG[st.id];
+    if(st.v==='chapter') return '/journey/'+CHSLUG[st.id]+'/'+((st.bi||0)+1);
+    return ROUTES[st.v]||'/';
+  }
+  function routeOf(pn){
+    pn=('/'+String(pn||'/')).replace(/\/{2,}/g,'/').replace(/(.)\/+$/,'$1');
+    var key,m;
+    for(key in ROUTES) if(ROUTES[key]===pn) return {v:key};
+    m=pn.match(/^\/product-stories\/(.+)$/);
+    if(m&&PID[m[1]]) return {v:'pstory',id:PID[m[1]]};
+    m=pn.match(/^\/journey\/([^\/]+)(?:\/(\d+))?$/);
+    if(m&&CHID[m[1]]) return {v:'chapter',id:CHID[m[1]],bi:Math.max(0,(parseInt(m[2],10)||1)-1)};
+    return null;
+  }
+  function setMeta(st){
+    var t,d,c;
+    if(st&&st.v==='pstory'&&PSTORY[st.id]){ c=PSTORY[st.id]; t=(c.ph||c.h)+' | Hardi Jain'; d=c.t||c.lede||''; }
+    else if(st&&st.v==='chapter'&&CH[st.id]){ t=CH[st.id].name+' | Hardi Jain'; d=CH[st.id].msg||'A chapter in the journey from audit to product.'; }
+    else { var m=META[(st&&st.v)||'intro']||META.intro; t=m[0]; d=m[1]; }
+    try{
+      document.title=t;
+      var set=function(sel,attr,val){ var e=document.querySelector(sel); if(e) e.setAttribute(attr,val); };
+      set('meta[name="description"]','content',d);
+      set('meta[property="og:title"]','content',t);
+      set('meta[name="twitter:title"]','content',t);
+      set('meta[property="og:description"]','content',d);
+      set('meta[name="twitter:description"]','content',d);
+      set('link[rel="canonical"]','href',SITE+path(st));
+      set('meta[property="og:url"]','content',SITE+path(st));
+    }catch(err){}
+  }
+  function hpush(st){ try{ hIdx++; st.i=hIdx; history.pushState(st,'',path(st)); setMeta(st); }catch(err){} }
   function pl(fn,ms){ ptimers.push(setTimeout(fn,ms)); }
   function pclear(){ ptimers.forEach(clearTimeout); ptimers=[]; }
   function beatEnd(html){
@@ -2080,7 +2138,7 @@ if(typeof module!=='undefined')module.exports=SK;
     var c=PSTORY[id]; if(!c) return;
     buildProdStory(c);
     go('pstory',false);
-    if(push!==false) hpush({v:'pstory',id:id},'#p-'+id);
+    if(push!==false) hpush({v:'pstory',id:id}); else setMeta({v:'pstory',id:id});
   }
   views.prod.addEventListener('click',function(e){
     var b=e.target.closest('[data-p]');
@@ -2243,7 +2301,8 @@ if(typeof module!=='undefined')module.exports=SK;
     window.scrollTo(0,0);
     var h=views[name].querySelector('h2');
     if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
-    if(push!==false){ if(name==='nav') navIdx=hIdx+1; hpush({v:name},name==='intro'?'#':'#'+name); }
+    if(push!==false){ if(name==='nav') navIdx=hIdx+1; hpush({v:name}); }
+    else if(name!=='chapter') setMeta({v:name});
   }
 
   function setupChapter(id,idx){
@@ -2261,7 +2320,7 @@ if(typeof module!=='undefined')module.exports=SK;
   function showNext(last){ nextBtn.textContent=last?'Continue':'Next'; nextBtn.hidden=false; }
   function playBeat(push){
     pclear();
-    if(push){ hpush({v:'chapter',id:cur.id,bi:bi},'#'+cur.id+'-'+(bi+1)); }
+    if(push){ hpush({v:'chapter',id:cur.id,bi:bi}); } else setMeta({v:'chapter',id:cur.id,bi:bi});
     var b=cur.beats[bi], last=bi===cur.beats.length-1;
     nextBtn.hidden=true; msgEl.classList.remove('on'); msgEl.textContent='';
     aix.classList.remove('on'); aix.hidden=true;
@@ -2337,19 +2396,19 @@ if(typeof module!=='undefined')module.exports=SK;
     hIdx=st.i||0;
     if(st.v==='chapter'&&CH[st.id]){ setupChapter(st.id,st.bi||0); go('chapter',false); playBeat(false); }
     else if(st.v==='pstory'&&PSTORY[st.id]) openProdStory(st.id,false);
-    else if(st.v==='nav'||st.v==='how'||st.v==='story'||st.v==='story2'||st.v==='prod') go(st.v,false);
+    else if(ROUTES[st.v]&&st.v!=='intro') go(st.v,false);
     else go('intro',false);
   });
-  try{ history.replaceState({v:'intro',i:0},'',location.href); }catch(err){}
-  var deep=location.hash.slice(1);
-  if(deep==='how'||deep==='story'||deep==='story2'||deep==='prod'){
-    /* landed straight on an inner page: keep the entry beneath it pointing at the landing page */
-    try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
-    navIdx=2; go(deep);
-  } else if(deep.indexOf('p-')===0&&PSTORY[deep.slice(2)]){
-    try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
-    navIdx=2; openProdStory(deep.slice(2));
-  }
+  /* read the landing path first, then make the entry beneath it the landing page,
+     so Back from an inner page leaves the site cleanly */
+  var entry=routeOf(location.pathname);
+  try{ history.replaceState({v:'intro',i:0},'','/'); }catch(err){}
+  if(entry&&entry.v!=='intro'){
+    navIdx=2;
+    if(entry.v==='pstory') openProdStory(entry.id);
+    else if(entry.v==='chapter'){ setupChapter(entry.id,entry.bi); go('chapter',false); playBeat(true); }
+    else go(entry.v);
+  } else { setMeta({v:'intro'}); }
 
   function centre(){
     var sky=document.getElementById('skyBox');
