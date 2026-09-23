@@ -316,6 +316,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 
 /* navigation page: intro, road, companies, pinned road — and the How I work page */
 .page.map,.page.how,.page.story{padding-top:72px}
+.page.story{max-width:1040px}
 .page.map h2,.page.how h2,.page.story h2{font-size:clamp(34px,4.6vw,54px);line-height:1}
 .intro{font-size:28px;line-height:1.2;max-width:50ch;margin:10px 0 4px}
 .hint2{font-size:24px;color:var(--muted);margin:0 0 2px}
@@ -367,6 +368,30 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .tags span{font-size:21px;color:var(--accent-text);border:1.5px solid var(--line);border-radius:999px;padding:4px 14px 6px}
 .st-cta{display:flex;justify-content:flex-end;margin:26px 0 0}
 .st-cta .ar{display:inline-block;margin-left:8px;color:var(--btn-ink)}
+/* product stories: three bands of cards, with a bridge between them */
+.ps-lede{font-size:26px;line-height:1.22;color:var(--muted);max-width:60ch;margin:14px 0 0}
+.ps-band{margin:62px 0 0;border-top:2px solid var(--line);border-bottom:2px solid var(--line);padding:16px 0;text-align:center}
+.ps-band .k{font-size:25px;letter-spacing:.14em;color:var(--accent-text);margin:0}
+.ps-band h3{font-size:clamp(26px,3.2vw,38px);font-weight:700;line-height:1.05;margin:4px 0 0}
+.ps-intro{font-size:23px;line-height:1.22;color:var(--muted);max-width:64ch;margin:16px auto 0;text-align:center}
+.ps-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0 0;align-items:start}
+.pc{display:flex;flex-direction:column;gap:9px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);padding:18px 18px 20px;transition:border-color .2s ease,box-shadow .25s ease,transform .25s ease}
+.pc:hover{border-color:var(--accent);box-shadow:0 8px 20px rgba(59,44,36,.12);transform:translateY(-2px)}
+.pc-n{font-size:18px;letter-spacing:.09em;color:var(--accent-text);margin:0}
+.pc h4{font-size:25px;font-weight:700;line-height:1.08;margin:0}
+.pc-sub{font-size:20px;color:var(--muted);margin:0}
+.pc-viz{border:1.5px dashed var(--line);border-radius:8px;padding:14px 8px;margin:3px 0 0}
+.pc-viz .nd{font-size:17px;padding:4px 9px 6px}
+.pc-viz .ar{font-size:19px}
+.pc-viz .col{gap:5px}
+.pc-viz .cb-t{font-size:17px}
+.pc-t{font-size:21px;line-height:1.2;color:var(--muted);margin:0}
+.pc-lens{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0}
+.pc-lens span{font-size:17px;color:var(--accent-text);border:1.5px solid var(--line);border-radius:999px;padding:3px 10px 5px}
+.ps-bridge{margin:58px 0 0;text-align:center}
+.ps-bridge p{font-size:clamp(23px,2.6vw,30px);font-weight:700;line-height:1.1;margin:0 0 16px}
+.ps-end{margin:64px 0 0;border-top:1.5px solid var(--line);padding-top:26px}
+.ps-end h3{font-size:clamp(26px,3vw,34px);font-weight:700;margin:0 0 16px}
 .cb-t{font-size:20px;letter-spacing:.05em;color:var(--muted);text-align:center;margin:0 0 8px}
 .out{display:flex;flex-direction:column;gap:5px;align-items:stretch}
 .out p{margin:0;font-size:20px;line-height:1.15;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);padding:5px 12px 7px}
@@ -431,6 +456,8 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 }
 
 @media (max-width:1100px){ .three{grid-template-columns:1fr} }
+@media (max-width:1000px){ .ps-cards{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:660px){ .ps-cards{grid-template-columns:1fr} }
 @media (max-width:520px){ .two{grid-template-columns:1fr} }
 @media (max-width:860px){
   .st-body{grid-template-columns:1fr;gap:18px}
@@ -569,12 +596,13 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   <section class="view" id="v-how" aria-label="How I work"></section>
   <section class="view" id="v-story" aria-label="The KPMG story"></section>
   <section class="view" id="v-story2" aria-label="The J.P. Morgan story"></section>
+  <section class="view" id="v-prod" aria-label="Product stories"></section>
   <section class="view" id="v-chapter" aria-label="Chapter">
     <div class="player" id="player">
       <div class="pl-top"><button type="button" class="link" data-go="nav">Map</button></div>
       <figure class="sketch" id="sketch"><svg id="sk" viewBox="0 0 800 500" role="img" aria-label=""></svg></figure>
       <p class="msg" id="msg" aria-live="polite"></p>
-      <p class="mlink" id="mlink" hidden><button type="button" class="link" data-go="story">Read the full stories<span class="ar" aria-hidden="true">→</span></button></p>
+      <p class="mlink" id="mlink" hidden></p>
       <div class="ai-x" id="aix" hidden></div>
       <div class="bar"><div class="prog" id="cprog" aria-hidden="true"></div><div class="btns"><button type="button" class="btn next" id="next" hidden>Next</button></div></div>
     </div>
@@ -999,12 +1027,12 @@ var SK=(function(){
       {alt:'Contract, invoice, payment, entry, financial statements.',b:sa1},
       {alt:'A 12-month service recorded in one month.',b:sa2},
       {alt:'Does the number match the evidence?',b:sa3}]},
-    {id:'au',name:'Automation',msg:'Learned that automation doesn’t remove the work. It moves it to judgment.',story:'story',beats:[
+    {id:'au',name:'Automation',msg:'Learned that automation doesn’t remove the work. It moves it to judgment.',story:{to:'story',label:'Read the full stories'},beats:[
       {alt:'Check, verify, reconcile, every month by hand.',b:au1},
       {alt:'Repetition, rules, validation.',b:au2},
       {alt:'Input, process, output, with a validation loop.',b:au3},
       {alt:'Automation: same work, better.',b:au4}]},
-    {id:'pm',name:'Product',msg:'Learned to build for people.',beats:[
+    {id:'pm',name:'Product',msg:'Learned to build for people.',story:{to:'prod',label:'See the product stories'},beats:[
       {alt:'User needs and personas. The gap, circled, and its solution becomes the product: access switches off when someone leaves.',b:pm1,vbn:'0 0 400 640'},
       {alt:'Key decision points.',b:pm3},
       {alt:'The product lifecycle in a circle: discover, define, design, prototype, build, launch, measure, improve.',b:pm4,vbn:'0 0 400 650'}]},
@@ -1184,7 +1212,7 @@ if(typeof module!=='undefined')module.exports=SK;
   var order=['ia','sa','au','pm','ai'];
   var progress={ia:false,sa:false,au:false,pm:false,fin:false};
   var CH={}; SK.chapters.forEach(function(c){ CH[c.id]=c; }); CH.fin=SK.finale;
-  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story'),story2:$('v-story2')};
+  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story'),story2:$('v-story2'),prod:$('v-prod')};
   var player=$('player'), sketch=$('sketch'), sk=$('sk'), msgEl=$('msg'), nextBtn=$('next'), cprog=$('cprog'), aix=$('aix'), mlink=$('mlink');
   var cur=null, bi=0, ptimers=[];
   /* history: the map is always the entry right after the landing page, so Back from the map lands on the landing page */
@@ -1389,6 +1417,98 @@ if(typeof module!=='undefined')module.exports=SK;
   }
   var STORY_IDS=STORIES.map(function(d){ return d.id; });
   STORIES.forEach(buildStory);
+  /* ---------- product stories: three bands, each a set of teaser cards ---------- */
+  function lens(list){ return '<p class="pc-lens">'+list.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>'; }
+  function pcard(c){
+    return '<article class="pc">'+
+      '<p class="pc-n">STORY '+c.n+'</p>'+
+      '<h4>'+c.h+'</h4>'+
+      '<p class="pc-sub">'+c.sub+'</p>'+
+      '<div class="pc-viz">'+c.v+'</div>'+
+      (c.t?'<p class="pc-t">'+c.t+'</p>':'')+
+      lens(c.l)+
+      '</article>';
+  }
+  var BANDS=[
+    {k:'B2C', h:'Optimizing moments that matter.',
+     intro:'Consumer products don’t give you much room for friction. Small changes in the journey can change what happens at scale.',
+     cards:[
+      {n:'01',h:'When the funnel lied',sub:'Checkout Conversion Optimization',
+       v:col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigate','on'),ar(),nd('Bot traffic','hi'),ar(),nd('67%')),
+       t:'A 5-point SRT drop looked like a checkout problem. The investigation revealed abnormal bot traffic distorting the funnel.',
+       l:['Data Investigation','Conversion','Root Cause','Trade-offs']},
+      {n:'02',h:'Making EMI a checkout decision',sub:'DP EMI',
+       v:col(nd('Purchase'),ar(),nd('Payment'),ar(),nd('EMI<br><small>decision point</small>','on'),ar(),nd('Checkout')),
+       t:'Turning a payment option into a customer decision point.',
+       l:['Customer Experience','Payments','Conversion','Product Design']},
+      {n:'03',h:'Pay now. Pay partially. Keep going.',sub:'Partial Payments',
+       v:col(nd('Total amount'),ar(),row(['Pay now','Pay partially'],'hi'),ar(),nd('Remaining balance')),
+       t:'Designing flexibility into the checkout journey without losing sight of the transaction experience.',
+       l:['Customer Experience','Checkout','Flexibility','Product Design']}]},
+    {k:'B2B', h:'Turning complexity into product capability.',
+     intro:'In B2B products, the problem is often bigger than a single screen. It can live inside workflows, dependencies, permissions, platforms and operating models.',
+     cards:[
+      {n:'04',h:'One platform. Many products.',sub:'Platform Standardisation',
+       v:col(row(['Product A','Product B','Product C','Product D','Product E']),ar(),nd('Common platform','on')),
+       t:'Bringing fragmented product experiences toward a common platform foundation.',
+       l:['B2B','Platform','Enterprise','Scalability']},
+      {n:'05',h:'From dependency to self-service',sub:'Merchant Self Serve',
+       v:two(cb('BEFORE',chain(['Merchant','Internal team','Engineering','Change'])),
+             cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
+       t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
+       l:['B2B','SaaS','Self-Service','Activation']},
+      {n:'06',h:'RACB',sub:'Platform capability',
+       v:chain(['Complexity','Discovery','Standardise','Enable','Scale']),
+       t:'',
+       l:['B2B','Enterprise','Platform']}]},
+    {k:'ENTERPRISE', h:'Making complex organizations move faster.',
+     intro:'At enterprise scale, product problems don’t stop at the customer interface. They can emerge from how teams build, share capabilities and allocate engineering capacity.',
+     cards:[
+      {n:'07',h:'From squads to system',sub:'Engineering Execution Frameworks & Cross-Squad Velocity Optimization',
+       v:vs(col(row(['Squad A','Squad B','Squad C','Squad D','Squad E']),ar(),nd('Shared execution model','on')),
+            two(cb('BEFORE',col(nd('Different ways of working'))),
+                cb('AFTER',chain(['Shared framework','Better visibility','Cross-squad velocity'],'hi')))),
+       t:'When multiple squads solve related problems differently, execution itself becomes a product problem.',
+       l:['Enterprise','Product Operations','Execution','Velocity']},
+      {n:'08',h:'Build once. Reuse many times.',sub:'Modular Low-Code Frameworks & Engineering Capacity Optimization',
+       v:col(nd('Common modules','on'),ar(),row(['Product A','Product B','Product C']),ar(),
+             nd('Less rebuilding','hi'),ar(),nd('Engineering capacity')),
+       t:'Instead of repeatedly solving the same engineering problem, the opportunity was to create reusable building blocks.',
+       l:['Platform Thinking','Low-Code','Reusability','Engineering Capacity']}]}
+  ];
+  var BRIDGES={
+    B2B:{p:'From optimizing transactions to simplifying systems.',
+         v:two(cb('B2C',chain(['User','Journey','Friction','Conversion'])),
+               cb('B2B',chain(['Customer','Workflow','Friction','Self-service'],'hi')))},
+    ENTERPRISE:{p:'From product to organization.',
+         v:two(cb('PRODUCT',chain(['Customer','Interface','Outcome'])),
+               cb('ORGANIZATION',chain(['Teams','Capabilities','Capacity'],'hi')))}
+  };
+  views.prod.innerHTML='<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
+    '<h2>Product stories</h2>'+
+    '<p class="st-lede">Different customers. Different constraints. Different product problems.</p>'+
+    '<p class="ps-lede">From optimizing a consumer checkout journey to standardizing platforms and improving how enterprise teams build — these are the product problems I have worked through.</p>'+
+    '<div class="st-viz" style="margin-top:26px">'+
+      two(cb('THREE LEVELS',chain(['B2C · the customer journey','B2B · the business workflow','Enterprise · the organization'],'hi')),
+          cb('ONE QUESTION',col(nd('What is actually<br>in the way?','on'))))+
+    '</div>'+
+    BANDS.map(function(b){
+      var br=BRIDGES[b.k];
+      return (br?'<div class="ps-bridge"><p>'+br.p+'</p><div class="st-viz">'+br.v+'</div></div>':'')+
+        '<div class="ps-band"><p class="k">'+b.k+'</p><h3>'+b.h+'</h3></div>'+
+        '<p class="ps-intro">'+b.intro+'</p>'+
+        '<div class="ps-cards">'+b.cards.map(pcard).join('')+'</div>';
+    }).join('')+
+    '<div class="ps-end"><h3>Three levels, one way of thinking</h3><div class="st-viz">'+
+    vs(col(nd('PRODUCT','on'),ar(),nd('Learned to build for people')),
+       three(cb('B2C',chain(['Customer journey','Conversion'],'hi')),
+             cb('B2B',chain(['Workflow system','Self-serve'],'hi')),
+             cb('ENTERPRISE',chain(['Organization system','Velocity'],'hi'))),
+       col(ar(),nd('PRODUCT THINKING','on')))+
+    '</div></div>'+
+    '<p class="tags"><span>#product</span><span>#b2c</span><span>#b2b</span><span>#enterprise</span></p>'+
+    '</div>';
+
   function openStory(){
     var i,v;
     for(i=0;i<STORY_IDS.length;i++){ v=views[STORY_IDS[i]]; if(v.classList.contains('on')) return v; }
@@ -1548,7 +1668,10 @@ if(typeof module!=='undefined')module.exports=SK;
       pl(function(){ aix.hidden=false; void aix.offsetWidth; aix.classList.add('on'); },d+(reduce?0:700));
     } else if(m){
       pl(function(){ msgEl.textContent=m; msgEl.classList.add('on'); },d+(reduce?0:400));
-      if(last&&cur.story){ pl(function(){ mlink.hidden=false; void mlink.offsetWidth; mlink.classList.add('on'); },d+(reduce?0:1200)); }
+      if(last&&cur.story){
+        mlink.innerHTML='<button type="button" class="link" data-go="'+cur.story.to+'">'+cur.story.label+'<span class="ar" aria-hidden="true">\u2192</span></button>';
+        pl(function(){ mlink.hidden=false; void mlink.offsetWidth; mlink.classList.add('on'); },d+(reduce?0:1200));
+      }
       pl(function(){ showNext(last); },d+(reduce?0:1900));
     } else {
       pl(function(){ showNext(last); },d);
@@ -1598,12 +1721,12 @@ if(typeof module!=='undefined')module.exports=SK;
     var st=e.state||{};
     hIdx=st.i||0;
     if(st.v==='chapter'&&CH[st.id]){ setupChapter(st.id,st.bi||0); go('chapter',false); playBeat(false); }
-    else if(st.v==='nav'||st.v==='how'||st.v==='story'||st.v==='story2') go(st.v,false);
+    else if(st.v==='nav'||st.v==='how'||st.v==='story'||st.v==='story2'||st.v==='prod') go(st.v,false);
     else go('intro',false);
   });
   try{ history.replaceState({v:'intro',i:0},'',location.href); }catch(err){}
   var deep=location.hash.slice(1);
-  if(deep==='how'||deep==='story'||deep==='story2'){
+  if(deep==='how'||deep==='story'||deep==='story2'||deep==='prod'){
     /* landed straight on an inner page: keep the entry beneath it pointing at the landing page */
     try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
     navIdx=2; go(deep);
