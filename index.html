@@ -1868,7 +1868,7 @@ if(typeof module!=='undefined')module.exports=SK;
     {k:'ENTERPRISE', h:'Making complex organizations move faster.',
      intro:'At enterprise scale, product problems don’t stop at the customer interface. They can emerge from how teams build, share capabilities and allocate engineering capacity.',
      cards:[
-      {n:'06',id:'racb',h:'Payment links access governance',
+      {n:'06',id:'access-governance',h:'Payment links access governance',
        ph:'How do you give an external agent enough access to sell, without giving them access to the business?',
        sub:'Enterprise payment links \u00b7 access governance \u00b7 role-based access',
        v:col(nd('External agent'),ar(),nd('Payment links only','on'),ar(),row(['Own links','Own status'],'hi')),
@@ -1969,10 +1969,14 @@ if(typeof module!=='undefined')module.exports=SK;
          v:two(cb('PRODUCT',chain(['Customer','Interface','Outcome'])),
                cb('ORGANIZATION',chain(['Teams','Capabilities','Capacity'],'hi')))}
   };
-  var PSTORY={};
-  BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; }); });
+  var PSTORY={}, PORDER=[];
+  BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; PORDER.push(c.id); }); });
   function buildProdStory(c){
     var tags='<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>';
+    var nx=PORDER[PORDER.indexOf(c.id)+1];
+    tags+='<div class="st-cta">'+(nx
+      ? '<button type="button" class="btn" data-p="'+nx+'">Next story<span class="ar" aria-hidden="true">\u2192</span></button>'
+      : '<button type="button" class="btn" data-go="prod">All product stories<span class="ar" aria-hidden="true">\u2192</span></button>')+'</div>';
     var head='<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
       '<p class="st-n">'+c.band+' \u00b7 STORY '+c.n+'</p>'+
       '<h2>'+(c.ph||c.h)+'</h2>'+
@@ -2005,6 +2009,8 @@ if(typeof module!=='undefined')module.exports=SK;
     if(b) openProdStory(b.getAttribute('data-p'));
   });
   views.pstory.addEventListener('click',function(e){
+    var n=e.target.closest('[data-p]');
+    if(n){ openProdStory(n.getAttribute('data-p')); return; }
     var b=e.target.closest('.sbar button'); if(!b) return;
     var sc=views.pstory.querySelectorAll('.st')[parseInt(b.getAttribute('data-s'),10)];
     if(!sc) return;
