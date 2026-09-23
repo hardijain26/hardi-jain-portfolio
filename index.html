@@ -337,11 +337,13 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .st-lede{font-size:30px;line-height:1.2;margin:16px 0 0;max-width:34ch;border-left:4px solid var(--accent);padding-left:18px}
 .st{margin:54px 0 0;scroll-margin-top:62px}
 .sbar{
-  position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:center;align-items:center;gap:6px;
-  padding:8px 150px 8px 14px;background:var(--bg);border-bottom:1px solid var(--line);overflow-x:auto;
+  position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:center;align-items:center;
+  padding:8px 150px 8px 14px;background:var(--bg);border-bottom:1px solid var(--line);overflow:hidden;
   transform:translateY(-110%);visibility:hidden;transition:transform .35s ease,visibility 0s .35s;
 }
 .sbar.on{transform:none;visibility:visible;transition:transform .35s ease}
+.sbar-in{display:flex;align-items:center;gap:6px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.sbar-in::-webkit-scrollbar{display:none}
 .sbar button{font:inherit;font-size:19px;line-height:1;flex:none;min-width:40px;padding:6px 9px 8px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--muted);cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease}
 .sbar button:hover{border-color:var(--accent);color:var(--ink)}
 .sbar button[aria-current="true"]{background:var(--btn);border-color:var(--btn);color:var(--btn-ink)}
@@ -395,7 +397,14 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .pc-go{margin:4px 0 0}
 .pc-go .link{font-size:21px;padding:2px 0}
 .pc-go .ar{display:inline-block;margin-left:6px}
+.fm{max-width:330px;margin:0 auto;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);padding:12px 14px 14px}
+.fm-t{font-size:18px;letter-spacing:.07em;color:var(--accent-text);text-align:center;margin:0 0 10px}
+.fm-f{margin:0 0 9px}
+.fm-f:last-child{margin:0}
+.fm-l{display:block;font-size:17px;color:var(--muted);line-height:1.1;margin:0 0 3px}
+.fm-i{border:1.5px solid var(--line);border-radius:5px;background:var(--card);padding:5px 9px 7px;font-size:17px;color:var(--muted);line-height:1.1}
 .vq{font-size:21px;line-height:1.2;color:var(--ink);border-left:3px solid var(--accent);padding-left:12px;margin:0}
+.vs{display:block;font-size:18px;color:var(--muted);margin-top:4px}
 .cmp{width:100%;border-collapse:collapse;font-size:19px}
 .cmp th,.cmp td{border:1.5px solid var(--line);padding:7px 10px;text-align:left;font-weight:400;line-height:1.15;vertical-align:top}
 .cmp thead th{color:var(--accent-text);font-weight:700}
@@ -480,11 +489,13 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 @media (max-width:560px){
   .contact{top:8px;right:12px;font-size:16px;padding:3px 11px 5px}
   /* keep the section strip clear of the Contact me button */
-  .sbar{gap:4px;padding:6px 104px 8px 12px}
+  .sbar{padding:6px 118px 8px 12px}
+  .sbar-in{gap:4px}
   .sbar button{min-width:28px;font-size:16px;padding:5px 5px 7px}
 }
 @media (max-width:365px){
-  .sbar{gap:2px;padding:6px 116px 8px 10px;justify-content:flex-start}
+  .sbar{padding:6px 116px 8px 10px;justify-content:flex-start}
+  .sbar-in{gap:2px}
   .sbar button{min-width:20px;font-size:13px;padding:5px 3px 7px}
   .pl-top{top:42px;right:12px}
   .pl-top .link{font-size:18px}
@@ -1265,7 +1276,12 @@ if(typeof module!=='undefined')module.exports=SK;
   function eqn(parts){ var h=[],i; for(i=0;i<parts.length;i++){ h.push(i%2?'<span class="op" aria-hidden="true">'+parts[i]+'</span>':nd(parts[i])); } return '<div class="eqn">'+h.join('')+'</div>'; }
   function outs(rows){ return '<div class="out">'+rows.map(function(r){ return '<p class="'+r[0]+'"><span aria-hidden="true">'+(r[0]==='ok'?'✓':'!')+'</span> '+r[1]+'</p>'; }).join('')+'</div>'; }
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
-  function voice(q){ return '<p class="vq">\u201c'+q+'\u201d</p>'; }
+  function voice(q,who){ return '<p class="vq">\u201c'+q+'\u201d'+(who?'<span class="vs">'+who+'</span>':'')+'</p>'; }
+  function form(t,fields){
+    return '<div class="fm"><p class="fm-t">'+t+'</p>'+
+      fields.map(function(f){ return '<div class="fm-f"><span class="fm-l">'+f[0]+'</span><div class="fm-i">'+(f[1]||'&nbsp;')+'</div></div>'; }).join('')+
+      '</div>';
+  }
   function cmp(head,rows){
     return '<table class="cmp"><thead><tr><td></td><th>'+head[0]+'</th><th>'+head[1]+'</th></tr></thead><tbody>'+
       rows.map(function(r){ return '<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'; }).join('')+
@@ -1409,9 +1425,9 @@ if(typeof module!=='undefined')module.exports=SK;
       '<div class="st-viz">'+x.v+'</div></div></section>';
   }
   function buildStory(d){
-    views[d.id].innerHTML='<nav class="sbar" aria-label="Story sections">'+
+    views[d.id].innerHTML='<nav class="sbar" aria-label="Story sections"><span class="sbar-in">'+
       d.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
-      '</nav>'+
+      '</span></nav>'+
       '<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
       '<h2>'+d.title+'</h2>'+
       '<p class="st-lede">'+d.lede+'</p>'+
@@ -1678,16 +1694,171 @@ if(typeof module!=='undefined')module.exports=SK;
     {k:'B2B', h:'Turning complexity into product capability.',
      intro:'In B2B products, the problem is often bigger than a single screen. It can live inside workflows, dependencies, permissions, platforms and operating models.',
      cards:[
-      {n:'04',id:'platform',h:'One platform. Many products.',sub:'Platform Standardisation',
-       v:col(row(['Product A','Product B','Product C','Product D','Product E']),ar(),nd('Common platform','on')),
-       t:'Bringing fragmented product experiences toward a common platform foundation.',
-       l:['B2B','Platform','Enterprise','Scalability']},
-      {n:'05',id:'self-serve',h:'From dependency to self-service',sub:'Merchant Self Serve',
+      {n:'04',id:'platform',h:'One platform. Many products.',
+       ph:'Cross-platform payment UX standardization',
+       sub:'One payment platform. Different surfaces. One experience standard.',
+       v:vs(col(nd('Payment platform','on'),ar()),
+            two(cb('PAYMENT LINKS',chain(['Web checkout'])),cb('NATIVE SDK',chain(['App checkout']))),
+            col(ar(),nd('One experience standard','hi'))),
+       t:'A design audit tells you what looks different. Mapping components onto live journeys tells you what behaves differently.',
+       l:['B2B','PayU India','Platform & Payments','UX Standardization','Experience Gap Analysis','Web & SDK Parity'],
+       lede:'Different surfaces were expected. Different experiences were not.',
+       secs:[
+        {n:'01',k:'THE OPENING',h:'One payment platform. Two payment surfaces.',
+         p:['Payment Links powered Web Checkout experiences, while Native SDKs powered payment experiences inside mobile applications.',
+            'Different surfaces were expected. Different experiences were not.'],
+         v:vs(col(nd('PAYMENT PLATFORM','on'),ar()),
+              two(cb('PAYMENT LINKS',chain(['Web checkout','Payment journey'])),
+                  cb('NATIVE SDK',chain(['App checkout','Payment journey']))))},
+        {n:'02',k:'THE EXPERIENCE GAP',h:'The same payment scenario could produce different behaviours.',
+         p:['A customer reaching the same point in the same journey did not meet the same product.',
+            'That is the actual product problem, and it is invisible in a static component library.'],
+         v:vs(col(nd('PAYMENT JOURNEY','on'),ar()),
+              two(cb('WEB CHECKOUT',chain(['Processing','Inline spinner','Failure','One-click retry','Recovery'])),
+                  cb('NATIVE SDK',chain(['Processing','Modal overlay','Failure','Generic error','Flow closes'],'hi'))))},
+        {n:'03',k:'WHY THIS HAPPENED',h:'The platform had grown faster than its experience model.',
+         p:['A design audit identified inconsistencies across more than 200 live components.',
+            'The bigger product question was whether those inconsistencies were merely visual, or whether they changed how the payment journey behaved.'],
+         v:vs(col(nd('PAYMENT PLATFORM','on'),ar()),
+              row(['Cards','UPI','EMI','Netbanking','Wallet','Pay Later']),
+              col(ar(),nd('Many payment flows'),ar(),nd('Web + Native SDK'),ar(),nd('EXPERIENCE DRIFT','hi')),
+              stat('200+','live components audited'))},
+        {n:'04',k:'TWO AUDITS',h:'Design audited what the product looked like. I investigated how it behaved.',
+         p:['The Design team audited atomic UI elements: colour, spacing, typography, across 200+ components.',
+            'I mapped those components onto functional payment journeys, looking at flow, state and recovery rather than appearance.'],
+         v:two(cb('DESIGN \u00b7 COMPONENT AUDIT',chain(['Colour','Spacing','Typography','200+ components'])),
+               cb('PRODUCT \u00b7 EXPERIENCE AUDIT',chain(['Flow','State','Recovery','User action \u2192 success \u2192 failure \u2192 retry'],'hi')))},
+        {n:'05',k:'THE EXPERIENCE GAP MAP',h:'Same state. Different behaviour.',
+         p:['Three examples were enough to make the problem tangible.',
+            'Processing feedback, failure recovery, and instrument validation each diverged between the two surfaces.'],
+         v:cmp(['Web','SDK'],[
+           ['Processing','Inline spinner','Modal overlay'],
+           ['Bank failure','One-click retry with an alternate method','Generic error, flow closes'],
+           ['Card / UPI validation','One set of rules','A different set of rules']])},
+        {n:'06',k:'THE PM INSIGHT',h:'What should happen when a customer reaches the same payment state?',
+         p:['The solution wasn\u2019t to make Web and SDK identical. They are different surfaces, and they should be.',
+            'The goal was consistent product behaviour: the same states, validation and recovery principles across both.'],
+         v:vs(two(cb('WEB',col(nd('Payment state'))),cb('SDK',col(nd('Payment state')))),
+              col(ar(),nd('COMMON PRODUCT RULE','on'),ar()),
+              three(cb('SUCCESS',col(nd('Complete','hi'))),cb('FAILURE',col(nd('Retry','hi'))),cb('TIMEOUT',col(nd('Recover','hi')))))},
+        {n:'07',k:'THE STRATEGIC CHOICE',h:'Standardize the experience, not just the appearance.',
+         p:['Visual standardization would have made the two surfaces look consistent while leaving the behaviour untouched.',
+            'Experience standardization meant design plus flow, state, validation, error and recovery.'],
+         v:two(cb('A \u00b7 VISUAL',vs(chain(['Design tokens','Colours','Typography','Spacing','Components']),col(nd('Looks consistent')))),
+               cb('B \u00b7 EXPERIENCE',vs(chain(['Design','Flow','State','Validation','Error','Recovery'],'hi'),col(nd('Behaves consistently','on')))))},
+        {n:'08',k:'THE NEW EXPERIENCE MODEL',h:'Component \u2192 state \u2192 behaviour \u2192 recovery.',
+         p:['A component is not an experience. A component enters a state, the state implies a behaviour, and a failed behaviour needs a recovery.',
+            'Defining that chain once is what made the standard portable across surfaces.'],
+         v:vs(col(nd('COMPONENT','on'),ar(),nd('STATE'),ar()),
+              three(cb('LOADING',col(nd('\u2014'))),cb('SUCCESS',col(nd('Complete'))),cb('FAILURE',chain(['Retry','Recovery'],'hi'))),
+              col(ar(),nd('CONSISTENT RULE','on')))},
+        {n:'09',k:'INTO REQUIREMENTS',h:'Every gap became a requirement with acceptance criteria.',
+         p:['I authored epics and user stories for Frontend Engineering on both Web and Mobile SDK, defining functional states, validation logic, error micro-copy, design token usage and cross-platform edge cases.'],
+         v:vs(chain(['Experience gap','Product requirement','JIRA epic','User story','Acceptance criteria','Engineering'],'hi'),
+              row(['Loading state','Error state','Retry logic','Validation','Micro-copy','Edge cases']))},
+        {n:'10',k:'CROSS-FUNCTIONAL EXECUTION',h:'Define, align, validate, ship.',
+         p:['I translated experience gaps into product requirements, aligned Design and Engineering around common behaviours, defined acceptance criteria, coordinated UAT across Web and SDK, and supported phased rollout.'],
+         v:vs(col(nd('PRODUCT','on'),ar()),
+              three(cb('DEFINE',col(nd('PRDs'))),cb('ALIGN',col(nd('Stakeholders'))),cb('VALIDATE',col(nd('UAT')))),
+              col(ar(),nd('SHIP','hi')))},
+        {n:'11',k:'UAT AS THE QUALITY LOOP',h:'UAT checked behaviour, not just screens.',
+         p:['UAT wasn\u2019t only checking whether the screens matched the design. It verified whether the intended payment behaviour remained consistent across platforms and edge cases.',
+            'A gap found sent the work back round the loop rather than through to release.'],
+         v:vs(chain(['Standard','Web implementation','SDK implementation','UAT']),
+              two(cb('MATCHES',chain(['Release'],'hi')),cb('GAP FOUND',chain(['Fix','Back to UAT']))))},
+        {n:'12',k:'THE SCALABILITY SHIFT',h:'Standardization wasn\u2019t the end goal. Scalability was.',
+         p:['Before, a new payment feature meant custom logic on Web and custom logic on SDK, written twice.',
+            'After, a new feature inherited a standard pattern and shared experience principles across both surfaces.'],
+         v:two(cb('BEFORE',vs(col(nd('New payment feature')),two(cb('WEB',col(nd('Custom logic'))),cb('SDK',col(nd('Custom logic')))),col(nd('DUPLICATION','hi')))),
+               cb('AFTER',vs(col(nd('New payment feature')),col(nd('STANDARD PATTERN','on')),two(cb('WEB',col(nd('\u2713'))),cb('SDK',col(nd('\u2713')))),col(nd('Shared experience principles','hi')))))},
+        {n:'13',k:'OUTCOME',h:'A scalable UX foundation across both surfaces.',
+         p:['More than 200 live components were evaluated and standardized, with defined coverage across every payment flow and instrument.',
+            'Reported UX inconsistencies fell by 30%.'],
+         v:vs(chain(['200+ live components','Experience gap mapping','Standardized behaviour','Web + SDK alignment','Scalable UX foundation'],'hi'),
+              three(stat('200+','components evaluated and standardized'),
+                    stat('30%','reduction in reported UX inconsistencies'),
+                    stat('100%','defined payment-flow and instrument coverage')))}],
+       ends:[
+        {h:'A design system tells a product how to look',
+         p:'A product standard tells it how to behave. States, recovery and validation are the part a component library cannot carry on its own.',
+         v:vs(two(cb('DESIGN SYSTEM',chain(['Look'])),
+                  cb('PRODUCT STANDARD',chain(['Behaviour','States','Recovery'],'hi'))),
+              col(ar(),nd('Consistent experience','on'),ar(),nd('Scalability','hi')))}]},
+            {n:'05',id:'self-serve',h:'From dependency to self-service',
+       ph:'Self-serve payment links',
+       sub:'One payment link. Many merchant needs.',
        v:two(cb('BEFORE',chain(['Merchant','Internal team','Engineering','Change'])),
              cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
        t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
-       l:['B2B','SaaS','Self-Service','Activation']},
-      {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
+       l:['B2B','PayU India','Payment Links','Self-Service','Merchant Enablement','Product Systems'],
+       lede:'The Payment Link worked. The problem was that every merchant wanted it to work differently.',
+       secs:[
+        {n:'01',k:'THE STARTING POINT',h:'One payment link. Many merchant needs.',
+         p:['The creation flow was generic: item description, total amount, expiry, partial payment, customer targeting.',
+            'But different merchants needed different information to appear in the payment request.'],
+         v:vs(form('CREATE PAYMENT LINK',[['Item description','e.g. Payment for Life Insurance'],['Total amount','\u20b9'],['Enable partial payment','\u25a2  off']]),
+              col(ar()),
+              two(cb('INSURANCE',chain(['Policy number','Premium amount','Policy due date'],'hi')),
+                  cb('EDUCATION',chain(['Student name','Fee type','Installment due'],'hi'))),
+              two(cb('SUBSCRIPTION',chain(['Subscription ID','Billing period','Amount due'],'hi')),
+                  cb('ENTERPRISE',chain(['Invoice number','Customer ID','Outstanding amount'],'hi'))))},
+        {n:'02',k:'THE FRICTION',h:'Customization became the bottleneck.',
+         p:['A simple merchant request, can I show the policy number, could turn into a product and engineering dependency.',
+            'The same chain ran again for the next merchant, and the one after that.'],
+         v:col(nd('Merchant','on'),ar(),nd('Support / operations','hi'),ar(),nd('Product','hi'),ar(),
+               nd('Engineering','hi'),ar(),nd('Testing','hi'),ar(),nd('Custom payment link'),ar(),
+               nd('Merchant can finally use it','on'))},
+        {n:'03',k:'THE PRODUCT INSIGHT',h:'The payment infrastructure was reusable. The configuration layer wasn\u2019t.',
+         p:['The problem was never the Payment Link. It was that the information around the payment could not vary without a build.'],
+         v:vs(col(nd('PAYMENT LINK','on'),ar()),
+              three(cb('INSURANCE',chain(['Policy number','Premium amount','Due date'])),
+                    cb('EDUCATION',chain(['Student name','Fee type','Installment'])),
+                    cb('SUBSCRIPTION',chain(['Customer ID','Billing period','Amount due']))))},
+        {n:'04',k:'THE REFRAME',h:'From custom builds to a configurable product.',
+         p:['Turn recurring customization requests into configurable product capabilities.',
+            'That is a different problem from building faster.'],
+         v:vs(two(cb('BEFORE',chain(['Merchant request','Custom development','Custom link'])),
+                  cb('AFTER',chain(['Merchant request','Self-serve configuration','Payment link'],'hi'))),
+              col(ar(),nd('SELF-SERVE CONFIGURATION','on'),ar()),
+              three(cb('FIELD TYPE',chain(['Policy number','Invoice number','Student ID','Subscription ID'],'hi')),
+                    cb('PAYMENT RULES',chain(['Partial payment','Amount','Due date','Expiry'],'hi')),
+                    cb('CUSTOMER DETAILS',chain(['Name','Phone','Email'],'hi'))))},
+        {n:'05',k:'THE NEW JOURNEY',h:'Configure, preview, create, share.',
+         p:['The merchant chose the fields their payment request needed, set the payment rules, previewed what the customer would see, and shared it.'],
+         v:vs(col(nd('MERCHANT','on'),ar(),nd('Create payment link'),ar(),nd('Select / configure required fields','hi'),ar()),
+              row(['Policy no.','Invoice no.','Student ID']),
+              col(ar(),nd('Set payment rules'),ar(),nd('Amount \u00b7 partial payment \u00b7 due date \u00b7 expiry'),ar(),
+                  nd('Preview customer link','hi'),ar()),
+              row(['Email','SMS','WhatsApp']),
+              col(ar(),nd('CUSTOMER PAYS','on')))},
+        {n:'06',k:'THE TRANSFORMATION',h:'Move customization from the engineering queue into the merchant\u2019s hands.',
+         p:['The same requirement, met in a different place in the system.'],
+         v:two(cb('BEFORE',chain(['\u201cCan we add policy number?\u201d','Support ticket','Product discussion','Engineering','Development','Testing','Custom configuration'])),
+               cb('AFTER',chain(['Merchant requirement','Select / configure field','Preview','Create payment link','Share'],'hi')))},
+        {n:'07',k:'WHAT I BUILT',h:'A configuration layer on top of reusable infrastructure.',
+         p:['Don\u2019t rebuild the payment infrastructure for every merchant. Build a configurable layer above it.',
+            'That decision is what made the capability scale to merchants nobody had spoken to yet.'],
+         v:col(nd('MERCHANT EXPERIENCE<br><small>configure \u00b7 preview \u00b7 create \u00b7 share</small>','on'),ar(),
+               nd('CONFIGURATION LOGIC<br><small>fields \u00b7 rules \u00b7 amount \u00b7 expiry \u00b7 access</small>','hi'),ar(),
+               nd('PAYMENT ENGINE<br><small>existing payment link infrastructure</small>'))},
+        {n:'08',k:'THE PM WORK',h:'I wasn\u2019t solving one customization request. I was looking for the pattern behind hundreds.',
+         p:['Mapping the recurring requests was what turned an operations problem into a product one.'],
+         v:col(nd('DISCOVER<br><small>map recurring requests, identify repetitive engineering work</small>','on'),ar(),
+               nd('DEFINE<br><small>what should be configurable versus custom</small>'),ar(),
+               nd('DESIGN<br><small>configuration, validation and preview flows</small>'),ar(),
+               nd('DELIVER<br><small>product, design, engineering, operations</small>','hi'))},
+        {n:'09',k:'THE RESULT',h:'From \u201cI need this customized\u201d to \u201cI can configure this myself\u201d.',
+         p:['Merchant onboarding time fell by 20%, and engineering dependency by 15%.',
+            'The metrics are the consequence of the product decision, not the story itself.'],
+         v:vs(two(cb('BEFORE',chain(['Merchant request','Manual dependency','Engineering involvement','Longer onboarding'])),
+                  cb('AFTER',chain(['Merchant configuration','Self-service workflow','Automated configuration','Faster time-to-value'],'hi'))),
+              two(stat('20%','reduction in merchant onboarding time'),
+                  stat('15%','reduction in engineering dependency')))}],
+       ends:[
+        {h:'Operational problems often contain product opportunities',
+         p:'When the same customization request keeps appearing, the answer isn\u2019t necessarily to process those requests faster. It may be to make the customer capable of solving them themselves.',
+         v:chain(['Customization requests','Pattern discovery','Configurable product','Self-serve flow','Less dependency','Faster value'],'hi')}]},
+            {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
        v:chain(['Complexity','Discovery','Standardise','Enable','Scale']),
        t:'',
        l:['B2B','Enterprise','Platform']}]},
@@ -1720,12 +1891,12 @@ if(typeof module!=='undefined')module.exports=SK;
     var tags='<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>';
     var head='<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
       '<p class="st-n">'+c.band+' \u00b7 STORY '+c.n+'</p>'+
-      '<h2>'+c.h+'</h2>'+
+      '<h2>'+(c.ph||c.h)+'</h2>'+
       '<p class="ps-lede">'+c.sub+'</p>';
     if(c.secs){
-      views.pstory.innerHTML='<nav class="sbar" aria-label="Story sections">'+
+      views.pstory.innerHTML='<nav class="sbar" aria-label="Story sections"><span class="sbar-in">'+
         c.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
-        '</nav><div class="page story">'+head+
+        '</span></nav><div class="page story">'+head+
         '<p class="st-lede">'+c.lede+'</p>'+
         c.secs.map(storySection).join('')+
         (c.ends||[]).map(function(e){ return '<div class="st-end"><h3>'+e.h+'</h3><div class="st-viz">'+e.v+'</div>'+
@@ -1794,6 +1965,10 @@ if(typeof module!=='undefined')module.exports=SK;
     for(i=0;i<secs.length;i++){ if(secs[i].getBoundingClientRect().top<=140) cur=i; }
     for(i=0;i<btns.length;i++){
       if(i===cur) btns[i].setAttribute('aria-current','true'); else btns[i].removeAttribute('aria-current');
+    }
+    var track=bar.querySelector('.sbar-in');
+    if(track&&btns[cur]&&track.scrollWidth>track.clientWidth+1){
+      track.scrollLeft=btns[cur].offsetLeft-(track.clientWidth-btns[cur].offsetWidth)/2;
     }
   }
   window.addEventListener('scroll',storyScroll,{passive:true});
