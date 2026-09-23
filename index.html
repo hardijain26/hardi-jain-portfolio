@@ -392,6 +392,10 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .ps-bridge p{font-size:clamp(23px,2.6vw,30px);font-weight:700;line-height:1.1;margin:0 0 16px}
 .ps-end{margin:64px 0 0;border-top:1.5px solid var(--line);padding-top:26px}
 .ps-end h3{font-size:clamp(26px,3vw,34px);font-weight:700;margin:0 0 16px}
+.pc-go{margin:4px 0 0}
+.pc-go .link{font-size:21px;padding:2px 0}
+.pc-go .ar{display:inline-block;margin-left:6px}
+.psd-wip{font-size:22px;color:var(--muted);border:1.5px dashed var(--line);border-radius:8px;padding:14px 18px;margin:22px 0 0}
 .cb-t{font-size:20px;letter-spacing:.05em;color:var(--muted);text-align:center;margin:0 0 8px}
 .out{display:flex;flex-direction:column;gap:5px;align-items:stretch}
 .out p{margin:0;font-size:20px;line-height:1.15;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);padding:5px 12px 7px}
@@ -597,6 +601,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   <section class="view" id="v-story" aria-label="The KPMG story"></section>
   <section class="view" id="v-story2" aria-label="The J.P. Morgan story"></section>
   <section class="view" id="v-prod" aria-label="Product stories"></section>
+  <section class="view" id="v-pstory" aria-label="Product story"></section>
   <section class="view" id="v-chapter" aria-label="Chapter">
     <div class="player" id="player">
       <div class="pl-top"><button type="button" class="link" data-go="nav">Map</button></div>
@@ -1212,7 +1217,7 @@ if(typeof module!=='undefined')module.exports=SK;
   var order=['ia','sa','au','pm','ai'];
   var progress={ia:false,sa:false,au:false,pm:false,fin:false};
   var CH={}; SK.chapters.forEach(function(c){ CH[c.id]=c; }); CH.fin=SK.finale;
-  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story'),story2:$('v-story2'),prod:$('v-prod')};
+  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story'),story2:$('v-story2'),prod:$('v-prod'),pstory:$('v-pstory')};
   var player=$('player'), sketch=$('sketch'), sk=$('sk'), msgEl=$('msg'), nextBtn=$('next'), cprog=$('cprog'), aix=$('aix'), mlink=$('mlink');
   var cur=null, bi=0, ptimers=[];
   /* history: the map is always the entry right after the landing page, so Back from the map lands on the landing page */
@@ -1427,50 +1432,51 @@ if(typeof module!=='undefined')module.exports=SK;
       '<div class="pc-viz">'+c.v+'</div>'+
       (c.t?'<p class="pc-t">'+c.t+'</p>':'')+
       lens(c.l)+
+      '<p class="pc-go"><button type="button" class="link" data-p="'+c.id+'">Explore story<span class="ar" aria-hidden="true">\u2192</span></button></p>'+
       '</article>';
   }
   var BANDS=[
     {k:'B2C', h:'Optimizing moments that matter.',
      intro:'Consumer products don’t give you much room for friction. Small changes in the journey can change what happens at scale.',
      cards:[
-      {n:'01',h:'When the funnel lied',sub:'Checkout Conversion Optimization',
+      {n:'01',id:'checkout',h:'When the funnel lied',sub:'Checkout Conversion Optimization',
        v:col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigate','on'),ar(),nd('Bot traffic','hi'),ar(),nd('67%')),
        t:'A 5-point SRT drop looked like a checkout problem. The investigation revealed abnormal bot traffic distorting the funnel.',
        l:['Data Investigation','Conversion','Root Cause','Trade-offs']},
-      {n:'02',h:'Making EMI a checkout decision',sub:'DP EMI',
+      {n:'02',id:'dp-emi',h:'Making EMI a checkout decision',sub:'DP EMI',
        v:col(nd('Purchase'),ar(),nd('Payment'),ar(),nd('EMI<br><small>decision point</small>','on'),ar(),nd('Checkout')),
        t:'Turning a payment option into a customer decision point.',
        l:['Customer Experience','Payments','Conversion','Product Design']},
-      {n:'03',h:'Pay now. Pay partially. Keep going.',sub:'Partial Payments',
+      {n:'03',id:'partial-payments',h:'Pay now. Pay partially. Keep going.',sub:'Partial Payments',
        v:col(nd('Total amount'),ar(),row(['Pay now','Pay partially'],'hi'),ar(),nd('Remaining balance')),
        t:'Designing flexibility into the checkout journey without losing sight of the transaction experience.',
        l:['Customer Experience','Checkout','Flexibility','Product Design']}]},
     {k:'B2B', h:'Turning complexity into product capability.',
      intro:'In B2B products, the problem is often bigger than a single screen. It can live inside workflows, dependencies, permissions, platforms and operating models.',
      cards:[
-      {n:'04',h:'One platform. Many products.',sub:'Platform Standardisation',
+      {n:'04',id:'platform',h:'One platform. Many products.',sub:'Platform Standardisation',
        v:col(row(['Product A','Product B','Product C','Product D','Product E']),ar(),nd('Common platform','on')),
        t:'Bringing fragmented product experiences toward a common platform foundation.',
        l:['B2B','Platform','Enterprise','Scalability']},
-      {n:'05',h:'From dependency to self-service',sub:'Merchant Self Serve',
+      {n:'05',id:'self-serve',h:'From dependency to self-service',sub:'Merchant Self Serve',
        v:two(cb('BEFORE',chain(['Merchant','Internal team','Engineering','Change'])),
              cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
        t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
        l:['B2B','SaaS','Self-Service','Activation']},
-      {n:'06',h:'RACB',sub:'Platform capability',
+      {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
        v:chain(['Complexity','Discovery','Standardise','Enable','Scale']),
        t:'',
        l:['B2B','Enterprise','Platform']}]},
     {k:'ENTERPRISE', h:'Making complex organizations move faster.',
      intro:'At enterprise scale, product problems don’t stop at the customer interface. They can emerge from how teams build, share capabilities and allocate engineering capacity.',
      cards:[
-      {n:'07',h:'From squads to system',sub:'Engineering Execution Frameworks & Cross-Squad Velocity Optimization',
+      {n:'07',id:'squads',h:'From squads to system',sub:'Engineering Execution Frameworks & Cross-Squad Velocity Optimization',
        v:vs(col(row(['Squad A','Squad B','Squad C','Squad D','Squad E']),ar(),nd('Shared execution model','on')),
             two(cb('BEFORE',col(nd('Different ways of working'))),
                 cb('AFTER',chain(['Shared framework','Better visibility','Cross-squad velocity'],'hi')))),
        t:'When multiple squads solve related problems differently, execution itself becomes a product problem.',
        l:['Enterprise','Product Operations','Execution','Velocity']},
-      {n:'08',h:'Build once. Reuse many times.',sub:'Modular Low-Code Frameworks & Engineering Capacity Optimization',
+      {n:'08',id:'low-code',h:'Build once. Reuse many times.',sub:'Modular Low-Code Frameworks & Engineering Capacity Optimization',
        v:col(nd('Common modules','on'),ar(),row(['Product A','Product B','Product C']),ar(),
              nd('Less rebuilding','hi'),ar(),nd('Engineering capacity')),
        t:'Instead of repeatedly solving the same engineering problem, the opportunity was to create reusable building blocks.',
@@ -1484,6 +1490,30 @@ if(typeof module!=='undefined')module.exports=SK;
          v:two(cb('PRODUCT',chain(['Customer','Interface','Outcome'])),
                cb('ORGANIZATION',chain(['Teams','Capabilities','Capacity'],'hi')))}
   };
+  var PSTORY={};
+  BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; }); });
+  function buildProdStory(c){
+    views.pstory.innerHTML='<div class="page story">'+
+      '<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
+      '<p class="st-n">'+c.band+' \u00b7 STORY '+c.n+'</p>'+
+      '<h2>'+c.h+'</h2>'+
+      '<p class="ps-lede">'+c.sub+'</p>'+
+      '<div class="st-viz" style="margin-top:22px">'+c.v+'</div>'+
+      (c.t?'<p class="st-lede">'+c.t+'</p>':'')+
+      (c.body||'<p class="psd-wip">The full write-up for this one is still being written.</p>')+
+      '<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>'+
+      '</div>';
+  }
+  function openProdStory(id,push){
+    var c=PSTORY[id]; if(!c) return;
+    buildProdStory(c);
+    go('pstory',false);
+    if(push!==false) hpush({v:'pstory',id:id},'#p-'+id);
+  }
+  views.prod.addEventListener('click',function(e){
+    var b=e.target.closest('[data-p]');
+    if(b) openProdStory(b.getAttribute('data-p'));
+  });
   views.prod.innerHTML='<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
     '<h2>Product stories</h2>'+
     '<p class="st-lede">Different customers. Different constraints. Different product problems.</p>'+
@@ -1721,6 +1751,7 @@ if(typeof module!=='undefined')module.exports=SK;
     var st=e.state||{};
     hIdx=st.i||0;
     if(st.v==='chapter'&&CH[st.id]){ setupChapter(st.id,st.bi||0); go('chapter',false); playBeat(false); }
+    else if(st.v==='pstory'&&PSTORY[st.id]) openProdStory(st.id,false);
     else if(st.v==='nav'||st.v==='how'||st.v==='story'||st.v==='story2'||st.v==='prod') go(st.v,false);
     else go('intro',false);
   });
@@ -1730,6 +1761,9 @@ if(typeof module!=='undefined')module.exports=SK;
     /* landed straight on an inner page: keep the entry beneath it pointing at the landing page */
     try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
     navIdx=2; go(deep);
+  } else if(deep.indexOf('p-')===0&&PSTORY[deep.slice(2)]){
+    try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
+    navIdx=2; openProdStory(deep.slice(2));
   }
 
   function centre(){
