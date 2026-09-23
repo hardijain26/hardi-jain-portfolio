@@ -395,6 +395,10 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .pc-go{margin:4px 0 0}
 .pc-go .link{font-size:21px;padding:2px 0}
 .pc-go .ar{display:inline-block;margin-left:6px}
+.cmp{width:100%;border-collapse:collapse;font-size:19px}
+.cmp th,.cmp td{border:1.5px solid var(--line);padding:7px 10px;text-align:left;font-weight:400;line-height:1.15;vertical-align:top}
+.cmp thead th{color:var(--accent-text);font-weight:700}
+.cmp tbody th{color:var(--muted)}
 .psd-wip{font-size:22px;color:var(--muted);border:1.5px dashed var(--line);border-radius:8px;padding:14px 18px;margin:22px 0 0}
 .cb-t{font-size:20px;letter-spacing:.05em;color:var(--muted);text-align:center;margin:0 0 8px}
 .out{display:flex;flex-direction:column;gap:5px;align-items:stretch}
@@ -1260,6 +1264,11 @@ if(typeof module!=='undefined')module.exports=SK;
   function eqn(parts){ var h=[],i; for(i=0;i<parts.length;i++){ h.push(i%2?'<span class="op" aria-hidden="true">'+parts[i]+'</span>':nd(parts[i])); } return '<div class="eqn">'+h.join('')+'</div>'; }
   function outs(rows){ return '<div class="out">'+rows.map(function(r){ return '<p class="'+r[0]+'"><span aria-hidden="true">'+(r[0]==='ok'?'✓':'!')+'</span> '+r[1]+'</p>'; }).join('')+'</div>'; }
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
+  function cmp(head,rows){
+    return '<table class="cmp"><thead><tr><td></td><th>'+head[0]+'</th><th>'+head[1]+'</th></tr></thead><tbody>'+
+      rows.map(function(r){ return '<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'; }).join('')+
+      '</tbody></table>';
+  }
 
   var STORIES=[{
     id:'story', tags:['#automation','#audit','#reconciliation'],
@@ -1420,7 +1429,7 @@ if(typeof module!=='undefined')module.exports=SK;
       try{ s.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(err){ s.scrollIntoView(); }
     });
   }
-  var STORY_IDS=STORIES.map(function(d){ return d.id; });
+  var STORY_IDS=STORIES.map(function(d){ return d.id; }).concat(['pstory']);
   STORIES.forEach(buildStory);
   /* ---------- product stories: three bands, each a set of teaser cards ---------- */
   function lens(list){ return '<p class="pc-lens">'+list.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>'; }
@@ -1439,10 +1448,78 @@ if(typeof module!=='undefined')module.exports=SK;
     {k:'B2C', h:'Optimizing moments that matter.',
      intro:'Consumer products don’t give you much room for friction. Small changes in the journey can change what happens at scale.',
      cards:[
-      {n:'01',id:'checkout',h:'When the funnel lied',sub:'Checkout Conversion Optimization',
+      {n:'01',id:'checkout',h:'When the funnel lied',sub:'SRT optimization through bot detection',
        v:col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigate','on'),ar(),nd('Bot traffic','hi'),ar(),nd('67%')),
        t:'A 5-point SRT drop looked like a checkout problem. The investigation revealed abnormal bot traffic distorting the funnel.',
-       l:['Data Investigation','Conversion','Root Cause','Trade-offs']},
+       l:['B2C','PayU India','Platform & Payments','Data Investigation','Root Cause','Trade-offs'],
+       lede:'A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.',
+       secs:[
+        {n:'01',k:'THE SIGNAL',h:'What changed?',
+         p:['A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.',
+            'AWS monitoring flagged the deviation once it passed two percentage points.'],
+         v:vs(two(stat('65%','before'),stat('60%','after')),
+              col(nd('\u22125 pp','on')),
+              chain(['AWS monitoring','SRT deviation > 2%','Alert triggered'],'hi'))},
+        {n:'02',k:'INVESTIGATION',h:'Before changing the product, I had to find the pattern.',
+         p:['I segmented the decline across merchant level, industry segment and transaction source to identify where the SRT movement was concentrated.'],
+         v:vs(col(nd('SRT DROP','hi'),ar()),
+              three(cb('MERCHANT',col(nd('Who?'))),cb('INDUSTRY',col(nd('Where?'))),cb('SOURCE',col(nd('How?')))),
+              col(ar(),nd('FIND THE PATTERN','on')))},
+        {n:'03',k:'THE FIRST HYPOTHESIS',h:'The obvious explanation wasn\u2019t the answer.',
+         p:['My initial hypothesis was that NGO merchants were driving the decline, because publicly shared payment links could attract users with low purchase intent.',
+            'The data disproved my first hypothesis. That is part of the story, not something to hide: hypothesis, evidence, revision.'],
+         v:col(nd('SRT drop'),ar(),nd('NGO merchants?','hi'),ar(),nd('Initial hypothesis'),ar(),
+               nd('Test the data','on'),ar(),nd('Not supported','hi'))},
+        {n:'04',k:'THE ANOMALY',h:'Then the transaction data changed the direction of the investigation.',
+         p:['Transaction-level logs revealed approximately 500 transactions initiated through a single email ID within a five-minute window, originating from outside India during non-standard business hours.',
+            'The metric wasn\u2019t telling the whole story.'],
+         v:vs(stat('~500','transactions in one cluster'),
+              row(['1 email ID','5 minutes','Outside India','Non-standard hours'],'hi'))},
+        {n:'05',k:'FOLLOW THE TRANSACTION',h:'Where were these transactions coming from?',
+         p:['I worked with Backend Engineering to trace the abnormal transactions back to their origin.',
+            'The investigation confirmed that automated scripts were generating fraudulent bot transactions through a Shopify source integration.'],
+         v:col(nd('~500 transactions'),ar(),nd('Transaction source'),ar(),nd('Shopify','hi'),ar(),
+               nd('Merchant website'),ar(),nd('Automated scripts','hi'),ar(),nd('BOT TRANSACTIONS','on'))},
+        {n:'06',k:'THE PRODUCT PROBLEM',h:'Finding the bots was only half the problem.',
+         p:['How do we stop them without disrupting legitimate users?',
+            'This is where the work stopped being analysis and became a product decision.'],
+         v:col(nd('BOT TRAFFIC','hi'),ar(),nd('How to mitigate?'),ar(),row(['CAPTCHA','Bot detection'],'hi'))},
+        {n:'07',k:'OPTION A',h:'CAPTCHA',
+         p:['What it solves: it creates an immediate barrier for automated scripts.',
+            'The product concern: it introduces an additional interaction into the checkout experience for legitimate users.'],
+         v:chain(['Checkout load','CAPTCHA','User interaction','Transaction'])},
+        {n:'08',k:'OPTION B',h:'Invisible bot detection',
+         p:['Detect abnormal script execution patterns in the background and mitigate suspicious transactions without requiring an interaction from genuine users.'],
+         v:vs(chain(['Checkout','Background signals','Risk scoring']),
+              two(cb('SUSPICIOUS',chain(['Mitigate'],'hi')),cb('NORMAL',chain(['Continue']))))},
+        {n:'09',k:'THE TRADE-OFF',h:'The decision wasn\u2019t about blocking bots. It was about where to place the friction.',
+         p:['Both options stop automated scripts. They differ in who pays for it.',
+            'CAPTCHA puts the cost on every legitimate user at checkout. Detection puts it on the traffic that looks abnormal.'],
+         v:cmp(['CAPTCHA','Bot detection'],[
+           ['User interaction','Required','None'],
+           ['Mitigation','Immediate','Targeted'],
+           ['Implementation','Lower effort','Medium'],
+           ['Legitimate-user impact','Potential friction','Background detection']])},
+        {n:'10',k:'THE DECISION',h:'Detect the abnormal behaviour. Don\u2019t interrupt everyone.',
+         p:['CAPTCHA was the initial proposed solution. After evaluating the trade-off between mitigation and user friction, I pivoted toward implementing bot detection first.'],
+         v:two(cb('INITIAL THINKING',chain(['CAPTCHA','Block bots'])),
+               cb('PRODUCT DECISION',chain(['Bot detection','Identify abnormality','Mitigate suspicious traffic','Preserve normal user flow'],'hi')))},
+        {n:'11',k:'FROM DECISION TO DELIVERY',h:'Turning the decision into a product.',
+         p:['I led problem definition, PRDs, tracking metrics, stakeholder alignment, sprint prioritization, cross-functional testing and post-launch monitoring.'],
+         v:col(nd('DEFINE<br><small>problem + requirements</small>','on'),ar(),
+               nd('ALIGN<br><small>engineering + design</small>'),ar(),
+               nd('PRIORITIZE<br><small>sprint delivery</small>'),ar(),
+               nd('TEST<br><small>frontend + backend</small>'),ar(),
+               nd('MEASURE','hi'))},
+        {n:'12',k:'THE RESULT',h:'The signal recovered.',
+         p:['Within one month of launch, SRT improved from 60% to 67%.',
+            'The bot traffic was mitigated without introducing an upfront CAPTCHA challenge into the checkout experience.'],
+         v:vs(col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigation'),ar(),nd('Bot detection','on'),ar(),nd('67%','hi')),
+              three(stat('10M+','users'),stat('1 month','post-launch'),stat('+7 pp','SRT')))}],
+       ends:[
+        {h:'What this story says about how I solve problems',
+         v:vs(col(nd('Don\u2019t optimize the metric before understanding the behaviour behind it.','on')),
+              chain(['Signal','Investigate','Hypothesis','Evidence','Root cause','Trade-off','Decision','Measure'],'hi'))}]},
       {n:'02',id:'dp-emi',h:'Making EMI a checkout decision',sub:'DP EMI',
        v:col(nd('Purchase'),ar(),nd('Payment'),ar(),nd('EMI<br><small>decision point</small>','on'),ar(),nd('Checkout')),
        t:'Turning a payment option into a customer decision point.',
@@ -1493,16 +1570,26 @@ if(typeof module!=='undefined')module.exports=SK;
   var PSTORY={};
   BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; }); });
   function buildProdStory(c){
-    views.pstory.innerHTML='<div class="page story">'+
-      '<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
+    var tags='<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>';
+    var head='<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
       '<p class="st-n">'+c.band+' \u00b7 STORY '+c.n+'</p>'+
       '<h2>'+c.h+'</h2>'+
-      '<p class="ps-lede">'+c.sub+'</p>'+
+      '<p class="ps-lede">'+c.sub+'</p>';
+    if(c.secs){
+      views.pstory.innerHTML='<nav class="sbar" aria-label="Story sections">'+
+        c.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
+        '</nav><div class="page story">'+head+
+        '<p class="st-lede">'+c.lede+'</p>'+
+        c.secs.map(storySection).join('')+
+        (c.ends||[]).map(function(e){ return '<div class="st-end"><h3>'+e.h+'</h3><div class="st-viz">'+e.v+'</div></div>'; }).join('')+
+        tags+'</div>';
+      return;
+    }
+    views.pstory.innerHTML='<div class="page story">'+head+
       '<div class="st-viz" style="margin-top:22px">'+c.v+'</div>'+
       (c.t?'<p class="st-lede">'+c.t+'</p>':'')+
-      (c.body||'<p class="psd-wip">The full write-up for this one is still being written.</p>')+
-      '<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>'+
-      '</div>';
+      '<p class="psd-wip">The full write-up for this one is still being written.</p>'+
+      tags+'</div>';
   }
   function openProdStory(id,push){
     var c=PSTORY[id]; if(!c) return;
@@ -1513,6 +1600,12 @@ if(typeof module!=='undefined')module.exports=SK;
   views.prod.addEventListener('click',function(e){
     var b=e.target.closest('[data-p]');
     if(b) openProdStory(b.getAttribute('data-p'));
+  });
+  views.pstory.addEventListener('click',function(e){
+    var b=e.target.closest('.sbar button'); if(!b) return;
+    var sc=views.pstory.querySelectorAll('.st')[parseInt(b.getAttribute('data-s'),10)];
+    if(!sc) return;
+    try{ sc.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(err){ sc.scrollIntoView(); }
   });
   views.prod.innerHTML='<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
     '<h2>Product stories</h2>'+
@@ -1546,9 +1639,10 @@ if(typeof module!=='undefined')module.exports=SK;
   }
   function storyScroll(){
     var v=openStory(); if(!v) return;
-    var lede=v.querySelector('.st-lede'), secs=v.querySelectorAll('.st'),
-        btns=v.querySelectorAll('.sbar button'), cur=0, i;
-    v.querySelector('.sbar').classList.toggle('on',lede.getBoundingClientRect().bottom<0);
+    var bar=v.querySelector('.sbar'), lede=v.querySelector('.st-lede');
+    if(!bar||!lede) return;
+    var secs=v.querySelectorAll('.st'), btns=v.querySelectorAll('.sbar button'), cur=0, i;
+    bar.classList.toggle('on',lede.getBoundingClientRect().bottom<0);
     for(i=0;i<secs.length;i++){ if(secs[i].getBoundingClientRect().top<=140) cur=i; }
     for(i=0;i<btns.length;i++){
       if(i===cur) btns[i].setAttribute('aria-current','true'); else btns[i].removeAttribute('aria-current');
@@ -1653,7 +1747,7 @@ if(typeof module!=='undefined')module.exports=SK;
     mk.setAttribute('aria-label',chap?'Home, back to the map':'Hardi Jain, home');
     $('role').hidden=(name==='intro'||chap);
     if(name==='nav'){ renderMap(); updateSlim(); }
-    if(name==='story'||name==='story2') storyScroll();
+    if(name==='story'||name==='story2'||name==='pstory') storyScroll();
     foot.classList.toggle('on',name==='intro'&&footReady);
     window.scrollTo(0,0);
     var h=views[name].querySelector('h2');
