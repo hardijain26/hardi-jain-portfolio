@@ -122,7 +122,7 @@ a{color:inherit}
 .mark.chap .hn{max-width:0;opacity:0}
 .mark.chap:hover .hn,.mark.chap:focus-visible .hn{max-width:120px;opacity:1}
 .mark.chap:hover .hi,.mark.chap:focus-visible .hi{margin-right:8px}
-.role{position:absolute;z-index:31;top:48px;left:32px;margin:0;max-width:min(60vw,430px);font-size:19px;font-weight:400;line-height:1.2;color:var(--muted)}
+.role{position:absolute;z-index:31;top:46px;left:32px;margin:0;max-width:min(60vw,430px);font-size:18px;font-weight:400;line-height:1.15;color:var(--muted)}
 
 .hero{
   position:relative;z-index:1;flex:1;width:100%;max-width:1240px;margin:0 auto;padding:64px 40px 8px;
@@ -308,7 +308,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 @keyframes sdin{to{opacity:var(--o,.4)}}
 
 /* navigation page: intro, road, companies, pinned road — and the How I work page */
-.page.map,.page.how,.page.work{padding-top:88px}
+.page.map,.page.how,.page.work{padding-top:72px}
 .page.map h2,.page.how h2,.page.work h2{font-size:clamp(34px,4.6vw,54px);line-height:1}
 .intro{font-size:28px;line-height:1.2;max-width:50ch;margin:10px 0 4px}
 .hint2{font-size:24px;color:var(--muted);margin:0 0 2px}
@@ -410,7 +410,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 @media (max-width:820px){
   .pgrid{grid-template-columns:repeat(2,1fr)}
   .page{padding:64px 20px 16px}
-  .page.map,.page.how,.page.work{padding-top:76px}
+  .page.map,.page.how,.page.work{padding-top:68px}
   .pgrid{grid-template-columns:1fr}
   .road.draw svg{animation-name:wipeDown}
   .slim .seg{width:26px}
@@ -418,7 +418,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   .player{padding:52px 14px 6px}
   .prog{--d:7px;--g:6px}
   .mark{left:20px}
-  .role{left:20px;top:44px;font-size:16px;max-width:min(90vw,340px)}
+  .role{left:20px;top:43px;font-size:16px;max-width:min(90vw,340px)}
   .hero{grid-template-columns:1fr;gap:8px;padding:56px 22px 8px}
   .sky{order:-1}
   .status{font-size:26px}
@@ -1159,7 +1159,6 @@ if(typeof module!=='undefined')module.exports=SK;
   views.nav.innerHTML='<div class="slim" id="slim" aria-label="Chapters"></div>'+
     '<div class="page map"><h2>Different dots. A bigger picture.</h2>'+
     '<p class="intro">I didn’t start out building products. I started by understanding how complex systems work and what happens when they fail. Each stop below is a chapter that led to the next.</p>'+
-    '<p class="hint2">Pick any dot. The pulsing one is next.</p>'+
     '<div class="road" id="road"></div>'+
     '<div class="worked"><p class="worked-label">Where I’ve worked</p><ol class="cos" id="cos">'+COMPANIES.map(function(c,i){ return '<li style="--i:'+i+'">'+c+'</li>'; }).join('')+'</ol></div>'+
     '<p class="more"><button type="button" class="link" data-go="work">Case studies<span class="ar" aria-hidden="true">→</span></button>'+
