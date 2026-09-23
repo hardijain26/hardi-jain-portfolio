@@ -415,6 +415,8 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .out p{margin:0;font-size:20px;line-height:1.15;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);padding:5px 12px 7px}
 .out p.ok{color:var(--muted)}
 .out p.warn{border-color:var(--accent);color:var(--accent-text)}
+.out p.yes{border-color:var(--accent);color:var(--accent-text)}
+.out p.no{color:var(--fmuted);border-style:dashed}
 .stat{display:flex;flex-direction:column;align-items:center;line-height:1}
 .stat .big{font-size:clamp(40px,5.5vw,58px);font-weight:700;color:var(--accent-text)}
 .stat .sml{font-size:20px;color:var(--muted);text-align:center;margin-top:2px}
@@ -1277,6 +1279,11 @@ if(typeof module!=='undefined')module.exports=SK;
   function outs(rows){ return '<div class="out">'+rows.map(function(r){ return '<p class="'+r[0]+'"><span aria-hidden="true">'+(r[0]==='ok'?'✓':'!')+'</span> '+r[1]+'</p>'; }).join('')+'</div>'; }
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
   function voice(q,who){ return '<p class="vq">\u201c'+q+'\u201d'+(who?'<span class="vs">'+who+'</span>':'')+'</p>'; }
+  function perm(rows){
+    return '<div class="out">'+rows.map(function(r){
+      return '<p class="'+(r[0]?'yes':'no')+'"><span aria-hidden="true">'+(r[0]?'\u2713':'\u2715')+'</span> '+r[1]+'</p>';
+    }).join('')+'</div>';
+  }
   function form(t,fields){
     return '<div class="fm"><p class="fm-t">'+t+'</p>'+
       fields.map(function(f){ return '<div class="fm-f"><span class="fm-l">'+f[0]+'</span><div class="fm-i">'+(f[1]||'&nbsp;')+'</div></div>'; }).join('')+
@@ -1469,7 +1476,7 @@ if(typeof module!=='undefined')module.exports=SK;
       {n:'01',id:'checkout',h:'When the funnel lied',sub:'SRT optimization through bot detection',
        v:col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigate','on'),ar(),nd('Bot traffic','hi'),ar(),nd('67%')),
        t:'A 5-point SRT drop looked like a checkout problem. The investigation revealed abnormal bot traffic distorting the funnel.',
-       l:['B2C','PayU India','Platform & Payments','Data Investigation','Root Cause','Trade-offs'],
+       l:['B2C','Platform & Payments','Data Investigation','Root Cause','Trade-offs'],
        lede:'A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.',
        secs:[
         {n:'01',k:'THE SIGNAL',h:'What changed?',
@@ -1541,7 +1548,7 @@ if(typeof module!=='undefined')module.exports=SK;
       {n:'02',id:'dp-emi',h:'The purchase was ready. The payment wasn\u2019t.',sub:'Enabling payment flexibility for high-value transactions',
        v:col(nd('> \u20b950K cart'),ar(),nd('Payment constraint','hi'),ar(),row(['DP','EMI'],'hi'),ar(),nd('Purchase complete','on')),
        t:'Turning a payment option into a customer decision point.',
-       l:['B2C','PayU India','> \u20b950K transactions','Customer Experience','Payments','Product Design'],
+       l:['B2C','> \u20b950K transactions','Customer Experience','Payments','Product Design'],
        lede:'Transactions above \u20b950,000 represented a critical segment for high-ticket merchants, but customers faced different financial constraints when completing these purchases.',
        secs:[
         {n:'01',k:'THE MOMENT',h:'A high-value cart, and a payment that doesn\u2019t fit.',
@@ -1620,7 +1627,7 @@ if(typeof module!=='undefined')module.exports=SK;
       {n:'03',id:'partial-payments',h:'The fee was due. The full payment wasn\u2019t always possible.',sub:'Partial payments for education payment links',
        v:col(nd('Total fee'),ar(),nd('School sets a minimum','hi'),ar(),row(['Pay now','Balance later'],'hi'),ar(),nd('Fee collected','on')),
        t:'Designing flexibility into the checkout journey without losing sight of the transaction experience.',
-       l:['B2B2C','EdTech / Education','PayU India','Payment Links','Conversion','Product Design'],
+       l:['B2B2C','EdTech / Education','Payment Links','Conversion','Product Design'],
        lede:'Educational institutions were using Payment Links to collect fees from parents. The challenge was that a single link typically asked the parent to pay the entire amount upfront.',
        secs:[
         {n:'01',k:'THE OPENING',h:'One link. One amount. Pay it all now.',
@@ -1701,7 +1708,7 @@ if(typeof module!=='undefined')module.exports=SK;
             two(cb('PAYMENT LINKS',chain(['Web checkout'])),cb('NATIVE SDK',chain(['App checkout']))),
             col(ar(),nd('One experience standard','hi'))),
        t:'A design audit tells you what looks different. Mapping components onto live journeys tells you what behaves differently.',
-       l:['B2B','PayU India','Platform & Payments','UX Standardization','Experience Gap Analysis','Web & SDK Parity'],
+       l:['B2B','Platform & Payments','UX Standardization','Experience Gap Analysis','Web & SDK Parity'],
        lede:'Different surfaces were expected. Different experiences were not.',
        secs:[
         {n:'01',k:'THE OPENING',h:'One payment platform. Two payment surfaces.',
@@ -1790,7 +1797,7 @@ if(typeof module!=='undefined')module.exports=SK;
        v:two(cb('BEFORE',chain(['Merchant','Internal team','Engineering','Change'])),
              cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
        t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
-       l:['B2B','PayU India','Payment Links','Self-Service','Merchant Enablement','Product Systems'],
+       l:['B2B','Payment Links','Self-Service','Merchant Enablement','Product Systems'],
        lede:'The Payment Link worked. The problem was that every merchant wanted it to work differently.',
        secs:[
         {n:'01',k:'THE STARTING POINT',h:'One payment link. Many merchant needs.',
@@ -1857,25 +1864,180 @@ if(typeof module!=='undefined')module.exports=SK;
        ends:[
         {h:'Operational problems often contain product opportunities',
          p:'When the same customization request keeps appearing, the answer isn\u2019t necessarily to process those requests faster. It may be to make the customer capable of solving them themselves.',
-         v:chain(['Customization requests','Pattern discovery','Configurable product','Self-serve flow','Less dependency','Faster value'],'hi')}]},
-            {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
-       v:chain(['Complexity','Discovery','Standardise','Enable','Scale']),
-       t:'',
-       l:['B2B','Enterprise','Platform']}]},
+         v:chain(['Customization requests','Pattern discovery','Configurable product','Self-serve flow','Less dependency','Faster value'],'hi')}]}]},
     {k:'ENTERPRISE', h:'Making complex organizations move faster.',
      intro:'At enterprise scale, product problems don’t stop at the customer interface. They can emerge from how teams build, share capabilities and allocate engineering capacity.',
      cards:[
-      {n:'07',id:'squads',h:'From squads to system',sub:'Engineering Execution Frameworks & Cross-Squad Velocity Optimization',
-       v:vs(col(row(['Squad A','Squad B','Squad C','Squad D','Squad E']),ar(),nd('Shared execution model','on')),
-            two(cb('BEFORE',col(nd('Different ways of working'))),
-                cb('AFTER',chain(['Shared framework','Better visibility','Cross-squad velocity'],'hi')))),
+      {n:'06',id:'access-governance',h:'Payment links access governance',
+       ph:'How do you give an external agent enough access to sell, without giving them access to the business?',
+       sub:'Enterprise payment links \u00b7 access governance \u00b7 role-based access',
+       v:col(nd('External agent'),ar(),nd('Payment links only','on'),ar(),row(['Own links','Own status'],'hi')),
+       t:'Giving distributed sales teams the access they need, without exposing the enterprise behind them.',
+       l:['Enterprise SaaS','RBAC','Access Governance','Self-Service','Data Isolation','Platform Design'],
+       lede:'The business needed distribution. The platform needed control.',
+       secs:[
+        {n:'01',k:'THE CONTEXT',h:'Payment links were moving beyond the enterprise.',
+         p:['Payment Links allowed merchants to collect payments without requiring a technical integration.',
+            'For an enterprise such as an insurance company, the person creating the link wasn\u2019t always an employee. There were two very different users.'],
+         v:vs(col(nd('ENTERPRISE MERCHANT','on'),ar()),
+              two(cb('COMPANY EMPLOYEES',chain(['Internal operations','Broader access'])),
+                  cb('EXTERNAL AGENTS',chain(['Distributed field force','Need to create links'],'hi'))))},
+        {n:'02',k:'THE PROBLEM',h:'The existing permission model was too broad.',
+         p:['An external agent needed one capability: create a Payment Link for a customer.',
+            'Too little access and the agent cannot work. Too much and enterprise data is exposed. That tension is the story.'],
+         v:vs(col(nd('External agent'),ar(),nd('Merchant dashboard','hi'),ar()),
+              perm([[1,'Payment links'],[0,'Other transactions'],[0,'Settlement data'],
+                    [0,'Customer data'],[0,'Reports'],[0,'Other products']]))},
+        {n:'03',k:'THE WORKAROUND',h:'So the enterprise became the middleman.',
+         p:['When merchants couldn\u2019t safely give access to external agents, the request travelled through internal teams instead.',
+            'What looked like a support problem was actually a product problem.'],
+         v:chain(['External agent','Support / operations','Central merchant team','Payment link','Customer'],'hi')},
+        {n:'04',k:'DISCOVERY',h:'I started with the support queue.',
+         p:['Rather than treating tickets as isolated operational issues, I grouped the requests, found the repeating patterns and traced them back to product gaps.',
+            'The missing capability wasn\u2019t another support workflow. It was a permission primitive designed around the Payment Link job to be done.'],
+         v:vs(chain(['Support tickets','Group the requests','Identify repeating patterns','Trace them to product gaps'],'hi'),
+              voice('I need to create a link.'),
+              voice('But I can\u2019t give the agent access to the dashboard.'),
+              voice('They may see other transactions and reports.'))},
+        {n:'05',k:'THE PRODUCT QUESTION',h:'What is the smallest surface area an external agent actually needs?',
+         p:['The useful question was not which permissions this user should have.',
+            'It was what an agent needs in order to create and manage their own Payment Links, and nothing beyond that.'],
+         v:two(cb('CAN DO',chain(['Create links','View own links','Check own status'],'hi')),
+               cb('CANNOT DO',chain(['View other agents','Export reports','View settlements','Access other products'])))},
+        {n:'06',k:'THE DECISION',h:'From broad access to scoped capability.',
+         p:['Don\u2019t give users access to a product. Give them access to the capability they need.'],
+         v:vs(cb('BEFORE',col(nd('Merchant account'),ar(),nd('User access','hi'),ar(),row(['Links','Reports','Financial data']))),
+              cb('AFTER',vs(col(nd('Merchant account'),ar()),
+                  two(cb('ENTERPRISE OWNER',chain(['Full visibility'])),
+                      cb('EXTERNAL AGENT',chain(['Payment links only','Own links \u00b7 own status'],'hi'))))))},
+        {n:'07',k:'CAPABILITY ISOLATION',h:'A deliberately narrow workspace.',
+         p:['The agent gets a workspace built around one job, not a filtered version of the merchant dashboard.',
+            'That is capability isolation, not simply role-based access.'],
+         v:vs(lbl('EXTERNAL AGENT WORKSPACE'),
+              perm([[1,'Create payment link'],[1,'My payment links'],[1,'Payment status'],
+                    [0,'Other merchant products'],[0,'Settlement'],[0,'Financial reports'],
+                    [0,'Other agents\u2019 transactions'],[0,'Report downloads']]))},
+        {n:'08',k:'DATA ISOLATION',h:'The agent sees their work. The enterprise sees everything.',
+         p:['Two levels of visibility. The agent asks to see what they created; the enterprise asks to see everything the organization created.'],
+         v:vs(col(nd('ENTERPRISE OWNER','on'),ar()),
+              three(cb('AGENT A',col(nd('Own links'))),cb('AGENT B',col(nd('Own links'))),cb('AGENT C',col(nd('Own links')))),
+              col(ar(),nd('ENTERPRISE VIEW','hi'),ar(),nd('All payment links','on')))},
+        {n:'09',k:'SECURITY BY DESIGN',h:'Restricting navigation wasn\u2019t enough.',
+         p:['Hiding a menu item does not protect a record. Access had to hold at the interface, at the data and at export.'],
+         v:vs(col(nd('ACCESS CONTROL','on'),ar()),
+              three(cb('NAVIGATION',chain(['Payment links only'],'hi')),
+                    cb('DATA ACCESS',chain(['Own records only'],'hi')),
+                    cb('EXPORT',chain(['No report download'],'hi'))),
+              col(ar(),nd('CONTROLLED SURFACE','on')))},
+        {n:'10',k:'EXECUTION',h:'Turning a permission problem into a product system.',
+         p:['I converted recurring support issues into a product problem, defined what an external agent needed to accomplish, and specified what they could see, create, view and export.',
+            'The balance to hold was merchant productivity against enterprise data protection.'],
+         v:chain(['Support data','Problem framing','Permission model','User / role journeys','Product requirements','Design','Engineering','Testing','Rollout'],'hi')},
+        {n:'11',k:'THE TRANSFORMATION',h:'Manual delegation became controlled self-service.',
+         p:['The agent stopped routing through the organization to do their job, and the enterprise gained a view of everything the agents did.'],
+         v:vs(two(cb('BEFORE',chain(['External agent','Cannot safely access platform','Merchant admin','Support / operations','Payment link'])),
+                  cb('AFTER',chain(['External agent','Restricted payment link access','Create link','Track own link','Customer pays'],'hi'))),
+              col(nd('ENTERPRISE OWNER','on'),ar(),nd('Central governance'),ar(),nd('All agent activity'),ar(),nd('Complete oversight','hi')))},
+        {n:'12',k:'WHAT CHANGED',h:'Five different people got a different answer.',
+         p:['A recurring class of access requests moved out of manual intervention and into the product.'],
+         v:vs(three(cb('EXTERNAL AGENTS',col(nd('Create payment links directly with the customer'))),
+                    cb('ENTERPRISE MERCHANTS',col(nd('Extend the capability to distributed teams without opening the account'))),
+                    cb('ENTERPRISE DATA',col(nd('Agent access isolated from financial and transaction data')))),
+              two(cb('SUPPORT & OPERATIONS',col(nd('A recurring request class moved into the product'))),
+                  cb('THE PLATFORM',col(nd('A granular access model for distributed enterprise workflows')))))}],
+       ends:[
+        {h:'Access is a product decision',
+         p:'In enterprise products the question isn\u2019t simply who should have access. It is what this person needs to accomplish, what information they need to accomplish it, and what should remain invisible.',
+         v:chain(['User','Job to be done','Required capability','Minimum data access','Controlled action','Enterprise governance'],'hi')}]},
+      {n:'07',id:'squads',h:'From squads to system',
+       ph:'The platform wasn\u2019t the only thing that needed standardization.',
+       sub:'Web checkout \u00b7 mobile SDK \u00b7 16 engineering squads \u00b7 platform execution',
+       v:vs(col(row(['Squad','Squad','Squad','Squad','Squad']),ar(),nd('Common execution model','on')),
+            col(ar(),nd('Cross-squad delivery','hi'))),
        t:'When multiple squads solve related problems differently, execution itself becomes a product problem.',
-       l:['Enterprise','Product Operations','Execution','Velocity']},
-      {n:'08',id:'low-code',h:'Build once. Reuse many times.',sub:'Modular Low-Code Frameworks & Engineering Capacity Optimization',
-       v:col(nd('Common modules','on'),ar(),row(['Product A','Product B','Product C']),ar(),
-             nd('Less rebuilding','hi'),ar(),nd('Engineering capacity')),
-       t:'Instead of repeatedly solving the same engineering problem, the opportunity was to create reusable building blocks.',
-       l:['Platform Thinking','Low-Code','Reusability','Engineering Capacity']}]}
+       l:['Enterprise','Product Operations','Cross-Squad Execution','Delivery Systems','Platform','Velocity'],
+       lede:'A problem that looked like engineering capacity turned out to be an execution system.',
+       secs:[
+        {n:'01',k:'THE CONTEXT',h:'One product surface. Many engineering teams.',
+         p:['The payment experience was being built and maintained across multiple engineering squads.',
+            'As the platform evolved, the challenge wasn\u2019t simply building new functionality. It was keeping multiple teams moving toward the same product outcome.'],
+         v:vs(col(nd('PAYMENT PLATFORM','on'),ar()),
+              three(cb('WEB CHECKOUT',col(nd('Squads'))),cb('MOBILE SDK',col(nd('Squads'))),cb('CORE PLATFORM',col(nd('Squads')))),
+              col(ar(),nd('MERCHANT INTEGRATIONS','hi')))},
+        {n:'02',k:'THE PROBLEM',h:'Standardization was becoming an execution problem.',
+         p:['The product needed common components and experiences across Web and SDK, but delivering one standardized capability could involve several squads.',
+            'A dependency on one team could therefore affect the delivery of an entire capability.'],
+         v:vs(col(nd('ONE PRODUCT CHANGE','on'),ar()),
+              three(cb('WEB',col(nd('Squad A'))),cb('SDK',col(nd('Squad B'))),cb('BACKEND',col(nd('Squad C')))),
+              col(ar(),nd('Integration'),ar(),nd('Release','hi')),
+              two(cb('DEPENDENCIES',col(nd('Teams depended on one another but did not always plan together'))),
+                  cb('SPECIFICATIONS',col(nd('Stories did not consistently carry what downstream teams needed')))),
+              two(cb('TIMING',col(nd('Different execution rhythms created coordination gaps'))),
+                  cb('QUALITY',col(nd('Incomplete acceptance criteria pushed validation later')))))},
+        {n:'03',k:'THE SYMPTOM',h:'Engineering had capacity. The system was losing it.',
+         p:['The bottleneck wasn\u2019t necessarily how much engineering capacity existed.',
+            'It was how effectively that capacity could move across team boundaries.'],
+         v:vs(col(nd('ENGINEERING CAPACITY'),ar(),nd('16 SQUADS','on'),ar()),
+              two(cb('LOCAL EXECUTION',chain(['Local JIRA conventions','Local story formats'])),
+                  cb('CROSS-SQUAD WORK',chain(['Dependencies','Misalignment','Timing gaps'],'hi'))),
+              col(ar(),nd('DELIVERY FRICTION','on')))},
+        {n:'04',k:'DISCOVERY',h:'I looked at the system around the teams.',
+         p:['Rather than looking at individual sprint performance alone, the investigation moved across the delivery system: how work was written, where dependencies sat, and when teams planned.'],
+         v:three(cb('JIRA',chain(['Story structure','Acceptance criteria','Status conventions','Readiness entering sprints'])),
+                 cb('DEPENDENCIES',chain(['Web','SDK','Backend','Release'],'hi')),
+                 cb('SPRINT RHYTHM',chain(['Planning cadence','Execution cadence','Coordination gap'])))},
+        {n:'05',k:'THE INSIGHT',h:'A platform standard isn\u2019t enough.',
+         p:['You can define a standard component. But if each stage interprets or executes it differently, a product standard does not automatically become a delivery standard.',
+            'Platform consistency requires consistency in the system that delivers the platform.'],
+         v:chain(['Design standard','JIRA','Squad A','Squad B','Squad C','UAT','Release'],'hi')},
+        {n:'06',k:'THE DECISION',h:'Standardize the way teams execute the work.',
+         p:['Solving each dependency separately meant one dependency, one status call, one escalation, repeated indefinitely.',
+            'The alternative was a common delivery framework that every squad worked inside.'],
+         v:vs(col(nd('COMMON DELIVERY FRAMEWORK','on'),ar()),
+              three(cb('STORY READY',col(nd('\u2014'))),cb('DEPENDENCY MAP',col(nd('\u2014'))),cb('UAT GATES',col(nd('\u2014')))),
+              col(ar(),nd('CROSS-SQUAD DELIVERY','hi')))},
+        {n:'07',k:'THREE LAYERS',h:'Readiness, dependencies, and a shared quality gate.',
+         p:['Work readiness reduced ambiguity before engineering started. Dependency alignment made dependencies visible before they became blockers. The quality gate meant standardization did not stop when development finished.'],
+         v:three(cb('01 \u00b7 WORK READINESS',chain(['Product requirement','Design','API / tech dependency','Edge cases','Acceptance criteria','Ready for sprint'],'hi')),
+                 cb('02 \u00b7 DEPENDENCY ALIGNMENT',vs(col(nd('Before: discovered during execution')),col(nd('After: mapped before execution','hi')))),
+                 cb('03 \u00b7 SHARED QUALITY GATE',chain(['Build','Integrate','UAT','Web + SDK validation','Release'],'hi')))},
+        {n:'08',k:'HOW IT CONNECTED',h:'Product, engineering, quality and release as one system.',
+         p:['Rather than a collection of disconnected team activities, the work moved through a single path with checks that everyone recognised.'],
+         v:vs(col(nd('Product requirement'),ar(),nd('STANDARD STORY','on'),ar()),
+              three(cb('WEB',col(nd('\u2014'))),cb('SDK',col(nd('\u2014'))),cb('BACKEND',col(nd('\u2014')))),
+              col(ar(),nd('Dependency check','hi'),ar(),nd('UAT gate','hi'),ar(),nd('Parity check','hi'),ar(),nd('RELEASE','on')))},
+        {n:'09',k:'MY ROLE',h:'Separating a capacity problem from a coordination problem.',
+         p:['The diagnosis mattered more than the fix. Adding people would not have helped; the friction was between the teams that already existed.'],
+         v:col(nd('OBSERVE<br><small>identify execution friction</small>','on'),ar(),
+               nd('DIAGNOSE<br><small>capacity problem or coordination problem?</small>','hi'),ar(),
+               nd('DESIGN<br><small>define a common execution model</small>'),ar(),
+               nd('ALIGN<br><small>product, design, engineering</small>'),ar(),
+               nd('EMBED<br><small>JIRA, sprint, UAT</small>'),ar(),
+               nd('STANDARDIZE<br><small>a repeatable delivery system</small>','hi'))},
+        {n:'10',k:'BEFORE AND AFTER',h:'From squad-level execution to system-level execution.',
+         p:['The same product change, moving through a system that expects it rather than one that discovers it.'],
+         v:two(cb('BEFORE',chain(['Product change','Local process per squad','Dependency issues','Rework and delays'])),
+               cb('AFTER',chain(['Product change','Common definition','Mapped dependencies','UAT gate','Release'],'hi')))},
+        {n:'11',k:'THE DISTINCTION',h:'Two different questions about the same platform.',
+         p:['This story asks how we made the organization capable of delivering the standard consistently. <button type="button" class="link" data-p="platform">Cross-platform payment UX standardization</button> asks how we identified and standardized the product experience itself.',
+            'They are not the same problem, and neither one solves the other.'],
+         v:vs(col(nd('PLATFORM STANDARD','on'),ar()),
+              two(cb('WEB',col(nd('\u2014'))),cb('SDK',col(nd('\u2014')))),
+              col(ar(),nd('Same product behaviour'),ar(),nd('Same acceptance rules'),ar(),nd('Same quality bar','hi')))},
+        {n:'12',k:'WHAT CHANGED',h:'A unified execution model.',
+         p:['The execution framework improved delivery speed across the participating squads by 40%.',
+            'It also supported the broader standardization of 200+ components across Web and SDK, which reduced reported UX inconsistencies by 30%.'],
+         v:vs(stat('+40%','engineering velocity across participating squads'),
+              row(['Story readiness','Acceptance criteria','Dependency visibility','Sprint coordination','UAT','Release validation'],'hi'))},
+        {n:'13',k:'THE SECOND-ORDER EFFECT',h:'Velocity was the first thing to change, not the most important.',
+         p:['Standardized execution removed ambiguity, which made dependencies visible, which made coordination possible, which made delivery predictable.',
+            'That is what let platform standardization happen at all.'],
+         v:chain(['Standardized execution','Fewer ambiguities','Visible dependencies','Better cross-squad coordination','More predictable delivery','Platform standardization','Scalable product development'],'hi')}],
+       ends:[
+        {h:'Product velocity is a system property',
+         p:'Adding more engineering capacity isn\u2019t the only way to improve delivery. Sometimes the bigger opportunity is to remove the friction between the teams that already exist.',
+         v:vs(row(['People','Process','Dependencies','Tools','Quality']),
+              col(ar(),nd('DELIVERY SYSTEM','on'),ar(),nd('PRODUCT VELOCITY','hi')))}]}]}
   ];
   var BRIDGES={
     B2B:{p:'From optimizing transactions to simplifying systems.',
@@ -1885,10 +2047,14 @@ if(typeof module!=='undefined')module.exports=SK;
          v:two(cb('PRODUCT',chain(['Customer','Interface','Outcome'])),
                cb('ORGANIZATION',chain(['Teams','Capabilities','Capacity'],'hi')))}
   };
-  var PSTORY={};
-  BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; }); });
+  var PSTORY={}, PORDER=[];
+  BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; PORDER.push(c.id); }); });
   function buildProdStory(c){
     var tags='<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>';
+    var nx=PORDER[PORDER.indexOf(c.id)+1];
+    tags+='<div class="st-cta">'+(nx
+      ? '<button type="button" class="btn" data-p="'+nx+'">Next story<span class="ar" aria-hidden="true">\u2192</span></button>'
+      : '<button type="button" class="btn" data-go="prod">All product stories<span class="ar" aria-hidden="true">\u2192</span></button>')+'</div>';
     var head='<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
       '<p class="st-n">'+c.band+' \u00b7 STORY '+c.n+'</p>'+
       '<h2>'+(c.ph||c.h)+'</h2>'+
@@ -1921,6 +2087,8 @@ if(typeof module!=='undefined')module.exports=SK;
     if(b) openProdStory(b.getAttribute('data-p'));
   });
   views.pstory.addEventListener('click',function(e){
+    var n=e.target.closest('[data-p]');
+    if(n){ openProdStory(n.getAttribute('data-p')); return; }
     var b=e.target.closest('.sbar button'); if(!b) return;
     var sc=views.pstory.querySelectorAll('.st')[parseInt(b.getAttribute('data-s'),10)];
     if(!sc) return;
