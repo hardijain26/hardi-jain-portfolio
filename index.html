@@ -397,6 +397,12 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .pc-go{margin:4px 0 0}
 .pc-go .link{font-size:21px;padding:2px 0}
 .pc-go .ar{display:inline-block;margin-left:6px}
+.fm{max-width:330px;margin:0 auto;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);padding:12px 14px 14px}
+.fm-t{font-size:18px;letter-spacing:.07em;color:var(--accent-text);text-align:center;margin:0 0 10px}
+.fm-f{margin:0 0 9px}
+.fm-f:last-child{margin:0}
+.fm-l{display:block;font-size:17px;color:var(--muted);line-height:1.1;margin:0 0 3px}
+.fm-i{border:1.5px solid var(--line);border-radius:5px;background:var(--card);padding:5px 9px 7px;font-size:17px;color:var(--muted);line-height:1.1}
 .vq{font-size:21px;line-height:1.2;color:var(--ink);border-left:3px solid var(--accent);padding-left:12px;margin:0}
 .vs{display:block;font-size:18px;color:var(--muted);margin-top:4px}
 .cmp{width:100%;border-collapse:collapse;font-size:19px}
@@ -1271,6 +1277,11 @@ if(typeof module!=='undefined')module.exports=SK;
   function outs(rows){ return '<div class="out">'+rows.map(function(r){ return '<p class="'+r[0]+'"><span aria-hidden="true">'+(r[0]==='ok'?'✓':'!')+'</span> '+r[1]+'</p>'; }).join('')+'</div>'; }
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
   function voice(q,who){ return '<p class="vq">\u201c'+q+'\u201d'+(who?'<span class="vs">'+who+'</span>':'')+'</p>'; }
+  function form(t,fields){
+    return '<div class="fm"><p class="fm-t">'+t+'</p>'+
+      fields.map(function(f){ return '<div class="fm-f"><span class="fm-l">'+f[0]+'</span><div class="fm-i">'+(f[1]||'&nbsp;')+'</div></div>'; }).join('')+
+      '</div>';
+  }
   function cmp(head,rows){
     return '<table class="cmp"><thead><tr><td></td><th>'+head[0]+'</th><th>'+head[1]+'</th></tr></thead><tbody>'+
       rows.map(function(r){ return '<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'; }).join('')+
@@ -1773,12 +1784,81 @@ if(typeof module!=='undefined')module.exports=SK;
          v:vs(two(cb('DESIGN SYSTEM',chain(['Look'])),
                   cb('PRODUCT STANDARD',chain(['Behaviour','States','Recovery'],'hi'))),
               col(ar(),nd('Consistent experience','on'),ar(),nd('Scalability','hi')))}]},
-            {n:'05',id:'self-serve',h:'From dependency to self-service',sub:'Merchant Self Serve',
+            {n:'05',id:'self-serve',h:'From dependency to self-service',
+       ph:'Self-serve payment links',
+       sub:'One payment link. Many merchant needs.',
        v:two(cb('BEFORE',chain(['Merchant','Internal team','Engineering','Change'])),
              cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
        t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
-       l:['B2B','SaaS','Self-Service','Activation']},
-      {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
+       l:['B2B','PayU India','Payment Links','Self-Service','Merchant Enablement','Product Systems'],
+       lede:'The Payment Link worked. The problem was that every merchant wanted it to work differently.',
+       secs:[
+        {n:'01',k:'THE STARTING POINT',h:'One payment link. Many merchant needs.',
+         p:['The creation flow was generic: item description, total amount, expiry, partial payment, customer targeting.',
+            'But different merchants needed different information to appear in the payment request.'],
+         v:vs(form('CREATE PAYMENT LINK',[['Item description','e.g. Payment for Life Insurance'],['Total amount','\u20b9'],['Enable partial payment','\u25a2  off']]),
+              col(ar()),
+              two(cb('INSURANCE',chain(['Policy number','Premium amount','Policy due date'],'hi')),
+                  cb('EDUCATION',chain(['Student name','Fee type','Installment due'],'hi'))),
+              two(cb('SUBSCRIPTION',chain(['Subscription ID','Billing period','Amount due'],'hi')),
+                  cb('ENTERPRISE',chain(['Invoice number','Customer ID','Outstanding amount'],'hi'))))},
+        {n:'02',k:'THE FRICTION',h:'Customization became the bottleneck.',
+         p:['A simple merchant request, can I show the policy number, could turn into a product and engineering dependency.',
+            'The same chain ran again for the next merchant, and the one after that.'],
+         v:col(nd('Merchant','on'),ar(),nd('Support / operations','hi'),ar(),nd('Product','hi'),ar(),
+               nd('Engineering','hi'),ar(),nd('Testing','hi'),ar(),nd('Custom payment link'),ar(),
+               nd('Merchant can finally use it','on'))},
+        {n:'03',k:'THE PRODUCT INSIGHT',h:'The payment infrastructure was reusable. The configuration layer wasn\u2019t.',
+         p:['The problem was never the Payment Link. It was that the information around the payment could not vary without a build.'],
+         v:vs(col(nd('PAYMENT LINK','on'),ar()),
+              three(cb('INSURANCE',chain(['Policy number','Premium amount','Due date'])),
+                    cb('EDUCATION',chain(['Student name','Fee type','Installment'])),
+                    cb('SUBSCRIPTION',chain(['Customer ID','Billing period','Amount due']))))},
+        {n:'04',k:'THE REFRAME',h:'From custom builds to a configurable product.',
+         p:['Turn recurring customization requests into configurable product capabilities.',
+            'That is a different problem from building faster.'],
+         v:vs(two(cb('BEFORE',chain(['Merchant request','Custom development','Custom link'])),
+                  cb('AFTER',chain(['Merchant request','Self-serve configuration','Payment link'],'hi'))),
+              col(ar(),nd('SELF-SERVE CONFIGURATION','on'),ar()),
+              three(cb('FIELD TYPE',chain(['Policy number','Invoice number','Student ID','Subscription ID'],'hi')),
+                    cb('PAYMENT RULES',chain(['Partial payment','Amount','Due date','Expiry'],'hi')),
+                    cb('CUSTOMER DETAILS',chain(['Name','Phone','Email'],'hi'))))},
+        {n:'05',k:'THE NEW JOURNEY',h:'Configure, preview, create, share.',
+         p:['The merchant chose the fields their payment request needed, set the payment rules, previewed what the customer would see, and shared it.'],
+         v:vs(col(nd('MERCHANT','on'),ar(),nd('Create payment link'),ar(),nd('Select / configure required fields','hi'),ar()),
+              row(['Policy no.','Invoice no.','Student ID']),
+              col(ar(),nd('Set payment rules'),ar(),nd('Amount \u00b7 partial payment \u00b7 due date \u00b7 expiry'),ar(),
+                  nd('Preview customer link','hi'),ar()),
+              row(['Email','SMS','WhatsApp']),
+              col(ar(),nd('CUSTOMER PAYS','on')))},
+        {n:'06',k:'THE TRANSFORMATION',h:'Move customization from the engineering queue into the merchant\u2019s hands.',
+         p:['The same requirement, met in a different place in the system.'],
+         v:two(cb('BEFORE',chain(['\u201cCan we add policy number?\u201d','Support ticket','Product discussion','Engineering','Development','Testing','Custom configuration'])),
+               cb('AFTER',chain(['Merchant requirement','Select / configure field','Preview','Create payment link','Share'],'hi')))},
+        {n:'07',k:'WHAT I BUILT',h:'A configuration layer on top of reusable infrastructure.',
+         p:['Don\u2019t rebuild the payment infrastructure for every merchant. Build a configurable layer above it.',
+            'That decision is what made the capability scale to merchants nobody had spoken to yet.'],
+         v:col(nd('MERCHANT EXPERIENCE<br><small>configure \u00b7 preview \u00b7 create \u00b7 share</small>','on'),ar(),
+               nd('CONFIGURATION LOGIC<br><small>fields \u00b7 rules \u00b7 amount \u00b7 expiry \u00b7 access</small>','hi'),ar(),
+               nd('PAYMENT ENGINE<br><small>existing payment link infrastructure</small>'))},
+        {n:'08',k:'THE PM WORK',h:'I wasn\u2019t solving one customization request. I was looking for the pattern behind hundreds.',
+         p:['Mapping the recurring requests was what turned an operations problem into a product one.'],
+         v:col(nd('DISCOVER<br><small>map recurring requests, identify repetitive engineering work</small>','on'),ar(),
+               nd('DEFINE<br><small>what should be configurable versus custom</small>'),ar(),
+               nd('DESIGN<br><small>configuration, validation and preview flows</small>'),ar(),
+               nd('DELIVER<br><small>product, design, engineering, operations</small>','hi'))},
+        {n:'09',k:'THE RESULT',h:'From \u201cI need this customized\u201d to \u201cI can configure this myself\u201d.',
+         p:['Merchant onboarding time fell by 20%, and engineering dependency by 15%.',
+            'The metrics are the consequence of the product decision, not the story itself.'],
+         v:vs(two(cb('BEFORE',chain(['Merchant request','Manual dependency','Engineering involvement','Longer onboarding'])),
+                  cb('AFTER',chain(['Merchant configuration','Self-service workflow','Automated configuration','Faster time-to-value'],'hi'))),
+              two(stat('20%','reduction in merchant onboarding time'),
+                  stat('15%','reduction in engineering dependency')))}],
+       ends:[
+        {h:'Operational problems often contain product opportunities',
+         p:'When the same customization request keeps appearing, the answer isn\u2019t necessarily to process those requests faster. It may be to make the customer capable of solving them themselves.',
+         v:chain(['Customization requests','Pattern discovery','Configurable product','Self-serve flow','Less dependency','Faster value'],'hi')}]},
+            {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
        v:chain(['Complexity','Discovery','Standardise','Enable','Scale']),
        t:'',
        l:['B2B','Enterprise','Platform']}]},
