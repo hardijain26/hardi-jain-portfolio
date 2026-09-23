@@ -337,11 +337,13 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .st-lede{font-size:30px;line-height:1.2;margin:16px 0 0;max-width:34ch;border-left:4px solid var(--accent);padding-left:18px}
 .st{margin:54px 0 0;scroll-margin-top:62px}
 .sbar{
-  position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:center;align-items:center;gap:6px;
-  padding:8px 150px 8px 14px;background:var(--bg);border-bottom:1px solid var(--line);overflow-x:auto;
+  position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:center;align-items:center;
+  padding:8px 150px 8px 14px;background:var(--bg);border-bottom:1px solid var(--line);overflow:hidden;
   transform:translateY(-110%);visibility:hidden;transition:transform .35s ease,visibility 0s .35s;
 }
 .sbar.on{transform:none;visibility:visible;transition:transform .35s ease}
+.sbar-in{display:flex;align-items:center;gap:6px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.sbar-in::-webkit-scrollbar{display:none}
 .sbar button{font:inherit;font-size:19px;line-height:1;flex:none;min-width:40px;padding:6px 9px 8px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--muted);cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease}
 .sbar button:hover{border-color:var(--accent);color:var(--ink)}
 .sbar button[aria-current="true"]{background:var(--btn);border-color:var(--btn);color:var(--btn-ink)}
@@ -481,11 +483,13 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 @media (max-width:560px){
   .contact{top:8px;right:12px;font-size:16px;padding:3px 11px 5px}
   /* keep the section strip clear of the Contact me button */
-  .sbar{gap:4px;padding:6px 104px 8px 12px}
+  .sbar{padding:6px 118px 8px 12px}
+  .sbar-in{gap:4px}
   .sbar button{min-width:28px;font-size:16px;padding:5px 5px 7px}
 }
 @media (max-width:365px){
-  .sbar{gap:2px;padding:6px 116px 8px 10px;justify-content:flex-start}
+  .sbar{padding:6px 116px 8px 10px;justify-content:flex-start}
+  .sbar-in{gap:2px}
   .sbar button{min-width:20px;font-size:13px;padding:5px 3px 7px}
   .pl-top{top:42px;right:12px}
   .pl-top .link{font-size:18px}
@@ -1410,9 +1414,9 @@ if(typeof module!=='undefined')module.exports=SK;
       '<div class="st-viz">'+x.v+'</div></div></section>';
   }
   function buildStory(d){
-    views[d.id].innerHTML='<nav class="sbar" aria-label="Story sections">'+
+    views[d.id].innerHTML='<nav class="sbar" aria-label="Story sections"><span class="sbar-in">'+
       d.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
-      '</nav>'+
+      '</span></nav>'+
       '<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
       '<h2>'+d.title+'</h2>'+
       '<p class="st-lede">'+d.lede+'</p>'+
@@ -1679,82 +1683,97 @@ if(typeof module!=='undefined')module.exports=SK;
     {k:'B2B', h:'Turning complexity into product capability.',
      intro:'In B2B products, the problem is often bigger than a single screen. It can live inside workflows, dependencies, permissions, platforms and operating models.',
      cards:[
-      {n:'04',id:'platform',h:'One platform. Many products.',sub:'Cross-platform payment UX standardization across Web and SDK',
-       v:col(row(['Web checkout','Mobile SDK','Payment links']),ar(),nd('Common component framework','on')),
+      {n:'04',id:'platform',h:'One platform. Many products.',
+       ph:'Cross-platform payment UX standardization',
+       sub:'One payment platform. Different surfaces. One experience standard.',
+       v:vs(col(nd('Payment platform','on'),ar()),
+            two(cb('PAYMENT LINKS',chain(['Web checkout'])),cb('NATIVE SDK',chain(['App checkout']))),
+            col(ar(),nd('One experience standard','hi'))),
        t:'A design audit tells you what looks different. Mapping components onto live journeys tells you what behaves differently.',
        l:['B2B','PayU India','Platform & Payments','UX Standardization','Experience Gap Analysis','Web & SDK Parity'],
-       lede:'The design team audited 200+ static components. My job was the gap between those components and the live payment product.',
+       lede:'Different surfaces were expected. Different experiences were not.',
        secs:[
-        {n:'01',k:'CONTEXT',h:'Two surfaces that had drifted apart.',
-         p:['As Associate Product Manager for Platform & Payments, I was responsible for the end-to-end payment experience across Web checkout surfaces and mobile client SDKs.',
-            'Years of rapid feature expansion, regional customizations and new payment method integrations had accumulated significant visual and procedural drift across our client-facing interfaces.'],
-         v:vs(two(cb('WEB CHECKOUT',chain(['Feature expansion','Regional customization','New instruments'])),
-                  cb('MOBILE SDK',chain(['Feature expansion','Regional customization','New instruments']))),
-              col(ar(),nd('DRIFT','on')))},
-        {n:'02',k:'DIVISION OF OWNERSHIP',h:'Design audited what looked different. My job was what behaved differently.',
-         p:['The Design team completed a visual audit at the static component level, identifying UI element discrepancies across more than 200 components.',
-            'Static design tokens alone do not solve real-world checkout friction. My responsibility was to bridge static components to the live payment product, identifying structural experience gaps across actual user journeys, payment flows and edge-case behaviours on both Web and SDK.'],
-         v:two(cb('DESIGN AUDIT',chain(['200+ components','Colors, padding, weights','Static level'])),
-               cb('PM EXPERIENCE GAP MAP',chain(['Live journeys','Payment flows','Edge-case behaviour'],'hi')))},
-        {n:'03',k:'WHAT FRAGMENTATION COST',h:'Two problems, one root cause.',
-         p:['Mismatched interaction states, error recovery flows and loading feedback between Web and SDK degraded user trust at critical payment moments.',
-            'Adding a new payment instrument or feature required custom, redundant development for both Web and SDK, because component logic was unaligned.'],
-         v:vs(col(nd('FRAGMENTATION','on'),ar()),
-              two(cb('FOR THE USER',chain(['Inconsistent journeys','Lower trust at payment'],'hi')),
-                  cb('FOR ENGINEERING',chain(['Duplicate frontend work','Slower instrument rollout'],'hi'))))},
-        {n:'04',k:'THE EXPERIENCE GAP AUDIT',h:'Mapping components onto journeys is where the real gaps showed up.',
-         p:['While Design audited atomic UI elements, I mapped those components to functional payment journeys.',
-            'The gaps were not cosmetic. They were state machines, fallbacks and instrument edge cases behaving differently on each surface.'],
+        {n:'01',k:'THE OPENING',h:'One payment platform. Two payment surfaces.',
+         p:['Payment Links powered Web Checkout experiences, while Native SDKs powered payment experiences inside mobile applications.',
+            'Different surfaces were expected. Different experiences were not.'],
+         v:vs(col(nd('PAYMENT PLATFORM','on'),ar()),
+              two(cb('PAYMENT LINKS',chain(['Web checkout','Payment journey'])),
+                  cb('NATIVE SDK',chain(['App checkout','Payment journey']))))},
+        {n:'02',k:'THE EXPERIENCE GAP',h:'The same payment scenario could produce different behaviours.',
+         p:['A customer reaching the same point in the same journey did not meet the same product.',
+            'That is the actual product problem, and it is invisible in a static component library.'],
+         v:vs(col(nd('PAYMENT JOURNEY','on'),ar()),
+              two(cb('WEB CHECKOUT',chain(['Processing','Inline spinner','Failure','One-click retry','Recovery'])),
+                  cb('NATIVE SDK',chain(['Processing','Modal overlay','Failure','Generic error','Flow closes'],'hi'))))},
+        {n:'03',k:'WHY THIS HAPPENED',h:'The platform had grown faster than its experience model.',
+         p:['A design audit identified inconsistencies across more than 200 live components.',
+            'The bigger product question was whether those inconsistencies were merely visual, or whether they changed how the payment journey behaved.'],
+         v:vs(col(nd('PAYMENT PLATFORM','on'),ar()),
+              row(['Cards','UPI','EMI','Netbanking','Wallet','Pay Later']),
+              col(ar(),nd('Many payment flows'),ar(),nd('Web + Native SDK'),ar(),nd('EXPERIENCE DRIFT','hi')),
+              stat('200+','live components audited'))},
+        {n:'04',k:'TWO AUDITS',h:'Design audited what the product looked like. I investigated how it behaved.',
+         p:['The Design team audited atomic UI elements: colour, spacing, typography, across 200+ components.',
+            'I mapped those components onto functional payment journeys, looking at flow, state and recovery rather than appearance.'],
+         v:two(cb('DESIGN \u00b7 COMPONENT AUDIT',chain(['Colour','Spacing','Typography','200+ components'])),
+               cb('PRODUCT \u00b7 EXPERIENCE AUDIT',chain(['Flow','State','Recovery','User action \u2192 success \u2192 failure \u2192 retry'],'hi')))},
+        {n:'05',k:'THE EXPERIENCE GAP MAP',h:'Same state. Different behaviour.',
+         p:['Three examples were enough to make the problem tangible.',
+            'Processing feedback, failure recovery, and instrument validation each diverged between the two surfaces.'],
          v:cmp(['Web','SDK'],[
-           ['Processing state','Inline loading spinner','Modal overlay'],
-           ['Failed authorization','One-click retry with an alternate instrument','Drawer closes, or a generic error code'],
-           ['Saved card CVV','Mobile browser validation mask','Native wrapper mask'],
-           ['UPI intent','Browser application switch','Native application switch']])},
-        {n:'05',k:'THE SIGNALS',h:'Both sides described the same problem.',
-         p:['The cost showed up in engineering time and in merchant confidence.'],
-         v:vs(voice('When we launch a new payment instrument, engineering has to rewrite frontend validation rules from scratch because Web and SDK use completely different component structures.','Frontend lead review'),
-              voice('Discrepancies in OTP and error-handling screens between the merchant\u2019s mobile web view and native app SDK degrade user confidence during high-value payment attempts.','Merchant UX feedback'))},
-        {n:'06',k:'THE OBJECTIVE',h:'Translate a design audit into a product roadmap.',
-         p:['The objective went beyond visual cleanup: eliminate functional experience gaps across all payment instruments while building a scalable cross-platform foundation.'],
-         v:chain(['Design audit','Experience gap map','Product roadmap','Scalable foundation'],'hi')},
-        {n:'07',k:'THE TRADE-OFF',h:'Repaint it, or align how it behaves.',
-         p:['A component-only visual refresh would apply new colors and fonts without fixing flow discrepancies. Users would still meet mismatched checkout behaviour, and every new instrument would still need duplicate work on both platforms.',
-            'I chose full functional standardization.'],
-         v:cmp(['A \u00b7 Visual refresh','B \u00b7 Functional standardization'],[
-           ['Scope','Surface level','Interaction logic, state handling, flow gaps'],
-           ['UX consistency','Looks similar, still behaves differently','Unified across Web and SDK'],
-           ['Future scalability','Duplicate work per instrument','Reusable standardized templates'],
-           ['Decision','Rejected','Selected']])},
-        {n:'08',k:'THE WORK',h:'From gap map to release.',
-         p:['I owned the execution lifecycle from experience gap discovery through to deployment.'],
-         v:chain(['Design audit + PM gap map','JIRA stories for Web & SDK frontend','UAT planning and execution','Stakeholder demos','Phased release rollout'],'hi')},
-        {n:'09',k:'WRITING THE STORIES',h:'The acceptance criteria were the standard.',
-         p:['I authored technical epics and user stories for Frontend Engineering on both Web and Mobile SDK, explicitly defining functional states, validation logic, error-handling micro-copy, design token usage and cross-platform edge cases.',
-            'Granular acceptance criteria covered micro-copy, accessibility contrast, input masks and responsive layouts.'],
-         v:vs(col(nd('JIRA STORY','on'),ar()),
-              row(['Functional states','Validation logic','Error micro-copy','Design tokens','Edge cases'],'hi'))},
-        {n:'10',k:'PROVING IT',h:'Every flow, every instrument, every device.',
-         p:['I designed end-to-end UAT test matrices, authored manual and automated test scenarios, and executed UAT cycles across multiple devices, OS versions and screen resolutions.'],
-         v:vs(col(nd('UAT MATRIX','on'),ar()),
-              row(['Cards','UPI','Netbanking','Wallets','Pay Later','EMI'],'hi'),
-              col(ar(),row(['Devices','OS versions','Resolutions']),ar(),nd('100% flow coverage','on')))},
-        {n:'11',k:'THE ARCHITECTURE',h:'A new instrument should inherit the framework, not rebuild it.',
-         p:['Design tokens were aligned with product state machine logic, so loading, success, failure, timeout and retry states responded identically across Web and SDK.',
-            'Interaction flows were standardized so a new instrument, such as Credit on UPI or Cardless EMI, automatically inherited the unified component framework.'],
-         v:vs(col(nd('UNIFIED COMPONENT FRAMEWORK','on'),ar()),
-              row(['Loading','Success','Failure','Timeout','Retry'],'hi'),
-              col(ar(),nd('New instrument inherits it','hi')))},
-        {n:'12',k:'THE OUTCOME',h:'One platform. Many products.',
-         p:['UX inconsistencies dropped by 30% across more than 200 live components, creating a cohesive checkout across Web and native SDKs.',
-            'Frontend effort to launch a new payment instrument was significantly streamlined, with full flow coverage across all instruments and zero critical regressions during UAT and release.'],
-         v:vs(three(stat('\u221230%','UX inconsistencies'),stat('200+','live components'),stat('100%','flow & instrument coverage')),
-              chain(['Fragmented surfaces','Experience gap map','Standardized components','Faster instrument rollout'],'hi'))}],
+           ['Processing','Inline spinner','Modal overlay'],
+           ['Bank failure','One-click retry with an alternate method','Generic error, flow closes'],
+           ['Card / UPI validation','One set of rules','A different set of rules']])},
+        {n:'06',k:'THE PM INSIGHT',h:'What should happen when a customer reaches the same payment state?',
+         p:['The solution wasn\u2019t to make Web and SDK identical. They are different surfaces, and they should be.',
+            'The goal was consistent product behaviour: the same states, validation and recovery principles across both.'],
+         v:vs(two(cb('WEB',col(nd('Payment state'))),cb('SDK',col(nd('Payment state')))),
+              col(ar(),nd('COMMON PRODUCT RULE','on'),ar()),
+              three(cb('SUCCESS',col(nd('Complete','hi'))),cb('FAILURE',col(nd('Retry','hi'))),cb('TIMEOUT',col(nd('Recover','hi')))))},
+        {n:'07',k:'THE STRATEGIC CHOICE',h:'Standardize the experience, not just the appearance.',
+         p:['Visual standardization would have made the two surfaces look consistent while leaving the behaviour untouched.',
+            'Experience standardization meant design plus flow, state, validation, error and recovery.'],
+         v:two(cb('A \u00b7 VISUAL',vs(chain(['Design tokens','Colours','Typography','Spacing','Components']),col(nd('Looks consistent')))),
+               cb('B \u00b7 EXPERIENCE',vs(chain(['Design','Flow','State','Validation','Error','Recovery'],'hi'),col(nd('Behaves consistently','on')))))},
+        {n:'08',k:'THE NEW EXPERIENCE MODEL',h:'Component \u2192 state \u2192 behaviour \u2192 recovery.',
+         p:['A component is not an experience. A component enters a state, the state implies a behaviour, and a failed behaviour needs a recovery.',
+            'Defining that chain once is what made the standard portable across surfaces.'],
+         v:vs(col(nd('COMPONENT','on'),ar(),nd('STATE'),ar()),
+              three(cb('LOADING',col(nd('\u2014'))),cb('SUCCESS',col(nd('Complete'))),cb('FAILURE',chain(['Retry','Recovery'],'hi'))),
+              col(ar(),nd('CONSISTENT RULE','on')))},
+        {n:'09',k:'INTO REQUIREMENTS',h:'Every gap became a requirement with acceptance criteria.',
+         p:['I authored epics and user stories for Frontend Engineering on both Web and Mobile SDK, defining functional states, validation logic, error micro-copy, design token usage and cross-platform edge cases.'],
+         v:vs(chain(['Experience gap','Product requirement','JIRA epic','User story','Acceptance criteria','Engineering'],'hi'),
+              row(['Loading state','Error state','Retry logic','Validation','Micro-copy','Edge cases']))},
+        {n:'10',k:'CROSS-FUNCTIONAL EXECUTION',h:'Define, align, validate, ship.',
+         p:['I translated experience gaps into product requirements, aligned Design and Engineering around common behaviours, defined acceptance criteria, coordinated UAT across Web and SDK, and supported phased rollout.'],
+         v:vs(col(nd('PRODUCT','on'),ar()),
+              three(cb('DEFINE',col(nd('PRDs'))),cb('ALIGN',col(nd('Stakeholders'))),cb('VALIDATE',col(nd('UAT')))),
+              col(ar(),nd('SHIP','hi')))},
+        {n:'11',k:'UAT AS THE QUALITY LOOP',h:'UAT checked behaviour, not just screens.',
+         p:['UAT wasn\u2019t only checking whether the screens matched the design. It verified whether the intended payment behaviour remained consistent across platforms and edge cases.',
+            'A gap found sent the work back round the loop rather than through to release.'],
+         v:vs(chain(['Standard','Web implementation','SDK implementation','UAT']),
+              two(cb('MATCHES',chain(['Release'],'hi')),cb('GAP FOUND',chain(['Fix','Back to UAT']))))},
+        {n:'12',k:'THE SCALABILITY SHIFT',h:'Standardization wasn\u2019t the end goal. Scalability was.',
+         p:['Before, a new payment feature meant custom logic on Web and custom logic on SDK, written twice.',
+            'After, a new feature inherited a standard pattern and shared experience principles across both surfaces.'],
+         v:two(cb('BEFORE',vs(col(nd('New payment feature')),two(cb('WEB',col(nd('Custom logic'))),cb('SDK',col(nd('Custom logic')))),col(nd('DUPLICATION','hi')))),
+               cb('AFTER',vs(col(nd('New payment feature')),col(nd('STANDARD PATTERN','on')),two(cb('WEB',col(nd('\u2713'))),cb('SDK',col(nd('\u2713')))),col(nd('Shared experience principles','hi')))))},
+        {n:'13',k:'OUTCOME',h:'A scalable UX foundation across both surfaces.',
+         p:['More than 200 live components were evaluated and standardized, with defined coverage across every payment flow and instrument.',
+            'Reported UX inconsistencies fell by 30%.'],
+         v:vs(chain(['200+ live components','Experience gap mapping','Standardized behaviour','Web + SDK alignment','Scalable UX foundation'],'hi'),
+              three(stat('200+','components evaluated and standardized'),
+                    stat('30%','reduction in reported UX inconsistencies'),
+                    stat('100%','defined payment-flow and instrument coverage')))}],
        ends:[
-        {h:'What this says about platform work',
-         p:'A design audit tells you what looks different. Only mapping components onto live journeys tells you what behaves differently, and that is where the friction actually lives.',
-         v:two(cb('LOOKS THE SAME',chain(['Colors','Padding','Type'])),
-               cb('BEHAVES THE SAME',chain(['States','Errors','Edge cases'],'hi')))}]},
-      {n:'05',id:'self-serve',h:'From dependency to self-service',sub:'Merchant Self Serve',
+        {h:'A design system tells a product how to look',
+         p:'A product standard tells it how to behave. States, recovery and validation are the part a component library cannot carry on its own.',
+         v:vs(two(cb('DESIGN SYSTEM',chain(['Look'])),
+                  cb('PRODUCT STANDARD',chain(['Behaviour','States','Recovery'],'hi'))),
+              col(ar(),nd('Consistent experience','on'),ar(),nd('Scalability','hi')))}]},
+            {n:'05',id:'self-serve',h:'From dependency to self-service',sub:'Merchant Self Serve',
        v:two(cb('BEFORE',chain(['Merchant','Internal team','Engineering','Change'])),
              cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
        t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
@@ -1792,12 +1811,12 @@ if(typeof module!=='undefined')module.exports=SK;
     var tags='<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>';
     var head='<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
       '<p class="st-n">'+c.band+' \u00b7 STORY '+c.n+'</p>'+
-      '<h2>'+c.h+'</h2>'+
+      '<h2>'+(c.ph||c.h)+'</h2>'+
       '<p class="ps-lede">'+c.sub+'</p>';
     if(c.secs){
-      views.pstory.innerHTML='<nav class="sbar" aria-label="Story sections">'+
+      views.pstory.innerHTML='<nav class="sbar" aria-label="Story sections"><span class="sbar-in">'+
         c.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
-        '</nav><div class="page story">'+head+
+        '</span></nav><div class="page story">'+head+
         '<p class="st-lede">'+c.lede+'</p>'+
         c.secs.map(storySection).join('')+
         (c.ends||[]).map(function(e){ return '<div class="st-end"><h3>'+e.h+'</h3><div class="st-viz">'+e.v+'</div>'+
@@ -1866,6 +1885,10 @@ if(typeof module!=='undefined')module.exports=SK;
     for(i=0;i<secs.length;i++){ if(secs[i].getBoundingClientRect().top<=140) cur=i; }
     for(i=0;i<btns.length;i++){
       if(i===cur) btns[i].setAttribute('aria-current','true'); else btns[i].removeAttribute('aria-current');
+    }
+    var track=bar.querySelector('.sbar-in');
+    if(track&&btns[cur]&&track.scrollWidth>track.clientWidth+1){
+      track.scrollLeft=btns[cur].offsetLeft-(track.clientWidth-btns[cur].offsetWidth)/2;
     }
   }
   window.addEventListener('scroll',storyScroll,{passive:true});
