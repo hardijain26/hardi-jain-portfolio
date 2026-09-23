@@ -316,6 +316,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 
 /* navigation page: intro, road, companies, pinned road — and the How I work page */
 .page.map,.page.how,.page.story{padding-top:72px}
+.page.story{max-width:1040px}
 .page.map h2,.page.how h2,.page.story h2{font-size:clamp(34px,4.6vw,54px);line-height:1}
 .intro{font-size:28px;line-height:1.2;max-width:50ch;margin:10px 0 4px}
 .hint2{font-size:24px;color:var(--muted);margin:0 0 2px}
@@ -367,6 +368,39 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .tags span{font-size:21px;color:var(--accent-text);border:1.5px solid var(--line);border-radius:999px;padding:4px 14px 6px}
 .st-cta{display:flex;justify-content:flex-end;margin:26px 0 0}
 .st-cta .ar{display:inline-block;margin-left:8px;color:var(--btn-ink)}
+/* product stories: three bands of cards, with a bridge between them */
+.ps-lede{font-size:26px;line-height:1.22;color:var(--muted);max-width:60ch;margin:14px 0 0}
+.ps-band{margin:62px 0 0;border-top:2px solid var(--line);border-bottom:2px solid var(--line);padding:16px 0;text-align:center}
+.ps-band .k{font-size:25px;letter-spacing:.14em;color:var(--accent-text);margin:0}
+.ps-band h3{font-size:clamp(26px,3.2vw,38px);font-weight:700;line-height:1.05;margin:4px 0 0}
+.ps-intro{font-size:23px;line-height:1.22;color:var(--muted);max-width:64ch;margin:16px auto 0;text-align:center}
+.ps-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0 0;align-items:start}
+.pc{display:flex;flex-direction:column;gap:9px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);padding:18px 18px 20px;transition:border-color .2s ease,box-shadow .25s ease,transform .25s ease}
+.pc:hover{border-color:var(--accent);box-shadow:0 8px 20px rgba(59,44,36,.12);transform:translateY(-2px)}
+.pc-n{font-size:18px;letter-spacing:.09em;color:var(--accent-text);margin:0}
+.pc h4{font-size:25px;font-weight:700;line-height:1.08;margin:0}
+.pc-sub{font-size:20px;color:var(--muted);margin:0}
+.pc-viz{border:1.5px dashed var(--line);border-radius:8px;padding:14px 8px;margin:3px 0 0}
+.pc-viz .nd{font-size:17px;padding:4px 9px 6px}
+.pc-viz .ar{font-size:19px}
+.pc-viz .col{gap:5px}
+.pc-viz .cb-t{font-size:17px}
+.pc-t{font-size:21px;line-height:1.2;color:var(--muted);margin:0}
+.pc-lens{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0}
+.pc-lens span{font-size:17px;color:var(--accent-text);border:1.5px solid var(--line);border-radius:999px;padding:3px 10px 5px}
+.ps-bridge{margin:58px 0 0;text-align:center}
+.ps-bridge p{font-size:clamp(23px,2.6vw,30px);font-weight:700;line-height:1.1;margin:0 0 16px}
+.ps-end{margin:64px 0 0;border-top:1.5px solid var(--line);padding-top:26px}
+.ps-end h3{font-size:clamp(26px,3vw,34px);font-weight:700;margin:0 0 16px}
+.pc-go{margin:4px 0 0}
+.pc-go .link{font-size:21px;padding:2px 0}
+.pc-go .ar{display:inline-block;margin-left:6px}
+.vq{font-size:21px;line-height:1.2;color:var(--ink);border-left:3px solid var(--accent);padding-left:12px;margin:0}
+.cmp{width:100%;border-collapse:collapse;font-size:19px}
+.cmp th,.cmp td{border:1.5px solid var(--line);padding:7px 10px;text-align:left;font-weight:400;line-height:1.15;vertical-align:top}
+.cmp thead th{color:var(--accent-text);font-weight:700}
+.cmp tbody th{color:var(--muted)}
+.psd-wip{font-size:22px;color:var(--muted);border:1.5px dashed var(--line);border-radius:8px;padding:14px 18px;margin:22px 0 0}
 .cb-t{font-size:20px;letter-spacing:.05em;color:var(--muted);text-align:center;margin:0 0 8px}
 .out{display:flex;flex-direction:column;gap:5px;align-items:stretch}
 .out p{margin:0;font-size:20px;line-height:1.15;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);padding:5px 12px 7px}
@@ -431,6 +465,8 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 }
 
 @media (max-width:1100px){ .three{grid-template-columns:1fr} }
+@media (max-width:1000px){ .ps-cards{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:660px){ .ps-cards{grid-template-columns:1fr} }
 @media (max-width:520px){ .two{grid-template-columns:1fr} }
 @media (max-width:860px){
   .st-body{grid-template-columns:1fr;gap:18px}
@@ -569,12 +605,14 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   <section class="view" id="v-how" aria-label="How I work"></section>
   <section class="view" id="v-story" aria-label="The KPMG story"></section>
   <section class="view" id="v-story2" aria-label="The J.P. Morgan story"></section>
+  <section class="view" id="v-prod" aria-label="Product stories"></section>
+  <section class="view" id="v-pstory" aria-label="Product story"></section>
   <section class="view" id="v-chapter" aria-label="Chapter">
     <div class="player" id="player">
       <div class="pl-top"><button type="button" class="link" data-go="nav">Map</button></div>
       <figure class="sketch" id="sketch"><svg id="sk" viewBox="0 0 800 500" role="img" aria-label=""></svg></figure>
       <p class="msg" id="msg" aria-live="polite"></p>
-      <p class="mlink" id="mlink" hidden><button type="button" class="link" data-go="story">Read the full stories<span class="ar" aria-hidden="true">→</span></button></p>
+      <p class="mlink" id="mlink" hidden></p>
       <div class="ai-x" id="aix" hidden></div>
       <div class="bar"><div class="prog" id="cprog" aria-hidden="true"></div><div class="btns"><button type="button" class="btn next" id="next" hidden>Next</button></div></div>
     </div>
@@ -999,12 +1037,12 @@ var SK=(function(){
       {alt:'Contract, invoice, payment, entry, financial statements.',b:sa1},
       {alt:'A 12-month service recorded in one month.',b:sa2},
       {alt:'Does the number match the evidence?',b:sa3}]},
-    {id:'au',name:'Automation',msg:'Learned that automation doesn’t remove the work. It moves it to judgment.',story:'story',beats:[
+    {id:'au',name:'Automation',msg:'Learned that automation doesn’t remove the work. It moves it to judgment.',story:{to:'story',label:'Read the full stories'},beats:[
       {alt:'Check, verify, reconcile, every month by hand.',b:au1},
       {alt:'Repetition, rules, validation.',b:au2},
       {alt:'Input, process, output, with a validation loop.',b:au3},
       {alt:'Automation: same work, better.',b:au4}]},
-    {id:'pm',name:'Product',msg:'Learned to build for people.',beats:[
+    {id:'pm',name:'Product',msg:'Learned to build for people.',story:{to:'prod',label:'See the product stories'},beats:[
       {alt:'User needs and personas. The gap, circled, and its solution becomes the product: access switches off when someone leaves.',b:pm1,vbn:'0 0 400 640'},
       {alt:'Key decision points.',b:pm3},
       {alt:'The product lifecycle in a circle: discover, define, design, prototype, build, launch, measure, improve.',b:pm4,vbn:'0 0 400 650'}]},
@@ -1184,7 +1222,7 @@ if(typeof module!=='undefined')module.exports=SK;
   var order=['ia','sa','au','pm','ai'];
   var progress={ia:false,sa:false,au:false,pm:false,fin:false};
   var CH={}; SK.chapters.forEach(function(c){ CH[c.id]=c; }); CH.fin=SK.finale;
-  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story'),story2:$('v-story2')};
+  var views={intro:$('v-intro'),nav:$('v-nav'),chapter:$('v-chapter'),how:$('v-how'),story:$('v-story'),story2:$('v-story2'),prod:$('v-prod'),pstory:$('v-pstory')};
   var player=$('player'), sketch=$('sketch'), sk=$('sk'), msgEl=$('msg'), nextBtn=$('next'), cprog=$('cprog'), aix=$('aix'), mlink=$('mlink');
   var cur=null, bi=0, ptimers=[];
   /* history: the map is always the entry right after the landing page, so Back from the map lands on the landing page */
@@ -1227,6 +1265,12 @@ if(typeof module!=='undefined')module.exports=SK;
   function eqn(parts){ var h=[],i; for(i=0;i<parts.length;i++){ h.push(i%2?'<span class="op" aria-hidden="true">'+parts[i]+'</span>':nd(parts[i])); } return '<div class="eqn">'+h.join('')+'</div>'; }
   function outs(rows){ return '<div class="out">'+rows.map(function(r){ return '<p class="'+r[0]+'"><span aria-hidden="true">'+(r[0]==='ok'?'✓':'!')+'</span> '+r[1]+'</p>'; }).join('')+'</div>'; }
   function stat(big,sml){ return '<div class="stat"><span class="big">'+big+'</span><span class="sml">'+sml+'</span></div>'; }
+  function voice(q){ return '<p class="vq">\u201c'+q+'\u201d</p>'; }
+  function cmp(head,rows){
+    return '<table class="cmp"><thead><tr><td></td><th>'+head[0]+'</th><th>'+head[1]+'</th></tr></thead><tbody>'+
+      rows.map(function(r){ return '<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'; }).join('')+
+      '</tbody></table>';
+  }
 
   var STORIES=[{
     id:'story', tags:['#automation','#audit','#reconciliation'],
@@ -1387,8 +1431,355 @@ if(typeof module!=='undefined')module.exports=SK;
       try{ s.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(err){ s.scrollIntoView(); }
     });
   }
-  var STORY_IDS=STORIES.map(function(d){ return d.id; });
+  var STORY_IDS=STORIES.map(function(d){ return d.id; }).concat(['pstory']);
   STORIES.forEach(buildStory);
+  /* ---------- product stories: three bands, each a set of teaser cards ---------- */
+  function lens(list){ return '<p class="pc-lens">'+list.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>'; }
+  function pcard(c){
+    return '<article class="pc">'+
+      '<p class="pc-n">STORY '+c.n+'</p>'+
+      '<h4>'+c.h+'</h4>'+
+      '<p class="pc-sub">'+c.sub+'</p>'+
+      '<div class="pc-viz">'+c.v+'</div>'+
+      (c.t?'<p class="pc-t">'+c.t+'</p>':'')+
+      lens(c.l)+
+      '<p class="pc-go"><button type="button" class="link" data-p="'+c.id+'">Explore story<span class="ar" aria-hidden="true">\u2192</span></button></p>'+
+      '</article>';
+  }
+  var BANDS=[
+    {k:'B2C', h:'Optimizing moments that matter.',
+     intro:'Consumer products don’t give you much room for friction. Small changes in the journey can change what happens at scale.',
+     cards:[
+      {n:'01',id:'checkout',h:'When the funnel lied',sub:'SRT optimization through bot detection',
+       v:col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigate','on'),ar(),nd('Bot traffic','hi'),ar(),nd('67%')),
+       t:'A 5-point SRT drop looked like a checkout problem. The investigation revealed abnormal bot traffic distorting the funnel.',
+       l:['B2C','PayU India','Platform & Payments','Data Investigation','Root Cause','Trade-offs'],
+       lede:'A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.',
+       secs:[
+        {n:'01',k:'THE SIGNAL',h:'What changed?',
+         p:['A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.',
+            'AWS monitoring flagged the deviation once it passed two percentage points.'],
+         v:vs(two(stat('65%','before'),stat('60%','after')),
+              col(nd('\u22125 pp','on')),
+              chain(['AWS monitoring','SRT deviation > 2%','Alert triggered'],'hi'))},
+        {n:'02',k:'INVESTIGATION',h:'Before changing the product, I had to find the pattern.',
+         p:['I segmented the decline across merchant level, industry segment and transaction source to identify where the SRT movement was concentrated.'],
+         v:vs(col(nd('SRT DROP','hi'),ar()),
+              three(cb('MERCHANT',col(nd('Who?'))),cb('INDUSTRY',col(nd('Where?'))),cb('SOURCE',col(nd('How?')))),
+              col(ar(),nd('FIND THE PATTERN','on')))},
+        {n:'03',k:'THE FIRST HYPOTHESIS',h:'The obvious explanation wasn\u2019t the answer.',
+         p:['My initial hypothesis was that NGO merchants were driving the decline, because publicly shared payment links could attract users with low purchase intent.',
+            'The data disproved my first hypothesis. That is part of the story, not something to hide: hypothesis, evidence, revision.'],
+         v:col(nd('SRT drop'),ar(),nd('NGO merchants?','hi'),ar(),nd('Initial hypothesis'),ar(),
+               nd('Test the data','on'),ar(),nd('Not supported','hi'))},
+        {n:'04',k:'THE ANOMALY',h:'Then the transaction data changed the direction of the investigation.',
+         p:['Transaction-level logs revealed approximately 500 transactions initiated through a single email ID within a five-minute window, originating from outside India during non-standard business hours.',
+            'The metric wasn\u2019t telling the whole story.'],
+         v:vs(stat('~500','transactions in one cluster'),
+              row(['1 email ID','5 minutes','Outside India','Non-standard hours'],'hi'))},
+        {n:'05',k:'FOLLOW THE TRANSACTION',h:'Where were these transactions coming from?',
+         p:['I worked with Backend Engineering to trace the abnormal transactions back to their origin.',
+            'The investigation confirmed that automated scripts were generating fraudulent bot transactions through a Shopify source integration.'],
+         v:col(nd('~500 transactions'),ar(),nd('Transaction source'),ar(),nd('Shopify','hi'),ar(),
+               nd('Merchant website'),ar(),nd('Automated scripts','hi'),ar(),nd('BOT TRANSACTIONS','on'))},
+        {n:'06',k:'THE PRODUCT PROBLEM',h:'Finding the bots was only half the problem.',
+         p:['How do we stop them without disrupting legitimate users?',
+            'This is where the work stopped being analysis and became a product decision.'],
+         v:col(nd('BOT TRAFFIC','hi'),ar(),nd('How to mitigate?'),ar(),row(['CAPTCHA','Bot detection'],'hi'))},
+        {n:'07',k:'OPTION A',h:'CAPTCHA',
+         p:['What it solves: it creates an immediate barrier for automated scripts.',
+            'The product concern: it introduces an additional interaction into the checkout experience for legitimate users.'],
+         v:chain(['Checkout load','CAPTCHA','User interaction','Transaction'])},
+        {n:'08',k:'OPTION B',h:'Invisible bot detection',
+         p:['Detect abnormal script execution patterns in the background and mitigate suspicious transactions without requiring an interaction from genuine users.'],
+         v:vs(chain(['Checkout','Background signals','Risk scoring']),
+              two(cb('SUSPICIOUS',chain(['Mitigate'],'hi')),cb('NORMAL',chain(['Continue']))))},
+        {n:'09',k:'THE TRADE-OFF',h:'The decision wasn\u2019t about blocking bots. It was about where to place the friction.',
+         p:['Both options stop automated scripts. They differ in who pays for it.',
+            'CAPTCHA puts the cost on every legitimate user at checkout. Detection puts it on the traffic that looks abnormal.'],
+         v:cmp(['CAPTCHA','Bot detection'],[
+           ['User interaction','Required','None'],
+           ['Mitigation','Immediate','Targeted'],
+           ['Implementation','Lower effort','Medium'],
+           ['Legitimate-user impact','Potential friction','Background detection']])},
+        {n:'10',k:'THE DECISION',h:'Detect the abnormal behaviour. Don\u2019t interrupt everyone.',
+         p:['CAPTCHA was the initial proposed solution. After evaluating the trade-off between mitigation and user friction, I pivoted toward implementing bot detection first.'],
+         v:two(cb('INITIAL THINKING',chain(['CAPTCHA','Block bots'])),
+               cb('PRODUCT DECISION',chain(['Bot detection','Identify abnormality','Mitigate suspicious traffic','Preserve normal user flow'],'hi')))},
+        {n:'11',k:'FROM DECISION TO DELIVERY',h:'Turning the decision into a product.',
+         p:['I led problem definition, PRDs, tracking metrics, stakeholder alignment, sprint prioritization, cross-functional testing and post-launch monitoring.'],
+         v:col(nd('DEFINE<br><small>problem + requirements</small>','on'),ar(),
+               nd('ALIGN<br><small>engineering + design</small>'),ar(),
+               nd('PRIORITIZE<br><small>sprint delivery</small>'),ar(),
+               nd('TEST<br><small>frontend + backend</small>'),ar(),
+               nd('MEASURE','hi'))},
+        {n:'12',k:'THE RESULT',h:'The signal recovered.',
+         p:['Within one month of launch, SRT improved from 60% to 67%.',
+            'The bot traffic was mitigated without introducing an upfront CAPTCHA challenge into the checkout experience.'],
+         v:vs(col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigation'),ar(),nd('Bot detection','on'),ar(),nd('67%','hi')),
+              three(stat('10M+','users'),stat('1 month','post-launch'),stat('+7 pp','SRT')))}],
+       ends:[
+        {h:'What this story says about how I solve problems',
+         v:vs(col(nd('Don\u2019t optimize the metric before understanding the behaviour behind it.','on')),
+              chain(['Signal','Investigate','Hypothesis','Evidence','Root cause','Trade-off','Decision','Measure'],'hi'))}]},
+      {n:'02',id:'dp-emi',h:'The purchase was ready. The payment wasn\u2019t.',sub:'Enabling payment flexibility for high-value transactions',
+       v:col(nd('> \u20b950K cart'),ar(),nd('Payment constraint','hi'),ar(),row(['DP','EMI'],'hi'),ar(),nd('Purchase complete','on')),
+       t:'Turning a payment option into a customer decision point.',
+       l:['B2C','PayU India','> \u20b950K transactions','Customer Experience','Payments','Product Design'],
+       lede:'Transactions above \u20b950,000 represented a critical segment for high-ticket merchants, but customers faced different financial constraints when completing these purchases.',
+       secs:[
+        {n:'01',k:'THE MOMENT',h:'A high-value cart, and a payment that doesn\u2019t fit.',
+         p:['Transactions above \u20b950,000 represented a critical segment for high-ticket merchants, but customers faced different financial constraints when completing these purchases.'],
+         v:col(nd('HIGH-VALUE CART','hi'),ar(),nd('> \u20b950K','on'),ar(),nd('Ready to purchase'),ar(),nd('PAYMENT CONSTRAINT','hi'))},
+        {n:'02',k:'THE PROBLEM',h:'The problem wasn\u2019t the price. It was how the price had to be paid.',
+         p:['Existing payment options required customers to either pay the full amount through a single instrument or finance the full principal through standard EMI.',
+            'One large purchase. Limited ways to pay for it.'],
+         v:vs(col(nd('\u20b960,000 purchase','on'),ar()),
+              two(cb('PAY FULL AMOUNT',chain(['Credit / funds available?'])),
+                  cb('FINANCE FULL AMOUNT',chain(['Credit limit sufficient?']))),
+              col(ar(),nd('No?','hi'),ar(),nd('ABANDONMENT','on')))},
+        {n:'03',k:'FINDING THE SIGNAL',h:'The drop-off wasn\u2019t evenly distributed.',
+         p:['Funnel analysis showed elevated abandonment specifically around carts above the \u20b950K threshold.',
+            'Merchant tickets and user feedback pointed at the same constraint from the other side.'],
+         v:vs(col(nd('PROBLEM SIGNAL','hi'),ar()),
+              two(cb('QUANTITATIVE',chain(['Funnel analysis','> \u20b950K behaviour'])),
+                  cb('QUALITATIVE',chain(['User feedback','Merchant tickets']))),
+              col(ar(),nd('PAYMENT CONSTRAINT','on')),
+              voice('My card credit limit won\u2019t cover the full order.'),
+              voice('Customers need more flexible ways to split high-ticket payments.'))},
+        {n:'04',k:'THE INSIGHT',h:'The customer didn\u2019t need a cheaper purchase. They needed a different payment structure.',
+         p:['Payment UX is not only about reducing friction. It is about offering the right payment choice for the transaction value and customer context.'],
+         v:vs(col(nd('SAME PURCHASE','hi'),ar()),
+              two(cb('PAY \u20b960K AT ONCE',col(nd('One instrument'))),
+                  cb('STRUCTURE THE \u20b960K',col(row(['Upfront','EMI'],'hi')))),
+              col(ar(),nd('MORE FLEXIBILITY','on')))},
+        {n:'05',k:'THE PRODUCT QUESTION',h:'How might we give customers more purchasing flexibility without requiring them to finance the entire amount?',
+         p:['Framing the question around the constraint, rather than around a feature, kept both options on the table long enough to compare them properly.'],
+         v:vs(col(nd('> \u20b950K cart','hi'),ar()),
+              two(cb('STANDARD EMI',chain(['Finance all amount','Full principal'])),
+                  cb('DP + EMI',chain(['Pay part upfront','Lower financed principal'],'hi'))))},
+        {n:'06',k:'THE TRADE-OFF',h:'Two ways to structure the payment.',
+         p:['Standard EMI was lower effort and reused existing payment routing and partner APIs, but the customer still needed approval for the full amount, so it did not address the constraint.',
+            'DP + EMI reduced the financed principal and gave the customer control over the split, at the cost of more complex transaction routing and coordination across payment and banking integrations.'],
+         v:cmp(['Standard EMI','DP + EMI'],[
+           ['Amount financed','Full principal','Reduced by the down payment'],
+           ['Customer control','None over the split','Chooses upfront vs installment'],
+           ['Implementation','Lower complexity','More complex routing'],
+           ['Addresses the constraint','Not directly','Directly']])},
+        {n:'07',k:'THE DECISION',h:'Don\u2019t make the customer finance the problem.',
+         p:['I chose a Down Payment + EMI model that allowed customers to pay an upfront amount and finance the remaining balance through EMI.'],
+         v:col(nd('\u20b960,000','hi'),ar(),row(['DP \u20b920K','EMI \u20b940K'],'hi'),ar(),nd('\u20b960,000 PURCHASE','on'))},
+        {n:'08',k:'THE PRODUCT FLOW',h:'What the customer actually experiences.',
+         p:['The choice had to sit inside the existing checkout, at the point where the customer was already deciding how to pay.'],
+         v:col(nd('Cart'),ar(),nd('> \u20b950K','hi'),ar(),nd('Payment options'),ar(),nd('DP + EMI','on'),ar(),
+               row(['Down payment','EMI amount'],'hi'),ar(),nd('Payment'),ar(),nd('Complete'))},
+        {n:'09',k:'BUILDING THE SYSTEM',h:'A simple customer choice required a coordinated payment flow underneath.',
+         p:['I worked across Frontend Engineering, Backend Core Payments, Banking Partner Integration and UX Design to define and deliver the flow within a single checkout session.'],
+         v:vs(col(nd('DP + EMI','on'),ar()),
+              three(cb('FRONTEND',col(nd('UX flow'))),cb('CORE PAYMENTS',col(nd('Transaction routing'))),cb('BANKING',col(nd('Partner integration')))),
+              col(ar(),nd('MERCHANT','hi')))},
+        {n:'10',k:'THE ENABLEMENT',h:'Make the flexibility appear when it matters.',
+         p:['Checkout rules were configured to dynamically surface DP + EMI options when a transaction crossed the \u20b950K threshold.',
+            'This wasn\u2019t adding another payment button. It was defining when the capability should appear.'],
+         v:vs(col(nd('Transaction value'),ar(),nd('> \u20b950K?','hi'),ar()),
+              two(cb('YES',chain(['DP + EMI available'],'hi')),cb('NO',chain(['Standard options']))))},
+        {n:'11',k:'THE OUTCOME',h:'More ways to complete a high-value purchase.',
+         p:['High-value transactions gained a new DP + EMI payment structure.',
+            'Customers could reduce the financed principal through an upfront payment, and merchants could offer a more flexible option for high-ticket purchases.'],
+         v:vs(two(cb('BEFORE',chain(['> \u20b950K purchase','Full payment or full-principal EMI','Payment constraint'])),
+                  cb('AFTER',chain(['> \u20b950K purchase','Payment choice','DP + EMI','More payment flexibility'],'hi'))),
+              three(cb('PAYMENT FLEXIBILITY',col(nd('A new DP + EMI structure for high-value transactions'))),
+                    cb('AFFORDABILITY',col(nd('Financed principal reduced by an upfront payment'))),
+                    cb('MERCHANT ENABLEMENT',col(nd('A more flexible option for high-ticket purchases')))))},
+        {n:'12',k:'THE PRODUCT LESSON',h:'The right payment experience changes with transaction size.',
+         p:['As transaction value increases, payment flexibility can become part of the product experience itself, not simply a payment-method decision.'],
+         v:two(cb('LOWER VALUE',chain(['Simple payment'])),
+               cb('HIGHER VALUE',chain(['More constraints','More flexibility'],'hi')))}],
+       ends:[
+        {h:'The shape of the story',
+         v:chain(['Purchase > \u20b950K','Payment constraint','Where is the drop?','Quantitative + qualitative',
+                  'Credit / liquidity constraint','Product insight','Standard EMI vs DP + EMI','Trade-off',
+                  'DP + EMI','\u20b950K+ checkout rule','Frontend + payments + banking + UX','More payment choice',
+                  'High-value purchase enabled'],'hi')}]},
+      {n:'03',id:'partial-payments',h:'The fee was due. The full payment wasn\u2019t always possible.',sub:'Partial payments for education payment links',
+       v:col(nd('Total fee'),ar(),nd('School sets a minimum','hi'),ar(),row(['Pay now','Balance later'],'hi'),ar(),nd('Fee collected','on')),
+       t:'Designing flexibility into the checkout journey without losing sight of the transaction experience.',
+       l:['B2B2C','EdTech / Education','PayU India','Payment Links','Conversion','Product Design'],
+       lede:'Educational institutions were using Payment Links to collect fees from parents. The challenge was that a single link typically asked the parent to pay the entire amount upfront.',
+       secs:[
+        {n:'01',k:'THE OPENING',h:'One link. One amount. Pay it all now.',
+         p:['Educational institutions were using Payment Links to collect fees from parents.',
+            'The challenge was that a single link typically asked the parent to pay the entire amount upfront.'],
+         v:vs(col(nd('SCHOOL FEE','hi'),ar(),nd('Large amount'),ar(),nd('Payment link'),ar(),nd('Pay full amount','on'),ar()),
+              two(cb('CAN PAY',chain(['Success'],'hi')),cb('CAN\u2019T PAY',chain(['Drop-off']))))},
+        {n:'02',k:'THE PROBLEM',h:'The Payment Link was simple. The payment wasn\u2019t.',
+         p:['Funnel analysis showed that parent drop-off was concentrated at the payment stage when annual or term fees had to be paid as a single lump sum.'],
+         v:vs(col(nd('Total fee'),ar(),nd('\u20b91,00,000','on'),ar(),nd('One payment link'),ar(),nd('\u201cPay \u20b91,00,000 now\u201d','hi'),ar()),
+              two(cb('SUFFICIENT LIQUIDITY',chain(['Payment'])),cb('INSUFFICIENT LIQUIDITY',chain(['Abandonment'],'hi'))))},
+        {n:'03',k:'LISTEN TO THE CUSTOMER',h:'The data showed where the problem was. Feedback explained why.',
+         p:['Both sides of the transaction described the same constraint in different words.'],
+         v:vs(voice('I want to pay the fee, but I can\u2019t pay the entire amount right now.'),
+              voice('Parents ask for installment options when they receive the fee link.'),
+              chain(['Payment drop-off','Full upfront fee','Parent payment barrier','Unpaid payment link'],'hi'))},
+        {n:'04',k:'THE INSIGHT',h:'The problem wasn\u2019t the Payment Link. It was the payment structure.',
+         p:['If schools could decide how much needed to be collected upfront, the same Payment Link infrastructure could support a more flexible fee-collection model.'],
+         v:col(nd('Payment link'),ar(),nd('FULL FEE<br><small>pay at once</small>','on'),ar(),nd('PAYMENT BARRIER','hi'))},
+        {n:'05',k:'THE PRODUCT QUESTION',h:'What if the school could decide how much to collect first?',
+         p:['That single change moved the decision from the parent, who had no options, to the institution, which understood its own collection cycle.'],
+         v:chain(['Total fee','School decides minimum amount','Payment link','Parent pays minimum amount','Balance remains'],'hi')},
+        {n:'06',k:'BEFORE VS AFTER',h:'From \u201cpay everything now\u201d to \u201cpay what is required now\u201d.',
+         p:['The balance could then be collected through subsequent Payment Links, on the school\u2019s own schedule.'],
+         v:two(cb('BEFORE',chain(['\u20b91,00,000 school fee','Payment link','Pay \u20b91,00,000','Can pay, or drop off'])),
+               cb('AFTER',chain(['\u20b91,00,000 school fee','Enable partial payment','Minimum e.g. \u20b925,000','Parent pays \u20b925K','\u20b975K remaining','New link later','Balance collected'],'hi')))},
+        {n:'07',k:'HOW THE PRODUCT WORKED',h:'The school controlled the payment structure.',
+         p:['The institution set the total fee, enabled partial payment, defined the minimum, and shared the link.',
+            'The parent paid the minimum the school had defined, and the balance stayed tracked against the fee.'],
+         v:vs(col(nd('SCHOOL ADMIN','on'),ar(),nd('Set total fee'),ar(),nd('Enable partial payment','hi'),ar(),
+                  nd('Define minimum payment','hi'),ar(),nd('Generate payment link'),ar(),nd('Share with parent'),ar()),
+              row(['Email','WhatsApp','SMS']),
+              col(ar(),nd('Parent opens link'),ar(),nd('Parent pays the minimum','on'),ar(),nd('Balance remains','hi'),ar()),
+              two(cb('MONTHLY',chain(['New payment link'])),cb('QUARTERLY',chain(['New payment link']))),
+              col(ar(),nd('Parent pays remaining fee'),ar(),nd('Balance reduced'),ar(),nd('FEE COLLECTED','on')))},
+        {n:'08',k:'TWO SIDES',h:'A B2B2C product has two users.',
+         p:['The school needed control over collection. The parent needed a payment they could actually complete. The product had to serve both in one flow.'],
+         v:vs(col(nd('PARTIAL PAYMENTS','on'),ar()),
+              two(cb('SCHOOL / ADMIN',chain(['Set minimum amount','Send payment link','Send next link'])),
+                  cb('PARENT',chain(['Pay minimum amount','Complete payment','Pay balance'],'hi'))),
+              col(ar(),nd('FEE COLLECTION','on')))},
+        {n:'09',k:'THE SYSTEM',h:'Simple for the parent. Structured for the platform.',
+         p:['The product needed to maintain the relationship between the total fee, the minimum amount collected and the outstanding balance, so subsequent Payment Links could collect the remaining amount.'],
+         v:vs(col(nd('Payment link'),ar(),nd('PARTIAL PAYMENT','on'),ar()),
+              three(cb('TOTAL FEE',col(nd('\u20b91,00,000'))),cb('MINIMUM',col(nd('\u20b925,000'))),cb('BALANCE',col(nd('\u20b975,000')))),
+              col(ar(),nd('Payment status'),ar(),nd('Balance tracked','hi'),ar(),nd('Next payment link'),ar(),nd('Balance payment','on')))},
+        {n:'10',k:'THE EDGE CASE',h:'What happens when the next payment doesn\u2019t happen?',
+         p:['A balance that is tracked but never collected is still an unpaid fee. The follow-up path is the part of the model that decides whether it closes.'],
+         v:vs(col(nd('Balance due'),ar(),nd('Payment link sent'),ar()),
+              two(cb('PAID',chain(['Balance reduced'],'hi')),cb('NOT PAID',chain(['Follow-up required']))),
+              lbl('V2 CONSIDERATION'),
+              col(nd('Payment reminder','hi')))},
+        {n:'11',k:'PRODUCT OWNERSHIP',h:'From signal to measurement.',
+         p:['I worked across product discovery, payment-flow definition, merchant requirements, UX, engineering coordination and measurement to extend Payment Links into a partial-payment collection model.'],
+         v:col(nd('IDENTIFY<br><small>payment drop-off</small>','on'),ar(),
+               nd('DISCOVER<br><small>parent + merchant constraint</small>'),ar(),
+               nd('DEFINE<br><small>partial payment experience</small>'),ar(),
+               nd('DESIGN<br><small>payment link flow</small>'),ar(),
+               nd('DELIVER<br><small>engineering + UX</small>'),ar(),
+               nd('MEASURE','hi'))},
+        {n:'12',k:'THE OUTCOME',h:'More completed payments.',
+         p:['Target EdTech payment links saw a 12% lift in segment conversion, and participating fee-collection flows saw an 8% lift in overall transaction completion.'],
+         v:vs(two(stat('+12%','segment conversion, target EdTech payment links'),
+                  stat('+8%','overall transaction completion, participating flows')),
+              chain(['Full upfront payment','Payment barrier','Partial payment','Lower upfront requirement','Balance later','More completed payments'],'hi'))}],
+       ends:[
+        {h:'Sometimes conversion isn\u2019t a UI problem',
+         p:'I learned that improving a payment product isn\u2019t always about making the checkout faster. Sometimes the bigger opportunity is changing the rules of how the transaction can happen.',
+         v:vs(col(nd('It\u2019s a transaction-model problem.','on')),
+              chain(['Payment links','One-time payment','Barrier','Change the model','Partial payment','Minimum upfront','Balance collection','Impact'],'hi'))}]}]},
+    {k:'B2B', h:'Turning complexity into product capability.',
+     intro:'In B2B products, the problem is often bigger than a single screen. It can live inside workflows, dependencies, permissions, platforms and operating models.',
+     cards:[
+      {n:'04',id:'platform',h:'One platform. Many products.',sub:'Platform Standardisation',
+       v:col(row(['Product A','Product B','Product C','Product D','Product E']),ar(),nd('Common platform','on')),
+       t:'Bringing fragmented product experiences toward a common platform foundation.',
+       l:['B2B','Platform','Enterprise','Scalability']},
+      {n:'05',id:'self-serve',h:'From dependency to self-service',sub:'Merchant Self Serve',
+       v:two(cb('BEFORE',chain(['Merchant','Internal team','Engineering','Change'])),
+             cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
+       t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
+       l:['B2B','SaaS','Self-Service','Activation']},
+      {n:'06',id:'racb',h:'RACB',sub:'Platform capability',
+       v:chain(['Complexity','Discovery','Standardise','Enable','Scale']),
+       t:'',
+       l:['B2B','Enterprise','Platform']}]},
+    {k:'ENTERPRISE', h:'Making complex organizations move faster.',
+     intro:'At enterprise scale, product problems don’t stop at the customer interface. They can emerge from how teams build, share capabilities and allocate engineering capacity.',
+     cards:[
+      {n:'07',id:'squads',h:'From squads to system',sub:'Engineering Execution Frameworks & Cross-Squad Velocity Optimization',
+       v:vs(col(row(['Squad A','Squad B','Squad C','Squad D','Squad E']),ar(),nd('Shared execution model','on')),
+            two(cb('BEFORE',col(nd('Different ways of working'))),
+                cb('AFTER',chain(['Shared framework','Better visibility','Cross-squad velocity'],'hi')))),
+       t:'When multiple squads solve related problems differently, execution itself becomes a product problem.',
+       l:['Enterprise','Product Operations','Execution','Velocity']},
+      {n:'08',id:'low-code',h:'Build once. Reuse many times.',sub:'Modular Low-Code Frameworks & Engineering Capacity Optimization',
+       v:col(nd('Common modules','on'),ar(),row(['Product A','Product B','Product C']),ar(),
+             nd('Less rebuilding','hi'),ar(),nd('Engineering capacity')),
+       t:'Instead of repeatedly solving the same engineering problem, the opportunity was to create reusable building blocks.',
+       l:['Platform Thinking','Low-Code','Reusability','Engineering Capacity']}]}
+  ];
+  var BRIDGES={
+    B2B:{p:'From optimizing transactions to simplifying systems.',
+         v:two(cb('B2C',chain(['User','Journey','Friction','Conversion'])),
+               cb('B2B',chain(['Customer','Workflow','Friction','Self-service'],'hi')))},
+    ENTERPRISE:{p:'From product to organization.',
+         v:two(cb('PRODUCT',chain(['Customer','Interface','Outcome'])),
+               cb('ORGANIZATION',chain(['Teams','Capabilities','Capacity'],'hi')))}
+  };
+  var PSTORY={};
+  BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; }); });
+  function buildProdStory(c){
+    var tags='<p class="tags">'+c.l.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</p>';
+    var head='<p class="back"><button type="button" class="link" data-go="prod">Product stories</button></p>'+
+      '<p class="st-n">'+c.band+' \u00b7 STORY '+c.n+'</p>'+
+      '<h2>'+c.h+'</h2>'+
+      '<p class="ps-lede">'+c.sub+'</p>';
+    if(c.secs){
+      views.pstory.innerHTML='<nav class="sbar" aria-label="Story sections">'+
+        c.secs.map(function(x,i){ return '<button type="button" data-s="'+i+'" aria-label="Section '+x.n+', '+x.k+'"'+(i?'':' aria-current="true"')+'>'+x.n+'</button>'; }).join('')+
+        '</nav><div class="page story">'+head+
+        '<p class="st-lede">'+c.lede+'</p>'+
+        c.secs.map(storySection).join('')+
+        (c.ends||[]).map(function(e){ return '<div class="st-end"><h3>'+e.h+'</h3><div class="st-viz">'+e.v+'</div>'+
+          (e.p?'<p class="st-lede">'+e.p+'</p>':'')+'</div>'; }).join('')+
+        tags+'</div>';
+      return;
+    }
+    views.pstory.innerHTML='<div class="page story">'+head+
+      '<div class="st-viz" style="margin-top:22px">'+c.v+'</div>'+
+      (c.t?'<p class="st-lede">'+c.t+'</p>':'')+
+      '<p class="psd-wip">The full write-up for this one is still being written.</p>'+
+      tags+'</div>';
+  }
+  function openProdStory(id,push){
+    var c=PSTORY[id]; if(!c) return;
+    buildProdStory(c);
+    go('pstory',false);
+    if(push!==false) hpush({v:'pstory',id:id},'#p-'+id);
+  }
+  views.prod.addEventListener('click',function(e){
+    var b=e.target.closest('[data-p]');
+    if(b) openProdStory(b.getAttribute('data-p'));
+  });
+  views.pstory.addEventListener('click',function(e){
+    var b=e.target.closest('.sbar button'); if(!b) return;
+    var sc=views.pstory.querySelectorAll('.st')[parseInt(b.getAttribute('data-s'),10)];
+    if(!sc) return;
+    try{ sc.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(err){ sc.scrollIntoView(); }
+  });
+  views.prod.innerHTML='<div class="page story"><p class="back"><button type="button" class="link" data-go="nav">Map</button></p>'+
+    '<h2>Product stories</h2>'+
+    '<p class="st-lede">Different customers. Different constraints. Different product problems.</p>'+
+    '<p class="ps-lede">From optimizing a consumer checkout journey to standardizing platforms and improving how enterprise teams build — these are the product problems I have worked through.</p>'+
+    '<div class="st-viz" style="margin-top:26px">'+
+      two(cb('THREE LEVELS',chain(['B2C · the customer journey','B2B · the business workflow','Enterprise · the organization'],'hi')),
+          cb('ONE QUESTION',col(nd('What is actually<br>in the way?','on'))))+
+    '</div>'+
+    BANDS.map(function(b){
+      var br=BRIDGES[b.k];
+      return (br?'<div class="ps-bridge"><p>'+br.p+'</p><div class="st-viz">'+br.v+'</div></div>':'')+
+        '<div class="ps-band"><p class="k">'+b.k+'</p><h3>'+b.h+'</h3></div>'+
+        '<p class="ps-intro">'+b.intro+'</p>'+
+        '<div class="ps-cards">'+b.cards.map(pcard).join('')+'</div>';
+    }).join('')+
+    '<div class="ps-end"><h3>Three levels, one way of thinking</h3><div class="st-viz">'+
+    vs(col(nd('PRODUCT','on'),ar(),nd('Learned to build for people')),
+       three(cb('B2C',chain(['Customer journey','Conversion'],'hi')),
+             cb('B2B',chain(['Workflow system','Self-serve'],'hi')),
+             cb('ENTERPRISE',chain(['Organization system','Velocity'],'hi'))),
+       col(ar(),nd('PRODUCT THINKING','on')))+
+    '</div></div>'+
+    '<p class="tags"><span>#product</span><span>#b2c</span><span>#b2b</span><span>#enterprise</span></p>'+
+    '</div>';
+
   function openStory(){
     var i,v;
     for(i=0;i<STORY_IDS.length;i++){ v=views[STORY_IDS[i]]; if(v.classList.contains('on')) return v; }
@@ -1396,9 +1787,10 @@ if(typeof module!=='undefined')module.exports=SK;
   }
   function storyScroll(){
     var v=openStory(); if(!v) return;
-    var lede=v.querySelector('.st-lede'), secs=v.querySelectorAll('.st'),
-        btns=v.querySelectorAll('.sbar button'), cur=0, i;
-    v.querySelector('.sbar').classList.toggle('on',lede.getBoundingClientRect().bottom<0);
+    var bar=v.querySelector('.sbar'), lede=v.querySelector('.st-lede');
+    if(!bar||!lede) return;
+    var secs=v.querySelectorAll('.st'), btns=v.querySelectorAll('.sbar button'), cur=0, i;
+    bar.classList.toggle('on',lede.getBoundingClientRect().bottom<0);
     for(i=0;i<secs.length;i++){ if(secs[i].getBoundingClientRect().top<=140) cur=i; }
     for(i=0;i<btns.length;i++){
       if(i===cur) btns[i].setAttribute('aria-current','true'); else btns[i].removeAttribute('aria-current');
@@ -1503,7 +1895,7 @@ if(typeof module!=='undefined')module.exports=SK;
     mk.setAttribute('aria-label',chap?'Home, back to the map':'Hardi Jain, home');
     $('role').hidden=(name==='intro'||chap);
     if(name==='nav'){ renderMap(); updateSlim(); }
-    if(name==='story'||name==='story2') storyScroll();
+    if(name==='story'||name==='story2'||name==='pstory') storyScroll();
     foot.classList.toggle('on',name==='intro'&&footReady);
     window.scrollTo(0,0);
     var h=views[name].querySelector('h2');
@@ -1548,7 +1940,10 @@ if(typeof module!=='undefined')module.exports=SK;
       pl(function(){ aix.hidden=false; void aix.offsetWidth; aix.classList.add('on'); },d+(reduce?0:700));
     } else if(m){
       pl(function(){ msgEl.textContent=m; msgEl.classList.add('on'); },d+(reduce?0:400));
-      if(last&&cur.story){ pl(function(){ mlink.hidden=false; void mlink.offsetWidth; mlink.classList.add('on'); },d+(reduce?0:1200)); }
+      if(last&&cur.story){
+        mlink.innerHTML='<button type="button" class="link" data-go="'+cur.story.to+'">'+cur.story.label+'<span class="ar" aria-hidden="true">\u2192</span></button>';
+        pl(function(){ mlink.hidden=false; void mlink.offsetWidth; mlink.classList.add('on'); },d+(reduce?0:1200));
+      }
       pl(function(){ showNext(last); },d+(reduce?0:1900));
     } else {
       pl(function(){ showNext(last); },d);
@@ -1598,15 +1993,19 @@ if(typeof module!=='undefined')module.exports=SK;
     var st=e.state||{};
     hIdx=st.i||0;
     if(st.v==='chapter'&&CH[st.id]){ setupChapter(st.id,st.bi||0); go('chapter',false); playBeat(false); }
-    else if(st.v==='nav'||st.v==='how'||st.v==='story'||st.v==='story2') go(st.v,false);
+    else if(st.v==='pstory'&&PSTORY[st.id]) openProdStory(st.id,false);
+    else if(st.v==='nav'||st.v==='how'||st.v==='story'||st.v==='story2'||st.v==='prod') go(st.v,false);
     else go('intro',false);
   });
   try{ history.replaceState({v:'intro',i:0},'',location.href); }catch(err){}
   var deep=location.hash.slice(1);
-  if(deep==='how'||deep==='story'||deep==='story2'){
+  if(deep==='how'||deep==='story'||deep==='story2'||deep==='prod'){
     /* landed straight on an inner page: keep the entry beneath it pointing at the landing page */
     try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
     navIdx=2; go(deep);
+  } else if(deep.indexOf('p-')===0&&PSTORY[deep.slice(2)]){
+    try{ history.replaceState({v:'intro',i:0},'',location.pathname+location.search); }catch(err){}
+    navIdx=2; openProdStory(deep.slice(2));
   }
 
   function centre(){
