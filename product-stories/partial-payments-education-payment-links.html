@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Audit reconciliation automation case study | Hardi Jain</title>
-<meta name="description" content="How repeated reconciliation logic became a reusable system, so auditors could investigate exceptions instead of repeating calculations.">
+<title>Partial payments for school fee payment links | Hardi Jain</title>
+<meta name="description" content="B2B2C case study: schools set how much parents pay first, so fee collection through payment links stopped depending on one full upfront payment.">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="author" content="Hardi Jain">
 <meta name="theme-color" content="#F7F1E3">
 <script>document.documentElement.className+=' js'</script>
-<link rel="canonical" href="https://hardijain.com/automation-stories/audit-reconciliation-automation">
+<script>/* old #hash links from before Sep 2026 keep working */(function(){var h=location.hash.slice(1),t={nav:'/map',how:'/how-i-work',prod:'/product-stories',story:'/automation-stories/audit-reconciliation-automation',story2:'/automation-stories/fund-operations-nav-reporting'}[h],p={checkout:'checkout-conversion-bot-detection','dp-emi':'down-payment-emi-high-value-checkout','partial-payments':'partial-payments-education-payment-links',platform:'cross-platform-payment-ux-standardization','self-serve':'self-serve-payment-links-merchant-configuration','access-governance':'payment-links-access-governance',squads:'cross-squad-execution-and-delivery'};if(!t&&h.indexOf('p-')===0&&p[h.slice(2)])t='/product-stories/'+p[h.slice(2)];if(t&&location.pathname==='/')location.replace(t);})();</script>
+<link rel="canonical" href="https://hardijain.com/product-stories/partial-payments-education-payment-links">
 <link rel="icon" type="image/svg+xml" href="https://hardijain.com/favicon.svg">
-<meta property="og:url" content="https://hardijain.com/automation-stories/audit-reconciliation-automation">
+<meta property="og:url" content="https://hardijain.com/product-stories/partial-payments-education-payment-links">
 <meta property="og:image" content="https://hardijain.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -19,11 +20,11 @@
 <meta name="twitter:image" content="https://hardijain.com/og-image.png">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Hardi Jain">
-<meta property="og:title" content="Audit reconciliation automation case study | Hardi Jain">
-<meta property="og:description" content="How repeated reconciliation logic became a reusable system, so auditors could investigate exceptions instead of repeating calculations.">
+<meta property="og:title" content="Partial payments for school fee payment links | Hardi Jain">
+<meta property="og:description" content="B2B2C case study: schools set how much parents pay first, so fee collection through payment links stopped depending on one full upfront payment.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Audit reconciliation automation case study | Hardi Jain">
-<meta name="twitter:description" content="How repeated reconciliation logic became a reusable system, so auditors could investigate exceptions instead of repeating calculations.">
+<meta name="twitter:title" content="Partial payments for school fee payment links | Hardi Jain">
+<meta name="twitter:description" content="B2B2C case study: schools set how much parents pay first, so fee collection through payment links stopped depending on one full upfront payment.">
 <script type="application/ld+json">{
  "@context": "https://schema.org",
  "@graph": [
@@ -92,19 +93,19 @@
   },
   {
    "@type": "Article",
-   "@id": "https://hardijain.com/automation-stories/audit-reconciliation-automation#page",
-   "url": "https://hardijain.com/automation-stories/audit-reconciliation-automation",
-   "name": "Audit reconciliation automation case study | Hardi Jain",
-   "description": "How repeated reconciliation logic became a reusable system, so auditors could investigate exceptions instead of repeating calculations.",
+   "@id": "https://hardijain.com/product-stories/partial-payments-education-payment-links#page",
+   "url": "https://hardijain.com/product-stories/partial-payments-education-payment-links",
+   "name": "Partial payments for school fee payment links | Hardi Jain",
+   "description": "B2B2C case study: schools set how much parents pay first, so fee collection through payment links stopped depending on one full upfront payment.",
    "isPartOf": {
     "@id": "https://hardijain.com/#website"
    },
    "inLanguage": "en",
-   "headline": "Audit reconciliation automation case study",
+   "headline": "Partial payments for school fee payment links",
    "author": {
     "@id": "https://hardijain.com/#person"
    },
-   "articleSection": "Automation",
+   "articleSection": "B2C",
    "image": "https://hardijain.com/og-image.png",
    "dateModified": "2026-09-24"
   },
@@ -120,14 +121,14 @@
     {
      "@type": "ListItem",
      "position": 2,
-     "name": "Career journey",
-     "item": "https://hardijain.com/map"
+     "name": "Product case studies",
+     "item": "https://hardijain.com/product-stories"
     },
     {
      "@type": "ListItem",
      "position": 3,
-     "name": "Audit reconciliation automation",
-     "item": "https://hardijain.com/automation-stories/audit-reconciliation-automation"
+     "name": "Partial payments for school fees",
+     "item": "https://hardijain.com/product-stories/partial-payments-education-payment-links"
     }
    ]
   }
@@ -635,41 +636,50 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   </defs>
 </svg>
 
-<!--SSR:start--><div id="ssr"><p><a href="/">Hardi Jain</a> · SaaS product manager · B2C, B2B and AI · Chartered Accountant</p><main><h1>Turning audit logic into an automated workflow</h1>
-<p>I converted an auditor’s repeated reconciliation logic into a reusable system, so auditors could focus on investigating exceptions rather than performing the same calculations manually.</p>
-<p>01 · THE OLD WAY</p>
-<h3>Thousands of transactions. The same logic, repeated every time.</h3>
-<p>Investment registers contained thousands of transactions that had to be tested through a series of reconciliations and account mappings.</p>
-<p>For each sample, auditors had to reconstruct the expected closing position, validate purchases and sales against the relevant accounts, and verify other income such as dividends and interest.</p>
-<p>02 · THE RECONCILIATION WEB</p>
-<h3>Every transaction had to find its way back to the financial statements.</h3>
-<p>The work wasn’t a single calculation. Each transaction had to connect to the right financial evidence and ultimately reconcile back to the financial statements.</p>
-<p>The challenge was doing this consistently across large transaction populations while still identifying the exceptions that required auditor judgment.</p>
-<p>03 · THE QUESTION</p>
-<h3>What if the logic didn’t have to be repeated by the auditor?</h3>
-<p>The underlying audit logic was repeatable.</p>
-<p>If the rules could be defined once, the system could perform the calculations and reconciliations consistently, leaving the auditor to investigate what didn’t reconcile.</p>
-<p>04 · DEFINE THE LOGIC</p>
-<h3>We turned audit procedures into rules.</h3>
-<p>We defined the underlying audit logic at the backend.</p>
-<p>The system could calculate the expected closing balance, map transactions to the relevant accounts, calculate profit or loss on sales, incorporate dividend and interest income, and identify differences against the expected balances.</p>
-<p>05 · THE USER EXPERIENCE</p>
-<h3>The auditor didn’t need to perform the calculations anymore.</h3>
-<p>The user’s job became simpler: upload the required data, review the automated output, investigate the differences, and document the conclusion.</p>
-<p>The auditor moved from calculation to investigation, rather than simply from manual to automated.</p>
-<p>06 · THE EXCEPTION BECOMES THE PRODUCT</p>
-<h3>Automation didn’t replace the auditor. It changed what the auditor spent time on.</h3>
-<p>Instead of spending time performing the same calculations across samples, auditors could focus their attention on the transactions where the system identified a difference.</p>
-<p>07 · THE INVESTIGATION</p>
-<h3>Automation identifies where human judgment is needed.</h3>
-<p>When the expected closing position did not agree with the financial statements, the system surfaced the difference rather than resolving it.</p>
-<p>Deciding what the difference meant stayed with the auditor.</p>
-<p>08 · THE SCALE</p>
-<h3>From repeated calculations to exception-driven review.</h3>
-<p>The workflow was standardised across 50 client engagements and more than 150 auditors, contributing to a 40–50% reduction in audit cycle time.</p>
-<p>The numbers are the proof, not the story.</p>
-<h3>Transaction → logic → exception</h3>
-<h3>Where this leads</h3></main><nav aria-label="Site"><ul><li><a href="/">Home</a></li><li><a href="/product-stories">Product case studies</a></li><li><a href="/product-stories/checkout-conversion-bot-detection">Checkout conversion and bot detection</a></li><li><a href="/product-stories/down-payment-emi-high-value-checkout">Down payment and EMI checkout</a></li><li><a href="/product-stories/partial-payments-education-payment-links">Partial payments for school fees</a></li><li><a href="/product-stories/cross-platform-payment-ux-standardization">Cross-platform payment UX</a></li><li><a href="/product-stories/self-serve-payment-links-merchant-configuration">Self-serve payment links</a></li><li><a href="/product-stories/payment-links-access-governance">Access control for sales agents</a></li><li><a href="/product-stories/cross-squad-execution-and-delivery">Cross-squad delivery</a></li><li><a href="/automation-stories/audit-reconciliation-automation">Audit reconciliation automation</a></li><li><a href="/automation-stories/fund-operations-nav-reporting">Fund operations and NAV reporting</a></li><li><a href="/map">Career journey</a></li><li><a href="/how-i-work">How I work</a></li></ul></nav></div><!--SSR:end-->
+<!--SSR:start--><div id="ssr"><p><a href="/">Hardi Jain</a> · SaaS product manager · B2C, B2B and AI · Chartered Accountant</p><main><p>B2C · STORY 03</p>
+<h1>The fee was due. The full payment wasn’t always possible.</h1>
+<p>Partial payments for education payment links</p>
+<p>Educational institutions were using Payment Links to collect fees from parents. The challenge was that a single link typically asked the parent to pay the entire amount upfront.</p>
+<p>01 · THE OPENING</p>
+<h3>One link. One amount. Pay it all now.</h3>
+<p>Educational institutions were using Payment Links to collect fees from parents.</p>
+<p>The challenge was that a single link typically asked the parent to pay the entire amount upfront.</p>
+<p>02 · THE PROBLEM</p>
+<h3>The Payment Link was simple. The payment wasn’t.</h3>
+<p>Funnel analysis showed that parent drop-off was concentrated at the payment stage when annual or term fees had to be paid as a single lump sum.</p>
+<p>03 · LISTEN TO THE CUSTOMER</p>
+<h3>The data showed where the problem was. Feedback explained why.</h3>
+<p>Both sides of the transaction described the same constraint in different words.</p>
+<p>04 · THE INSIGHT</p>
+<h3>The problem wasn’t the Payment Link. It was the payment structure.</h3>
+<p>If schools could decide how much needed to be collected upfront, the same Payment Link infrastructure could support a more flexible fee-collection model.</p>
+<p>05 · THE PRODUCT QUESTION</p>
+<h3>What if the school could decide how much to collect first?</h3>
+<p>That single change moved the decision from the parent, who had no options, to the institution, which understood its own collection cycle.</p>
+<p>06 · BEFORE VS AFTER</p>
+<h3>From “pay everything now” to “pay what is required now”.</h3>
+<p>The balance could then be collected through subsequent Payment Links, on the school’s own schedule.</p>
+<p>07 · HOW THE PRODUCT WORKED</p>
+<h3>The school controlled the payment structure.</h3>
+<p>The institution set the total fee, enabled partial payment, defined the minimum, and shared the link.</p>
+<p>The parent paid the minimum the school had defined, and the balance stayed tracked against the fee.</p>
+<p>08 · TWO SIDES</p>
+<h3>A B2B2C product has two users.</h3>
+<p>The school needed control over collection. The parent needed a payment they could actually complete. The product had to serve both in one flow.</p>
+<p>09 · THE SYSTEM</p>
+<h3>Simple for the parent. Structured for the platform.</h3>
+<p>The product needed to maintain the relationship between the total fee, the minimum amount collected and the outstanding balance, so subsequent Payment Links could collect the remaining amount.</p>
+<p>10 · THE EDGE CASE</p>
+<h3>What happens when the next payment doesn’t happen?</h3>
+<p>A balance that is tracked but never collected is still an unpaid fee. The follow-up path is the part of the model that decides whether it closes.</p>
+<p>11 · PRODUCT OWNERSHIP</p>
+<h3>From signal to measurement.</h3>
+<p>I worked across product discovery, payment-flow definition, merchant requirements, UX, engineering coordination and measurement to extend Payment Links into a partial-payment collection model.</p>
+<p>12 · THE OUTCOME</p>
+<h3>More completed payments.</h3>
+<p>Target EdTech payment links saw a 12% lift in segment conversion, and participating fee-collection flows saw an 8% lift in overall transaction completion.</p>
+<h3>Sometimes conversion isn’t a UI problem</h3>
+<p>I learned that improving a payment product isn’t always about making the checkout faster. Sometimes the bigger opportunity is changing the rules of how the transaction can happen.</p></main><nav aria-label="Site"><ul><li><a href="/">Home</a></li><li><a href="/product-stories">Product case studies</a></li><li><a href="/product-stories/checkout-conversion-bot-detection">Checkout conversion and bot detection</a></li><li><a href="/product-stories/down-payment-emi-high-value-checkout">Down payment and EMI checkout</a></li><li><a href="/product-stories/partial-payments-education-payment-links">Partial payments for school fees</a></li><li><a href="/product-stories/cross-platform-payment-ux-standardization">Cross-platform payment UX</a></li><li><a href="/product-stories/self-serve-payment-links-merchant-configuration">Self-serve payment links</a></li><li><a href="/product-stories/payment-links-access-governance">Access control for sales agents</a></li><li><a href="/product-stories/cross-squad-execution-and-delivery">Cross-squad delivery</a></li><li><a href="/automation-stories/audit-reconciliation-automation">Audit reconciliation automation</a></li><li><a href="/automation-stories/fund-operations-nav-reporting">Fund operations and NAV reporting</a></li><li><a href="/map">Career journey</a></li><li><a href="/how-i-work">How I work</a></li></ul></nav></div><!--SSR:end-->
 <div class="app">
   <div class="stars" id="stars" aria-hidden="true"></div>
   <button type="button" class="btn contact" id="contact">Contact me</button>
