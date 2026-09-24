@@ -391,7 +391,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 .pc-lens{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0}
 .pc-lens span{font-size:17px;color:var(--accent-text);border:1.5px solid var(--line);border-radius:999px;padding:3px 10px 5px}
 .ps-bridge{margin:58px 0 0;text-align:center}
-.ps-bridge p{font-size:clamp(23px,2.6vw,30px);font-weight:700;line-height:1.1;margin:0 0 16px}
+.ps-bridge p{font-size:clamp(23px,2.6vw,30px);font-weight:700;line-height:1.1;margin:0}
 .ps-end{margin:64px 0 0;border-top:1.5px solid var(--line);padding-top:26px}
 .ps-end h3{font-size:clamp(26px,3vw,34px);font-weight:700;margin:0 0 16px}
 .pc-go{margin:4px 0 0}
@@ -1523,7 +1523,7 @@ if(typeof module!=='undefined')module.exports=SK;
       '<p class="pc-sub">'+c.sub+'</p>'+
       '<div class="pc-viz">'+c.v+'</div>'+
       (c.t?'<p class="pc-t">'+c.t+'</p>':'')+
-      lens(c.l)+
+      lens(c.cl||c.l)+
       '<p class="pc-go"><button type="button" class="link" data-p="'+c.id+'">Explore story<span class="ar" aria-hidden="true">\u2192</span></button></p>'+
       '</article>';
   }
@@ -1535,6 +1535,7 @@ if(typeof module!=='undefined')module.exports=SK;
        v:col(nd('65%'),ar(),nd('60%','hi'),ar(),nd('Investigate','on'),ar(),nd('Bot traffic','hi'),ar(),nd('67%')),
        t:'A 5-point SRT drop looked like a checkout problem. The investigation revealed abnormal bot traffic distorting the funnel.',
        l:['B2C','Platform & Payments','Data Investigation','Root Cause','Trade-offs'],
+       cl:['Data Investigation','Root Cause','Trade-offs'],
        lede:'A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.',
        secs:[
         {n:'01',k:'THE SIGNAL',h:'What changed?',
@@ -1607,6 +1608,7 @@ if(typeof module!=='undefined')module.exports=SK;
        v:col(nd('> \u20b950K cart'),ar(),nd('Payment constraint','hi'),ar(),row(['DP','EMI'],'hi'),ar(),nd('Purchase complete','on')),
        t:'Turning a payment option into a customer decision point.',
        l:['B2C','> \u20b950K transactions','Customer Experience','Payments','Product Design'],
+       cl:['> \u20b950K transactions','Customer Experience','Product Design'],
        lede:'Transactions above \u20b950,000 represented a critical segment for high-ticket merchants, but customers faced different financial constraints when completing these purchases.',
        secs:[
         {n:'01',k:'THE MOMENT',h:'A high-value cart, and a payment that doesn\u2019t fit.',
@@ -1686,6 +1688,7 @@ if(typeof module!=='undefined')module.exports=SK;
        v:col(nd('Total fee'),ar(),nd('School sets a minimum','hi'),ar(),row(['Pay now','Balance later'],'hi'),ar(),nd('Fee collected','on')),
        t:'Designing flexibility into the checkout journey without losing sight of the transaction experience.',
        l:['B2B2C','EdTech / Education','Payment Links','Conversion','Product Design'],
+       cl:['EdTech / Education','Payment Links','Conversion'],
        lede:'Educational institutions were using Payment Links to collect fees from parents. The challenge was that a single link typically asked the parent to pay the entire amount upfront.',
        secs:[
         {n:'01',k:'THE OPENING',h:'One link. One amount. Pay it all now.',
@@ -1767,6 +1770,7 @@ if(typeof module!=='undefined')module.exports=SK;
             col(ar(),nd('One experience standard','hi'))),
        t:'A design audit tells you what looks different. Mapping components onto live journeys tells you what behaves differently.',
        l:['B2B','Platform & Payments','UX Standardization','Experience Gap Analysis','Web & SDK Parity'],
+       cl:['UX Standardization','Experience Gap Analysis','Web & SDK Parity'],
        lede:'Different surfaces were expected. Different experiences were not.',
        secs:[
         {n:'01',k:'THE OPENING',h:'One payment platform. Two payment surfaces.',
@@ -1856,6 +1860,7 @@ if(typeof module!=='undefined')module.exports=SK;
              cb('AFTER',chain(['Merchant','Self-serve','Configure','Go'],'hi'))),
        t:'Turning recurring operational dependencies into capabilities customers could manage themselves.',
        l:['B2B','Payment Links','Self-Service','Merchant Enablement','Product Systems'],
+       cl:['Self-Service','Merchant Enablement','Product Systems'],
        lede:'The Payment Link worked. The problem was that every merchant wanted it to work differently.',
        secs:[
         {n:'01',k:'THE STARTING POINT',h:'One payment link. Many merchant needs.',
@@ -1932,6 +1937,7 @@ if(typeof module!=='undefined')module.exports=SK;
        v:col(nd('External agent'),ar(),nd('Payment links only','on'),ar(),row(['Own links','Own status'],'hi')),
        t:'Giving distributed sales teams the access they need, without exposing the enterprise behind them.',
        l:['Enterprise SaaS','RBAC','Access Governance','Self-Service','Data Isolation','Platform Design'],
+       cl:['RBAC','Access Governance','Data Isolation'],
        lede:'The business needed distribution. The platform needed control.',
        secs:[
         {n:'01',k:'THE CONTEXT',h:'Payment links were moving beyond the enterprise.',
@@ -2014,6 +2020,7 @@ if(typeof module!=='undefined')module.exports=SK;
             col(ar(),nd('Cross-squad delivery','hi'))),
        t:'When multiple squads solve related problems differently, execution itself becomes a product problem.',
        l:['Enterprise','Product Operations','Cross-Squad Execution','Delivery Systems','Platform','Velocity'],
+       cl:['Product Operations','Cross-Squad Execution','Velocity'],
        lede:'A problem that looked like engineering capacity turned out to be an execution system.',
        secs:[
         {n:'01',k:'THE CONTEXT',h:'One product surface. Many engineering teams.',
@@ -2098,12 +2105,8 @@ if(typeof module!=='undefined')module.exports=SK;
               col(ar(),nd('DELIVERY SYSTEM','on'),ar(),nd('PRODUCT VELOCITY','hi')))}]}]}
   ];
   var BRIDGES={
-    B2B:{p:'From optimizing transactions to simplifying systems.',
-         v:two(cb('B2C',chain(['User','Journey','Friction','Conversion'])),
-               cb('B2B',chain(['Customer','Workflow','Friction','Self-service'],'hi')))},
-    ENTERPRISE:{p:'From product to organization.',
-         v:two(cb('PRODUCT',chain(['Customer','Interface','Outcome'])),
-               cb('ORGANIZATION',chain(['Teams','Capabilities','Capacity'],'hi')))}
+    B2B:{p:'From optimizing transactions to simplifying systems.'},
+    ENTERPRISE:{p:'From product to organization.'}
   };
   var PSTORY={}, PORDER=[];
   BANDS.forEach(function(b){ b.cards.forEach(function(c){ c.band=b.k; PSTORY[c.id]=c; PORDER.push(c.id); }); });
@@ -2156,13 +2159,9 @@ if(typeof module!=='undefined')module.exports=SK;
     '<h2>Product stories</h2>'+
     '<p class="st-lede">Different customers. Different constraints. Different product problems.</p>'+
     '<p class="ps-lede">From optimizing a consumer checkout journey to standardizing platforms and improving how enterprise teams build — these are the product problems I have worked through.</p>'+
-    '<div class="st-viz" style="margin-top:26px">'+
-      two(cb('THREE LEVELS',chain(['B2C · the customer journey','B2B · the business workflow','Enterprise · the organization'],'hi')),
-          cb('ONE QUESTION',col(nd('What is actually<br>in the way?','on'))))+
-    '</div>'+
     BANDS.map(function(b){
       var br=BRIDGES[b.k];
-      return (br?'<div class="ps-bridge"><p>'+br.p+'</p><div class="st-viz">'+br.v+'</div></div>':'')+
+      return (br?'<div class="ps-bridge"><p>'+br.p+'</p></div>':'')+
         '<div class="ps-band"><p class="k">'+b.k+'</p><h3>'+b.h+'</h3></div>'+
         '<p class="ps-intro">'+b.intro+'</p>'+
         '<div class="ps-cards">'+b.cards.map(pcard).join('')+'</div>';
@@ -2174,7 +2173,6 @@ if(typeof module!=='undefined')module.exports=SK;
              cb('ENTERPRISE',chain(['Organization system','Velocity'],'hi'))),
        col(ar(),nd('PRODUCT THINKING','on')))+
     '</div></div>'+
-    '<p class="tags"><span>#product</span><span>#b2c</span><span>#b2b</span><span>#enterprise</span></p>'+
     '</div>';
 
   function openStory(){
