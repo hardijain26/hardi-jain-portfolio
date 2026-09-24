@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fund operations and NAV reporting automation | Hardi Jain</title>
-<meta name="description" content="Daily capital calls and quarterly NAV reporting, automated from one upload, cutting processing from two business days to under four hours.">
+<title>Payment link access control for sales agents | Hardi Jain</title>
+<meta name="description" content="Enterprise SaaS case study: a scoped workspace that lets external sales agents create payment links without seeing the rest of the business.">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="author" content="Hardi Jain">
 <meta name="theme-color" content="#F7F1E3">
 <script>document.documentElement.className+=' js'</script>
-<link rel="canonical" href="https://hardijain.com/automation-stories/fund-operations-nav-reporting">
+<script>/* old #hash links from before Sep 2026 keep working */(function(){var h=location.hash.slice(1),t={nav:'/map',how:'/how-i-work',prod:'/product-stories',story:'/automation-stories/audit-reconciliation-automation',story2:'/automation-stories/fund-operations-nav-reporting'}[h],p={checkout:'checkout-conversion-bot-detection','dp-emi':'down-payment-emi-high-value-checkout','partial-payments':'partial-payments-education-payment-links',platform:'cross-platform-payment-ux-standardization','self-serve':'self-serve-payment-links-merchant-configuration','access-governance':'payment-links-access-governance',squads:'cross-squad-execution-and-delivery'};if(!t&&h.indexOf('p-')===0&&p[h.slice(2)])t='/product-stories/'+p[h.slice(2)];if(t&&location.pathname==='/')location.replace(t);})();</script>
+<link rel="canonical" href="https://hardijain.com/product-stories/payment-links-access-governance">
 <link rel="icon" type="image/svg+xml" href="https://hardijain.com/favicon.svg">
-<meta property="og:url" content="https://hardijain.com/automation-stories/fund-operations-nav-reporting">
+<meta property="og:url" content="https://hardijain.com/product-stories/payment-links-access-governance">
 <meta property="og:image" content="https://hardijain.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -19,11 +20,11 @@
 <meta name="twitter:image" content="https://hardijain.com/og-image.png">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Hardi Jain">
-<meta property="og:title" content="Fund operations and NAV reporting automation | Hardi Jain">
-<meta property="og:description" content="Daily capital calls and quarterly NAV reporting, automated from one upload, cutting processing from two business days to under four hours.">
+<meta property="og:title" content="Payment link access control for sales agents | Hardi Jain">
+<meta property="og:description" content="Enterprise SaaS case study: a scoped workspace that lets external sales agents create payment links without seeing the rest of the business.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fund operations and NAV reporting automation | Hardi Jain">
-<meta name="twitter:description" content="Daily capital calls and quarterly NAV reporting, automated from one upload, cutting processing from two business days to under four hours.">
+<meta name="twitter:title" content="Payment link access control for sales agents | Hardi Jain">
+<meta name="twitter:description" content="Enterprise SaaS case study: a scoped workspace that lets external sales agents create payment links without seeing the rest of the business.">
 <script type="application/ld+json">{
  "@context": "https://schema.org",
  "@graph": [
@@ -92,19 +93,19 @@
   },
   {
    "@type": "Article",
-   "@id": "https://hardijain.com/automation-stories/fund-operations-nav-reporting#page",
-   "url": "https://hardijain.com/automation-stories/fund-operations-nav-reporting",
-   "name": "Fund operations and NAV reporting automation | Hardi Jain",
-   "description": "Daily capital calls and quarterly NAV reporting, automated from one upload, cutting processing from two business days to under four hours.",
+   "@id": "https://hardijain.com/product-stories/payment-links-access-governance#page",
+   "url": "https://hardijain.com/product-stories/payment-links-access-governance",
+   "name": "Payment link access control for sales agents | Hardi Jain",
+   "description": "Enterprise SaaS case study: a scoped workspace that lets external sales agents create payment links without seeing the rest of the business.",
    "isPartOf": {
     "@id": "https://hardijain.com/#website"
    },
    "inLanguage": "en",
-   "headline": "Fund operations and NAV reporting automation",
+   "headline": "Payment link access control for sales agents",
    "author": {
     "@id": "https://hardijain.com/#person"
    },
-   "articleSection": "Automation",
+   "articleSection": "Enterprise",
    "image": "https://hardijain.com/og-image.png",
    "dateModified": "2026-09-24"
   },
@@ -120,14 +121,14 @@
     {
      "@type": "ListItem",
      "position": 2,
-     "name": "Career journey",
-     "item": "https://hardijain.com/map"
+     "name": "Product case studies",
+     "item": "https://hardijain.com/product-stories"
     },
     {
      "@type": "ListItem",
      "position": 3,
-     "name": "Fund operations and NAV reporting",
-     "item": "https://hardijain.com/automation-stories/fund-operations-nav-reporting"
+     "name": "Access control for sales agents",
+     "item": "https://hardijain.com/product-stories/payment-links-access-governance"
     }
    ]
   }
@@ -635,41 +636,55 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
   </defs>
 </svg>
 
-<!--SSR:start--><div id="ssr"><p><a href="/">Hardi Jain</a> · SaaS product manager · B2C, B2B and AI · Chartered Accountant</p><main><h1>The numbers changed every day. The process didn’t need to.</h1>
-<p>Whether it was a daily capital call or a quarterly NAV process, the opportunity was the same: identify repeatable logic, automate the workflow, and direct human effort toward exceptions rather than routine processing.</p>
-<p>01 · CONTEXT</p>
-<h3>A daily operational process with a largely repeatable sequence.</h3>
-<p>Private equity fund operations involved recurring capital calls and distributions between funds and their investors.</p>
-<p>When an investment was sold or a fund needed to call capital, the team had to evaluate the available cash flows, determine the amount to be called or distributed, calculate the amount attributable to each investor, account for adjustments and expenses, and prepare the corresponding investor communication.</p>
+<!--SSR:start--><div id="ssr"><p><a href="/">Hardi Jain</a> · SaaS product manager · B2C, B2B and AI · Chartered Accountant</p><main><p>ENTERPRISE · STORY 06</p>
+<h1>How do you give an external agent enough access to sell, without giving them access to the business?</h1>
+<p>Enterprise payment links · access governance · role-based access</p>
+<p>The business needed distribution. The platform needed control.</p>
+<p>01 · THE CONTEXT</p>
+<h3>Payment links were moving beyond the enterprise.</h3>
+<p>Payment Links allowed merchants to collect payments without requiring a technical integration.</p>
+<p>For an enterprise such as an insurance company, the person creating the link wasn’t always an employee. There were two very different users.</p>
 <p>02 · THE PROBLEM</p>
-<h3>The inputs changed. The workflow repeated.</h3>
-<p>Every day brought different cash flows and different investor amounts, but the underlying process remained largely the same.</p>
-<p>The team had to repeatedly evaluate the cash flows, perform the calculations, make adjustments, and prepare the outputs.</p>
-<p>The opportunity was not simply to make one calculation faster. It was to automate the repeatable logic across the workflow.</p>
-<p>03 · THE INTERVENTION</p>
-<h3>Turning repeatable calculations into an automated workflow.</h3>
-<p>I worked on translating the recurring calculation logic into an automated workflow.</p>
-<p>The underlying data could flow through the defined logic, with the system performing the repeatable calculations and surfacing exceptions for investigation.</p>
-<p>This changed the team’s role from manually performing every calculation to reviewing the output and focusing on the cases that required judgment.</p>
-<p>04 · THE HUMAN ROLE CHANGED</p>
-<h3>From processing every transaction to investigating exceptions.</h3>
-<p>Automation handled the repeatable parts of the process, while human attention was focused on the exceptions that needed investigation and review.</p>
-<p>The objective wasn’t to remove human judgment. It was to move human judgment to the places where it mattered.</p>
-<p>05 · THE SECOND WORKFLOW</p>
-<h3>Quarterly NAV reporting.</h3>
-<p>The same principle applied at quarter-end. The team also had to prepare quarterly financial statements and share NAV information with investors.</p>
-<p>The reporting workflow started with the Trial Balance, which flowed into the Profit &amp; Loss Statement, followed by the Balance Sheet and NAV.</p>
-<p>06 · AUTOMATING THE REPORTING</p>
-<h3>One upload. Multiple downstream outputs.</h3>
-<p>We automated this recurring reporting process so that the Trial Balance could be uploaded once, after which the relevant downstream calculations and outputs were populated automatically.</p>
-<p>Rather than manually working through the entire reporting process, the team could review the generated outputs and investigate the exceptions surfaced by the system.</p>
-<p>07 · THE COMMON PATTERN</p>
-<h3>Two workflows. One automation principle.</h3>
-<p>Whether it was a daily capital call or a quarterly NAV process, the opportunity was the same: identify repeatable logic, automate the workflow, and direct human effort toward exceptions rather than routine processing.</p>
-<p>08 · THE OUTCOME</p>
-<h3>What changed.</h3>
-<p>Across the automated workflows, fund-processing time was reduced from approximately two business days to less than four hours, processing effort was reduced by 75%, and NAV reporting errors decreased from 30% to 10%.</p>
-<h3>What I took forward</h3></main><nav aria-label="Site"><ul><li><a href="/">Home</a></li><li><a href="/product-stories">Product case studies</a></li><li><a href="/product-stories/checkout-conversion-bot-detection">Checkout conversion and bot detection</a></li><li><a href="/product-stories/down-payment-emi-high-value-checkout">Down payment and EMI checkout</a></li><li><a href="/product-stories/partial-payments-education-payment-links">Partial payments for school fees</a></li><li><a href="/product-stories/cross-platform-payment-ux-standardization">Cross-platform payment UX</a></li><li><a href="/product-stories/self-serve-payment-links-merchant-configuration">Self-serve payment links</a></li><li><a href="/product-stories/payment-links-access-governance">Access control for sales agents</a></li><li><a href="/product-stories/cross-squad-execution-and-delivery">Cross-squad delivery</a></li><li><a href="/automation-stories/audit-reconciliation-automation">Audit reconciliation automation</a></li><li><a href="/automation-stories/fund-operations-nav-reporting">Fund operations and NAV reporting</a></li><li><a href="/map">Career journey</a></li><li><a href="/how-i-work">How I work</a></li></ul></nav></div><!--SSR:end-->
+<h3>The existing permission model was too broad.</h3>
+<p>An external agent needed one capability: create a Payment Link for a customer.</p>
+<p>Too little access and the agent cannot work. Too much and enterprise data is exposed. That tension is the story.</p>
+<p>03 · THE WORKAROUND</p>
+<h3>So the enterprise became the middleman.</h3>
+<p>When merchants couldn’t safely give access to external agents, the request travelled through internal teams instead.</p>
+<p>What looked like a support problem was actually a product problem.</p>
+<p>04 · DISCOVERY</p>
+<h3>I started with the support queue.</h3>
+<p>Rather than treating tickets as isolated operational issues, I grouped the requests, found the repeating patterns and traced them back to product gaps.</p>
+<p>The missing capability wasn’t another support workflow. It was a permission primitive designed around the Payment Link job to be done.</p>
+<p>05 · THE PRODUCT QUESTION</p>
+<h3>What is the smallest surface area an external agent actually needs?</h3>
+<p>The useful question was not which permissions this user should have.</p>
+<p>It was what an agent needs in order to create and manage their own Payment Links, and nothing beyond that.</p>
+<p>06 · THE DECISION</p>
+<h3>From broad access to scoped capability.</h3>
+<p>Don’t give users access to a product. Give them access to the capability they need.</p>
+<p>07 · CAPABILITY ISOLATION</p>
+<h3>A deliberately narrow workspace.</h3>
+<p>The agent gets a workspace built around one job, not a filtered version of the merchant dashboard.</p>
+<p>That is capability isolation, not simply role-based access.</p>
+<p>08 · DATA ISOLATION</p>
+<h3>The agent sees their work. The enterprise sees everything.</h3>
+<p>Two levels of visibility. The agent asks to see what they created; the enterprise asks to see everything the organization created.</p>
+<p>09 · SECURITY BY DESIGN</p>
+<h3>Restricting navigation wasn’t enough.</h3>
+<p>Hiding a menu item does not protect a record. Access had to hold at the interface, at the data and at export.</p>
+<p>10 · EXECUTION</p>
+<h3>Turning a permission problem into a product system.</h3>
+<p>I converted recurring support issues into a product problem, defined what an external agent needed to accomplish, and specified what they could see, create, view and export.</p>
+<p>The balance to hold was merchant productivity against enterprise data protection.</p>
+<p>11 · THE TRANSFORMATION</p>
+<h3>Manual delegation became controlled self-service.</h3>
+<p>The agent stopped routing through the organization to do their job, and the enterprise gained a view of everything the agents did.</p>
+<p>12 · WHAT CHANGED</p>
+<h3>Five different people got a different answer.</h3>
+<p>A recurring class of access requests moved out of manual intervention and into the product.</p>
+<h3>Access is a product decision</h3>
+<p>In enterprise products the question isn’t simply who should have access. It is what this person needs to accomplish, what information they need to accomplish it, and what should remain invisible.</p></main><nav aria-label="Site"><ul><li><a href="/">Home</a></li><li><a href="/product-stories">Product case studies</a></li><li><a href="/product-stories/checkout-conversion-bot-detection">Checkout conversion and bot detection</a></li><li><a href="/product-stories/down-payment-emi-high-value-checkout">Down payment and EMI checkout</a></li><li><a href="/product-stories/partial-payments-education-payment-links">Partial payments for school fees</a></li><li><a href="/product-stories/cross-platform-payment-ux-standardization">Cross-platform payment UX</a></li><li><a href="/product-stories/self-serve-payment-links-merchant-configuration">Self-serve payment links</a></li><li><a href="/product-stories/payment-links-access-governance">Access control for sales agents</a></li><li><a href="/product-stories/cross-squad-execution-and-delivery">Cross-squad delivery</a></li><li><a href="/automation-stories/audit-reconciliation-automation">Audit reconciliation automation</a></li><li><a href="/automation-stories/fund-operations-nav-reporting">Fund operations and NAV reporting</a></li><li><a href="/map">Career journey</a></li><li><a href="/how-i-work">How I work</a></li></ul></nav></div><!--SSR:end-->
 <div class="app">
   <div class="stars" id="stars" aria-hidden="true"></div>
   <button type="button" class="btn contact" id="contact">Contact me</button>
