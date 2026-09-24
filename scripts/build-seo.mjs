@@ -20,6 +20,8 @@ const slug = (p) => (p === '/' ? 'home' : p.slice(1).replace(/\//g, '__'));
 const url = (p) => SITE + p;
 const attr = (t) => t.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const byPath = Object.fromEntries(cfg.pages.map((p) => [p.path, p]));
+// Share image: og/<slug>.png when scripts/make-og.mjs has drawn one, else the homepage card.
+const ogImage = (p) => (fs.existsSync(path.join(ROOT, 'og', slug(p.path) + '.png')) ? `${SITE}/og/${slug(p.path)}.png` : `${SITE}/og-image.png`);
 
 // 1. SEO map used by the app when it changes pages in the browser.
 let tpl = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
@@ -58,7 +60,7 @@ function jsonld(page) {
   const node = { '@type': page.type, '@id': url(page.path) + '#page', url: url(page.path), name: page.title, description: page.description, isPartOf: { '@id': `${SITE}/#website` }, inLanguage: 'en' };
   if (page.type === 'ProfilePage') node.mainEntity = { '@id': `${SITE}/#person` };
   if (page.type === 'Article') {
-    Object.assign(node, { headline: page.title.replace(/ \| Hardi Jain$/, ''), author: { '@id': `${SITE}/#person` }, articleSection: page.section, image: `${SITE}/og-image.png`, dateModified: today });
+    Object.assign(node, { headline: page.title.replace(/ \| Hardi Jain$/, ''), author: { '@id': `${SITE}/#person` }, articleSection: page.section, image: ogImage(page), dateModified: today });
   }
   graph.push(node);
   if (page.path !== '/') graph.push(crumbs(page));
@@ -88,6 +90,9 @@ function render(page) {
     .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${d}">`)
     .replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${t}">`)
     .replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${d}">`)
+    .replace(/<meta property="og:image" content="[^"]*">/, `<meta property="og:image" content="${ogImage(page)}">`)
+    .replace(/<meta name="twitter:image" content="[^"]*">/, `<meta name="twitter:image" content="${ogImage(page)}">`)
+    .replace(/<meta property="og:image:alt" content="[^"]*">/, `<meta property="og:image:alt" content="${page.path === '/' ? 'Hardi Jain, Product Manager, with a five-dot constellation and a sixth dot not yet joined' : t}">`)
     .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, jsonld(page))
     .replace(/<!--SSR:start--><!--SSR:end-->/, ssr(page));
 }
