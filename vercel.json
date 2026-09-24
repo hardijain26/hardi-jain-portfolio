@@ -1,4 +1,11 @@
 {
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/(.*)", "has": [{ "type": "host", "value": "www.hardijain.com" }], "destination": "https://hardijain.com/$1", "permanent": true }
+  ],
+  "headers": [
+    { "source": "/journey/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }] }
+  ],
   "rewrites": [
     { "source": "/((?!_vercel).*)", "destination": "/index.html" }
   ]

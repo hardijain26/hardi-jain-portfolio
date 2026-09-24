@@ -1,0 +1,49 @@
+<p>B2C · STORY 01</p>
+<h1>When the funnel lied</h1>
+<p>SRT optimization through bot detection</p>
+<p>A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.</p>
+<p>01 · THE SIGNAL</p>
+<h3>What changed?</h3>
+<p>A platform serving more than 10 million users saw its Success Rate of Transactions fall from 65% to 60%.</p>
+<p>AWS monitoring flagged the deviation once it passed two percentage points.</p>
+<p>02 · INVESTIGATION</p>
+<h3>Before changing the product, I had to find the pattern.</h3>
+<p>I segmented the decline across merchant level, industry segment and transaction source to identify where the SRT movement was concentrated.</p>
+<p>03 · THE FIRST HYPOTHESIS</p>
+<h3>The obvious explanation wasn’t the answer.</h3>
+<p>My initial hypothesis was that NGO merchants were driving the decline, because publicly shared payment links could attract users with low purchase intent.</p>
+<p>The data disproved my first hypothesis. That is part of the story, not something to hide: hypothesis, evidence, revision.</p>
+<p>04 · THE ANOMALY</p>
+<h3>Then the transaction data changed the direction of the investigation.</h3>
+<p>Transaction-level logs revealed approximately 500 transactions initiated through a single email ID within a five-minute window, originating from outside India during non-standard business hours.</p>
+<p>The metric wasn’t telling the whole story.</p>
+<p>05 · FOLLOW THE TRANSACTION</p>
+<h3>Where were these transactions coming from?</h3>
+<p>I worked with Backend Engineering to trace the abnormal transactions back to their origin.</p>
+<p>The investigation confirmed that automated scripts were generating fraudulent bot transactions through a Shopify source integration.</p>
+<p>06 · THE PRODUCT PROBLEM</p>
+<h3>Finding the bots was only half the problem.</h3>
+<p>How do we stop them without disrupting legitimate users?</p>
+<p>This is where the work stopped being analysis and became a product decision.</p>
+<p>07 · OPTION A</p>
+<h3>CAPTCHA</h3>
+<p>What it solves: it creates an immediate barrier for automated scripts.</p>
+<p>The product concern: it introduces an additional interaction into the checkout experience for legitimate users.</p>
+<p>08 · OPTION B</p>
+<h3>Invisible bot detection</h3>
+<p>Detect abnormal script execution patterns in the background and mitigate suspicious transactions without requiring an interaction from genuine users.</p>
+<p>09 · THE TRADE-OFF</p>
+<h3>The decision wasn’t about blocking bots. It was about where to place the friction.</h3>
+<p>Both options stop automated scripts. They differ in who pays for it.</p>
+<p>CAPTCHA puts the cost on every legitimate user at checkout. Detection puts it on the traffic that looks abnormal.</p>
+<p>10 · THE DECISION</p>
+<h3>Detect the abnormal behaviour. Don’t interrupt everyone.</h3>
+<p>CAPTCHA was the initial proposed solution. After evaluating the trade-off between mitigation and user friction, I pivoted toward implementing bot detection first.</p>
+<p>11 · FROM DECISION TO DELIVERY</p>
+<h3>Turning the decision into a product.</h3>
+<p>I led problem definition, PRDs, tracking metrics, stakeholder alignment, sprint prioritization, cross-functional testing and post-launch monitoring.</p>
+<p>12 · THE RESULT</p>
+<h3>The signal recovered.</h3>
+<p>Within one month of launch, SRT improved from 60% to 67%.</p>
+<p>The bot traffic was mitigated without introducing an upfront CAPTCHA challenge into the checkout experience.</p>
+<h3>What this story says about how I solve problems</h3>
