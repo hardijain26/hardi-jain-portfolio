@@ -688,7 +688,7 @@ h1{font-weight:700;font-size:clamp(58px,8.6vw,116px);line-height:.95;margin:0 0 
 <p>I learned that improving a payment product isn’t always about making the checkout faster. Sometimes the bigger opportunity is changing the rules of how the transaction can happen.</p></main><nav aria-label="Site"><ul><li><a href="/">Home</a></li><li><a href="/product-stories">Product case studies</a></li><li><a href="/product-stories/checkout-conversion-bot-detection">Checkout conversion and bot detection</a></li><li><a href="/product-stories/down-payment-emi-high-value-checkout">Down payment and EMI checkout</a></li><li><a href="/product-stories/partial-payments-education-payment-links">Partial payments for school fees</a></li><li><a href="/product-stories/cross-platform-payment-ux-standardization">Cross-platform payment UX</a></li><li><a href="/product-stories/self-serve-payment-links-merchant-configuration">Self-serve payment links</a></li><li><a href="/product-stories/payment-links-access-governance">Access control for sales agents</a></li><li><a href="/product-stories/cross-squad-execution-and-delivery">Cross-squad delivery</a></li><li><a href="/automation-stories/audit-reconciliation-automation">Audit reconciliation automation</a></li><li><a href="/automation-stories/fund-operations-nav-reporting">Fund operations and NAV reporting</a></li><li><a href="/map">Career journey</a></li><li><a href="/how-i-work">How I work</a></li></ul></nav></div><!--SSR:end-->
 <div class="app">
   <div class="stars" id="stars" aria-hidden="true"></div>
-  <button type="button" class="btn contact" id="contact">Contact me</button>
+  <a class="btn contact" id="contact" href="https://www.linkedin.com/in/hardijain-pm/" target="_blank" rel="noopener">Contact me</a>
   <button type="button" class="mark" id="mark" hidden aria-label="Hardi Jain, home"><svg class="hi" viewBox="0 0 40 40" aria-hidden="true"><g filter="url(#wob)"><path id="homeP" d=""/></g></svg><span class="hn">Hardi Jain</span></button>
   <p class="role" id="role" hidden>SaaS Product Manager · B2C, B2B &amp; AI</p>
 
@@ -2501,13 +2501,6 @@ if(typeof module!=='undefined')module.exports=SK;
       dt.querySelector('summary').addEventListener('click',function(e){ if(e.detail>0) e.preventDefault(); });
     });
   })();
-  $('contact').addEventListener('click',function(){
-    var em=foot.querySelector('a[href^="mailto:"]');
-    try{ foot.scrollIntoView({behavior:reduce?'auto':'smooth',block:'end'}); }catch(err){}
-    em.classList.remove('pulse'); void em.offsetWidth; em.classList.add('pulse');
-    setTimeout(function(){ em.focus({preventScroll:true}); },reduce?0:600);
-    setTimeout(function(){ em.classList.remove('pulse'); },2400);
-  });
   cprog.addEventListener('click',function(e){
     var b=e.target.closest('[data-b]'); if(!b) return;
     var k=parseInt(b.getAttribute('data-b'),10);
